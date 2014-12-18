@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Employee">
+<Super>%Persistent,%XML.Adaptor,%Populate</Super>
+<TimeCreated>63527,76710.695998</TimeCreated>
+
+<Property name="FirstName">
+<Description>
+Имя работника</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="LastName">
+<Description>
+Фамилия</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="MiddleName">
+<Description>
+Отчество</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="Phone">
+<Description>
+Телефон</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Email">
+<Description>
+Электронный адрес</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Method name="ConvertToProxyObject">
+<Description>
+Convert to proxyObject (for JSON)</Description>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.lastName = ..LastName.Value
+	set proxy.firstName = ..FirstName.Value
+	set proxy.middleName = ..MiddleName.Value
+	set proxy.email = ..Email
+	set proxy.phone = ..Phone
+	quit proxy
+]]></Implementation>
+</Method>
+
+<UDLText name="T">
+<Content><![CDATA[
+/*
+ClassMethod CheckDeletePrivilege()
+{
+}
+
+/// Create or save modified employee
+ClassMethod Save(data As %RegisteredObject, ByRef status) As Sti.Data.Employee
+{
+	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Save", 
+	"ID="_data.id_
+	"; LastName="_$ZCONVERT(data.lastName, "I","UTF8")_
+	"; FirstName="_$ZCONVERT(data.firstName, "I","UTF8")_
+	"; MiddleName="_$ZCONVERT(data.middleName, "I","UTF8")_
+	"; Email="_data.email_
+	"; Phone="_data.phone)
+
+	if (data.id '= ""){
+		set employee = ..%OpenId(data.id,3,.status)
+		set employee.LastName.Value = $ZCONVERT(data.lastName, "I","UTF8")
+		set employee.FirstName.Value = $ZCONVERT(data.firstName, "I","UTF8")
+		set employee.MiddleName.Value = $ZCONVERT(data.middleName, "I","UTF8")
+	}
+	else{
+		set employee = ..%New()
+		set employee.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I","UTF8"), "Sti.Data.Localization.Translation;employeeLTextValue")
+		set employee.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I","UTF8"), "Sti.Data.Localization.Translation;employeeLTextValue")
+		set employee.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I","UTF8"), "Sti.Data.Localization.Translation;employeeLTextValue")
+	}
+	
+	set employee.Email = $ZCONVERT(data.email, "I","UTF8")
+	set employee.Phone = $ZCONVERT(data.phone, "I","UTF8")
+	
+	set status = employee.%Save()
+
+	quit employee
+}
+
+/// Delete employee if it is available
+ClassMethod Delete(employeeId As %String) As %Status
+{
+	set employee = ..%OpenId(employeeId, 4)
+
+	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_employeeId_"; LastName="_employee.LastName.Value_"; FirstName="_employee.FirstName.Value_"; Email="_employee.Email)
+	
+	set st = ##class(Sti.Data.Localization.LText).Delete(employee.LastName.%Id())
+	quit:$$$ISERR(st) st
+		
+	set st = ##class(Sti.Data.Localization.LText).Delete(employee.FirstName.%Id())
+	quit:$$$ISERR(st) st
+		
+	set st = ##class(Sti.Data.Localization.LText).Delete(employee.MiddleName.%Id())
+	quit:$$$ISERR(st) st
+	
+	set st = ..%DeleteId(employeeId,4)
+	quit:$$$ISERR(st) ##class(Sti.Utils.Msg).GetErrorStatus("deleteemployee", " | "_st) 
+	
+	quit $$$OK
+}
+*/
+]]></Content>
+</UDLText>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.EmployeeD</DataLocation>
+<DefaultData>EmployeeDefaultData</DefaultData>
+<IdLocation>^Sti.Data.EmployeeD</IdLocation>
+<IndexLocation>^Sti.Data.EmployeeI</IndexLocation>
+<StreamLocation>^Sti.Data.EmployeeS</StreamLocation>
+<ExtentSize>10</ExtentSize>
+<Data name="EmployeeDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>FirstName</Value>
+</Value>
+<Value name="3">
+<Value>LastName</Value>
+</Value>
+<Value name="4">
+<Value>MiddleName</Value>
+</Value>
+<Value name="5">
+<Value>Phone</Value>
+</Value>
+<Value name="6">
+<Value>Email</Value>
+</Value>
+</Data>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+</Property>
+<Property name="Email">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="FirstName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="LastName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="MiddleName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Phone">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<SQLMap name="IDKEY">
+<BlockCount>-4</BlockCount>
+</SQLMap>
+</Storage>
+</Class>
+</Export>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.University">
+<Super>%Persistent,%XML.Adaptor,%Populate</Super>
+<TimeCreated>63527,76710.907034</TimeCreated>
+
+<Property name="Address">
+<Description>
+Адрес университета</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="City">
+<Description>
+Город, в котором расположен университет</Description>
+<Type>Region</Type>
+</Property>
+
+<Property name="Country">
+<Description>
+Страна</Description>
+<Type>Region</Type>
+</Property>
+
+<Property name="Curator">
+<Description>
+Куратор университета</Description>
+<Type>Employee</Type>
+</Property>
+
+<Property name="FullName">
+<Description>
+Полное наименование университета</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="ShortName">
+<Description>
+Краткое наименование университета</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="Contacts">
+<Description>
+Доп. контакты</Description>
+<Type>Employee</Type>
+<Cardinality>many</Cardinality>
+<Inverse>University</Inverse>
+</Property>
+
+<Property name="Web">
+<Description>
+Web страница</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Interns">
+<Description>
+Массив стажеров</Description>
+<Type>Sti.Data.Intern</Type>
+<Cardinality>many</Cardinality>
+<Inverse>University</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Method name="ConvertToProxyObject">
+<Description>
+Convert to proxyObject (for JSON)</Description>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.address = ..Address.Value
+	set proxy.city = ..City.ConvertToProxyObject()
+	
+	set proxy.country = ..Country.ConvertToProxyObject()
+	set proxy.curator = ..Curator.ConvertToProxyObject()
+	set proxy.fullName = ..FullName.Value
+	set proxy.shortName = ..ShortName.Value
+	set proxy.web = ..Web
+	
+	set proxy.interns = ##class(%ListOfObjects).%New()
+	
+	set key = ""
+	for i=1:1:..Interns.Count(){
+		set key = ..Interns.Next(key)
+		do proxy.interns.Insert(..Interns.GetAt(key).ConvertToProxyObject())
+	}
+	
+	set proxy.employees = ##class(%ListOfObjects).%New()
+	set key = ""
+	for i=1:1:..Contacts.Count(){
+		set key = ..Contacts.Next(key)
+		do proxy.employees.Insert(..Interns.GetAt(key).ConvertToProxyObject())
+	}
+	quit proxy
+]]></Implementation>
+</Method>
+
+<UDLText name="T">
+<Content><![CDATA[
+/*
+/// Create or save modified organization
+ClassMethod Save(data As %RegisteredObject, ByRef status) As University
+{
+	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Save", "ID="_data.id_"; ShortName="_$ZCONVERT(data.shortName, "I","UTF8"))
+	
+	if (data.id '= ""){
+		set university = ..%OpenId(data.id,3,.status)
+		set university.FullName.Value = $ZCONVERT(data.fullName, "I","UTF8")
+		set university.ShortName.Value = $ZCONVERT(data.shortName, "I","UTF8")
+		set university.Address.Value = $ZCONVERT(data.address, "I","UTF8")
+	}
+	else{
+		set university = ..%New()
+		set university.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I","UTF8"))
+		set university.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I","UTF8"))
+		set university.Address = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.legalAddress, "I","UTF8"))
+	}
+	
+	set university.WebSite = $REPLACE($REPLACE($ZCONVERT(data.web, "I","UTF8"),"http://",""), "https://","")
+	
+	set status = university.%Save()
+	
+	quit university
+}
+
+/// Delete organization, if it is available
+ClassMethod Delete(id) As %Status
+{
+	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_id)
+	
+	set university = ..%OpenId(id,4,.status)
+	quit:$$$ISERR(status) ##class(Sti.Utils.Msg).GetErrorStatus("openUniversity", "| "_status)
+	
+	set findId = ""
+	
+	// Checking: if in applications
+	&sql(SELECT ID INTO:findId FROM Sti_Data.Intern WHERE University = :id)
+	
+	// Quit, if has links
+	quit:findId'="" ##class(Sti.Utils.Msg).GetErrorStatus("deleteUniversityImpossible")
+	
+	// Delete localization
+	set status = ##class(Sti.Data.Localization.LText).Delete(university.FullName.%Id())
+	quit:$$$ISERR(status) status
+		
+	set status = ##class(Sti.Data.Localization.LText).Delete(university.ShortName.%Id())
+	quit:$$$ISERR(status) status
+		
+	set status = ##class(Sti.Data.Localization.LText).Delete(university.Address.%Id())
+	quit:$$$ISERR(status) status
+	
+	///Company, contacts? country, curator??
+	
+	// Delete organization
+	set status = ..%DeleteId(id, 4)
+	quit:$$$ISERR(status) ##class(Sti.Utils.Msg).GetErrorStatus("deleteUniversity", "| "_status)
+	
+	quit $$$OK
+}
+*/
+]]></Content>
+</UDLText>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.UniversityD</DataLocation>
+<DefaultData>UniversityDefaultData</DefaultData>
+<IdLocation>^Sti.Data.UniversityD</IdLocation>
+<IndexLocation>^Sti.Data.UniversityI</IndexLocation>
+<StreamLocation>^Sti.Data.UniversityS</StreamLocation>
+<ExtentSize>10</ExtentSize>
+<Data name="UniversityDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Address</Value>
+</Value>
+<Value name="3">
+<Value>City</Value>
+</Value>
+<Value name="4">
+<Value>Country</Value>
+</Value>
+<Value name="5">
+<Value>Curator</Value>
+</Value>
+<Value name="6">
+<Value>FullName</Value>
+</Value>
+<Value name="7">
+<Value>ShortName</Value>
+</Value>
+<Value name="8">
+<Value>Contacts</Value>
+</Value>
+<Value name="9">
+<Value>Web</Value>
+</Value>
+</Data>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+</Property>
+<Property name="Address">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="City">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Contacts">
+<Selectivity>11.1111%</Selectivity>
+</Property>
+<Property name="Country">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Curator">
+<Selectivity>16.6667%</Selectivity>
+</Property>
+<Property name="FullName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="ShortName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Web">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<SQLMap name="IDKEY">
+<BlockCount>-4</BlockCount>
+</SQLMap>
+</Storage>
+</Class>
+</Export>

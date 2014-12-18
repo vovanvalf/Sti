@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Localization.Translation">
+<Description>
+Class for text translation</Description>
+<TimeCreated>63142,65508.32117</TimeCreated>
+
+<Method name="PersonLTextValue">
+<Description>
+Name translation method; if language is unknown, returns input string</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>inputStr:%Text,fromLang:%String,toLang:%String</FormalSpec>
+<ReturnType>%Text</ReturnType>
+<Implementation><![CDATA[
+	set outputStr = ""
+	
+	for i=1:1:$L(inputStr){
+		set inputChar = $E(inputStr, i)
+		set lower = $ZCONVERT(inputChar, "L")
+		set outputChar = $GET(^CacheMsg("Sti", fromLang, toLang, lower), inputChar)
+		if (lower '= inputChar) set outputChar = $ZCONVERT($E(outputChar, 1), "U")_$E(outputChar, 2, *)
+		set outputStr = outputStr_outputChar
+	}
+	
+	quit outputStr
+]]></Implementation>
+</Method>
+
+<Method name="Init">
+<Description>
+Translation dictionary</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set ^CacheMsg("Sti", "ru", "en", "а") = "a"
+	set ^CacheMsg("Sti", "ru", "en", "б") = "b"
+	set ^CacheMsg("Sti", "ru", "en", "в") = "v"
+	set ^CacheMsg("Sti", "ru", "en", "г") = "g"
+	set ^CacheMsg("Sti", "ru", "en", "д") = "d"
+	set ^CacheMsg("Sti", "ru", "en", "е") = "e"
+	set ^CacheMsg("Sti", "ru", "en", "ё") = "e"
+	set ^CacheMsg("Sti", "ru", "en", "ж") = "zh"
+	set ^CacheMsg("Sti", "ru", "en", "з") = "z"
+	set ^CacheMsg("Sti", "ru", "en", "и") = "i"
+	set ^CacheMsg("Sti", "ru", "en", "й") = "y"
+	set ^CacheMsg("Sti", "ru", "en", "к") = "k"
+	set ^CacheMsg("Sti", "ru", "en", "л") = "l"
+	set ^CacheMsg("Sti", "ru", "en", "м") = "m"
+	set ^CacheMsg("Sti", "ru", "en", "н") = "n"
+	set ^CacheMsg("Sti", "ru", "en", "о") = "o"
+	set ^CacheMsg("Sti", "ru", "en", "п") = "p"
+	set ^CacheMsg("Sti", "ru", "en", "р") = "r"	
+	set ^CacheMsg("Sti", "ru", "en", "с") = "s"
+	set ^CacheMsg("Sti", "ru", "en", "т") = "t"
+	set ^CacheMsg("Sti", "ru", "en", "у") = "u"
+	set ^CacheMsg("Sti", "ru", "en", "ф") = "f"
+	set ^CacheMsg("Sti", "ru", "en", "х") = "kh"
+	set ^CacheMsg("Sti", "ru", "en", "ц") = "ts"
+	set ^CacheMsg("Sti", "ru", "en", "ч") = "ch"
+	set ^CacheMsg("Sti", "ru", "en", "ш") = "sh"
+	set ^CacheMsg("Sti", "ru", "en", "щ") = "shch"	
+	set ^CacheMsg("Sti", "ru", "en", "ь") = ""
+	set ^CacheMsg("Sti", "ru", "en", "ъ") = ""
+	set ^CacheMsg("Sti", "ru", "en", "ы") = ""
+	set ^CacheMsg("Sti", "ru", "en", "э") = "e"
+	set ^CacheMsg("Sti", "ru", "en", "ю") = "yu"
+	set ^CacheMsg("Sti", "ru", "en", "я") = "ya"
+	
+	// Reverse translation is not good enough
+	set ^CacheMsg("Sti", "en", "ru", "a") = "а"
+	set ^CacheMsg("Sti", "en", "ru", "b") = "б"
+	set ^CacheMsg("Sti", "en", "ru", "c") = "ц"
+	set ^CacheMsg("Sti", "en", "ru", "d") = "д"
+	set ^CacheMsg("Sti", "en", "ru", "e") = "е"
+	set ^CacheMsg("Sti", "en", "ru", "f") = "ф"
+	set ^CacheMsg("Sti", "en", "ru", "g") = "ж"
+	set ^CacheMsg("Sti", "en", "ru", "h") = "ш"
+	set ^CacheMsg("Sti", "en", "ru", "i") = "и"
+	set ^CacheMsg("Sti", "en", "ru", "j") = "й"
+	set ^CacheMsg("Sti", "en", "ru", "k") = "к"
+	set ^CacheMsg("Sti", "en", "ru", "l") = "л"
+	set ^CacheMsg("Sti", "en", "ru", "m") = "м"
+	set ^CacheMsg("Sti", "en", "ru", "n") = "н"
+	set ^CacheMsg("Sti", "en", "ru", "o") = "о"
+	set ^CacheMsg("Sti", "en", "ru", "p") = "п"
+	set ^CacheMsg("Sti", "en", "ru", "r") = "р"
+	set ^CacheMsg("Sti", "en", "ru", "s") = "с"	
+	set ^CacheMsg("Sti", "en", "ru", "q") = "ку"
+	set ^CacheMsg("Sti", "en", "ru", "t") = "т"
+	set ^CacheMsg("Sti", "en", "ru", "u") = "у"
+	set ^CacheMsg("Sti", "en", "ru", "v") = "в"
+	set ^CacheMsg("Sti", "en", "ru", "w") = "в"
+	set ^CacheMsg("Sti", "en", "ru", "x") = "кс"
+	set ^CacheMsg("Sti", "en", "ru", "y") = "у"
+	set ^CacheMsg("Sti", "en", "ru", "z") = "з"
+]]></Implementation>
+</Method>
+</Class>
+</Export>

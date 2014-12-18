@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Resume">
+<Super>%Persistent,%File</Super>
+<TimeCreated>63538,86033.727122</TimeCreated>
+
+<Property name="File">
+<Type>%File</Type>
+</Property>
+
+<Property name="TextInfo">
+<Type>%String</Type>
+</Property>
+
+<Method name="ConvertToProxyObject">
+<Description>
+Convert to proxyObject (for JSON)</Description>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.textinfo = ..TextInfo
+	set proxy.file = ..File
+	
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.ResumeD</DataLocation>
+<DefaultData>ResumeDefaultData</DefaultData>
+<IdLocation>^Sti.Data.ResumeD</IdLocation>
+<IndexLocation>^Sti.Data.ResumeI</IndexLocation>
+<StreamLocation>^Sti.Data.ResumeS</StreamLocation>
+<Data name="ResumeDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Name</Value>
+</Value>
+<Value name="3">
+<Value>AtEnd</Value>
+</Value>
+<Value name="4">
+<Value>Id</Value>
+</Value>
+<Value name="5">
+<Value>%Location</Value>
+</Value>
+<Value name="6">
+<Value>openmode</Value>
+</Value>
+<Value name="7">
+<Value>Mode</Value>
+</Value>
+<Value name="8">
+<Value>LineTerminator</Value>
+</Value>
+<Value name="9">
+<Value>IsOpen</Value>
+</Value>
+<Value name="10">
+<Value>File</Value>
+</Value>
+<Value name="11">
+<Value>TextInfo</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

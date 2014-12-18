@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Web.BrokerAdmin">
+<Description>
+Private request processor for administrator</Description>
+<Super>%CSP.REST</Super>
+<TimeCreated>63098,81405.67207</TimeCreated>
+
+<Parameter name="UseSession">
+<Type>Integer</Type>
+<Default>1</Default>
+</Parameter>
+
+<XData name="UrlMap">
+<Data><![CDATA[
+<Routes>
+<!-- Получить всех стажеров -->
+<Route Url="/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetInterns"/> 
+
+<!-- Получить стажера по ИД -->
+<Route Url="/intern/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetIntern"/> 
+
+<!-- Сохранить / создать стажера -->
+<Route Url="/intern" Method="POST" Call="Sti.Web.JsonAdmin:SaveIntern"/> 
+
+<!-- Удалить стажера -->
+<Route Url="/intern/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteIntern"/> 
+
+
+
+<!-- Все институты -->
+<Route Url="/univer" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversitys"/> 
+
+<!-- Все стажеры института -->
+<Route Url="/univer/:id/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversityInterns"/> 
+
+<!-- Получить институт по ИД -->
+<Route Url="/univer/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversity"/> 
+
+<!-- Сохранить / создать институт -->
+<Route Url="/univer" Method="POST" Call="Sti.Web.JsonAdmin:SaveUniversity"/> 
+
+<!-- Удалить институт -->
+<Route Url="/univer/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteUniversity"/> 
+
+
+</Routes>
+]]></Data>
+</XData>
+
+<Method name="Http404">
+<Description>
+Issue an '404' error ( user can override)</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	&html<<h3 style="color:red">Страница не найдена!!!</h3>>
+    Set %response.Status="404 Not Found"
+    Quit $$$OK
+]]></Implementation>
+</Method>
+</Class>
+</Export>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Web.JsonAdmin">
+<Description>
+Handling of BrokerAdmin</Description>
+<Super>Json</Super>
+<TimeCreated>63098,81450.05769</TimeCreated>
+
+<Method name="GetIntern">
+<Description>
+Получить стажёра по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		do ##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject().%ToJSON()
+	}
+	catch(ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveIntern">
+<Description>
+Создать / сохранить интерна</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	
+	try{
+		// Преобразовали входную строку JSON в объект proxyObject
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+      	
+      	// Открываем студента по ИД
+      	set student = ##class(Sti.Data.Intern).%OpenId(data.id,,.st)
+      	
+      	// Открыть не удалось - создаем
+      	if $$$ISERR(st) set intern = ##class(Sti.Data.Intern).%New()
+     
+      	set student.LastName = $ZCONVERT(data.lastname, "I", "UTF8")
+      	set student.FirstName = $ZCONVERT(data.firstname, "I", "UTF8")
+      	set student.Email = $ZCONVERT(data.lastname, "I", "UTF8")
+      	set student.MiddleName = $ZCONVERT(data.middlename, "I", "UTF8")
+      	
+      	set student.Phone = $ZCONVERT(data.phone, "I", "UTF8")
+      	set student.Email = $ZCONVERT(data.email, "I", "UTF8")
+      	set student.Skype = $ZCONVERT(data.skype, "I", "UTF8")
+      	set student.Agree = $ZCONVERT(data.agree, "I", "UTF8")
+      	set student.Cache = $ZCONVERT(data.cache, "I", "UTF8")
+      	set student.Ensemble = $ZCONVERT(data.ensemble, "I", "UTF8")
+      	set student.DeepSee = $ZCONVERT(data.deepsee, "I", "UTF8")
+      	set student.TET = $ZCONVERT(data.tet, "I", "UTF8")
+      	set student.PET = $ZCONVERT(data.pet, "I", "UTF8")
+      	set student.Resume = $ZCONVERT(data.resume, "I", "UTF8")
+      	//set student.Address = $ZCONVERT(data.city, "I", "UTF8")
+      	
+      	
+      	
+      	
+      	set student.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		
+		$$$THROWONERROR(st, student.%Save())
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="DeleteIntern">
+<Description>
+Удалить стажера по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ##class(Sti.Data.Intern).%DeleteId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetInterns">
+<Description>
+Все стажеры</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE IntCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.Intern)	
+		
+		&sql(OPEN IntCur)
+		for  
+		{	
+			&sql(FETCH IntCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE IntCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversitys">
+<Description>
+Все институты</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE UnCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data."University")	
+		
+		&sql(OPEN UnCur)
+		for  
+		{	
+			&sql(FETCH UnCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.University).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE UnCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="DeleteUniversity">
+<Description>
+Удалить институт по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ##class(Sti.Data.University).%DeleteId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversityInterns">
+<Description>
+Все стажеры университета</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>unId:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		// Открываем институт, конвертируем в proxy(полностью) и возвращаем стажеров
+		set proxy.children = ##class(Sti.Data.University).%OpenId(unId).ConvertToProxyObject(1).Interns
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversity">
+<Description>
+Получить институт по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{	
+		do ##class(Sti.Data.University).%OpenId(id).ConvertToProxyObject().%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveUniversity">
+<Description>
+Создать / сохранить институт</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+      	
+      	set univer = ##class(Sti.Data.University).%OpenId(data.id,,.st)
+      	
+      	if $$$ISERR(st) set univer = ##class(Sti.Data.University).%New()
+	
+      	set univer.Address = $ZCONVERT(data.address, "I", "UTF8")
+      	set univer.Faculty = ##class(Sti.Data.Faculty).%OpenId(data.faculty.id)
+		set univer.City = $ZCONVERT(data.city, "I", "UTF8")
+		set univer.Country = $ZCONVERT(data.country, "I", "UTF8")
+		set univer.FullName = $ZCONVERT(data.fullName, "I", "UTF8")
+		set univer.ShortName = $ZCONVERT(data.shortName, "I", "UTF8")
+		set univer.Web = $ZCONVERT(data.web, "I", "UTF8")
+	    set univer.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id)
+		
+		$$$THROWONERROR(st, group.%Save())
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+</Class>
+</Export>
