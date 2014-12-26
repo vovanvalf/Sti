@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.BaseInit">
+<TimeCreated>63143,84424.482465</TimeCreated>
+
+<Method name="Init">
+<Description>
+do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	do ..KillThemAll()
+
+	do ##class(Sti.Utils.Msg).Init()
+ 	do ##class(Sti.Data.Localization.Translation).Init()
+ 	do ##class(Sti.Utils.Init.LTextLanguage).Import()
+ 	do ##class(Sti.Utils.Init.Mark).Import()
+ 	do ##class(Sti.Utils.Init.Region).Import()
+ 	do ##class(Sti.Utils.Init.Employee).Import()
+ 	do ##class(Sti.Utils.Init.University).Import()
+ 	do ##class(Sti.Utils.Init.Intern).Import()
+
+	
+ 	do ..Settings()
+]]></Implementation>
+</Method>
+
+<Method name="KillThemAll">
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[
+
+	do $CLASSMETHOD("Sti.Data.University", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Employee", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Intern", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Mark", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Region", "%KillExtent")
+	
+	
+	do $CLASSMETHOD("Sti.Data.Localization.LTextValue", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Localization.LTextLanguage", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Localization.LText", "%KillExtent")
+]]></Implementation>
+</Method>
+
+<Method name="ImportXData">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>locationXData:%String,className:%String,xDataName:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	#dim sc As %Status = $$$OK
+
+	if $$$ISERR(sc)
+	{
+		write !, $System.Status.DisplayError(sc)
+		quit sc
+	}
+
+	#dim stream As %Stream.Object = ##class(%Dictionary.CompiledXData).%OpenId(locationXData_"||"_xDataName).Data
+	#dim reader As %XML.Reader = ##class(%XML.Reader).%New()
+
+	set sc = reader.OpenStream(stream, "literal")
+	if $$$ISERR(sc) {
+		write !, $System.Status.DisplayError(sc)
+		quit sc
+	}
+
+	do reader.Correlate($piece(className, ".", *), className)
+
+	set itemsCount = 0
+
+	while reader.Next(.obj, .sc)
+	{
+		if $$$ISERR(sc)
+		{
+			write !, $System.Status.DisplayError(sc)
+			quit
+		}
+		
+		set sc = obj.%Save()
+		
+		if $$$ISERR(sc)
+		{
+			write !, $System.Status.DisplayError(sc)
+			quit 
+		}
+		
+		set obj = ""
+		set itemsCount = itemsCount + 1
+	}
+	
+	write !,itemsCount_" objects of class "_className_" were imported."
+]]></Implementation>
+</Method>
+
+<Method name="Settings">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	// Namespace of CSP-application
+	set ^Settings("Sti", "WebApp") = "/csp/third"
+	// Name of private CSP-application (BrokerAdmin)
+	set ^Settings("Sti", "WebAppAdmin") = "/Stiapp/admin"
+	// Name of public CSP-application (BrokerUser)
+	set ^Settings("Sti", "WebAppUser") = "/Stiapp/user"
+]]></Implementation>
+</Method>
+</Class>
+</Export>

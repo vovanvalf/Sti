@@ -28,7 +28,7 @@ Handling of BrokerAdmin</Description>
 
 <Method name="SaveIntern">
 <Description>
-Создать / сохранить интерна</Description>
+Создать / сохранить стажера</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -40,34 +40,34 @@ Handling of BrokerAdmin</Description>
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
       	
       	// Открываем студента по ИД
-      	set student = ##class(Sti.Data.Intern).%OpenId(data.id,,.st)
+      	set intern = ##class(Sti.Data.Intern).%OpenId(data.id,,.st)
       	
       	// Открыть не удалось - создаем
       	if $$$ISERR(st) set intern = ##class(Sti.Data.Intern).%New()
      
-      	set student.LastName = $ZCONVERT(data.lastname, "I", "UTF8")
-      	set student.FirstName = $ZCONVERT(data.firstname, "I", "UTF8")
-      	set student.Email = $ZCONVERT(data.lastname, "I", "UTF8")
-      	set student.MiddleName = $ZCONVERT(data.middlename, "I", "UTF8")
+      	set intern.LastName = $ZCONVERT(data.lastname, "I", "UTF8")
+      	set intern.FirstName = $ZCONVERT(data.firstname, "I", "UTF8")
+      	set intern.Email = $ZCONVERT(data.lastname, "I", "UTF8")
+      	set intern.MiddleName = $ZCONVERT(data.middlename, "I", "UTF8")
       	
-      	set student.Phone = $ZCONVERT(data.phone, "I", "UTF8")
-      	set student.Email = $ZCONVERT(data.email, "I", "UTF8")
-      	set student.Skype = $ZCONVERT(data.skype, "I", "UTF8")
-      	set student.Agree = $ZCONVERT(data.agree, "I", "UTF8")
-      	set student.Cache = $ZCONVERT(data.cache, "I", "UTF8")
-      	set student.Ensemble = $ZCONVERT(data.ensemble, "I", "UTF8")
-      	set student.DeepSee = $ZCONVERT(data.deepsee, "I", "UTF8")
-      	set student.TET = $ZCONVERT(data.tet, "I", "UTF8")
-      	set student.PET = $ZCONVERT(data.pet, "I", "UTF8")
-      	set student.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	//set student.Address = $ZCONVERT(data.city, "I", "UTF8")
-      	
-      	
+      	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
+      	set intern.Email = $ZCONVERT(data.email, "I", "UTF8")
+      	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
+      	set intern.Agree = $ZCONVERT(data.agree, "I", "UTF8")
+      	set intern.Cache = $ZCONVERT(data.cache, "I", "UTF8")
+      	set intern.Ensemble = $ZCONVERT(data.ensemble, "I", "UTF8")
+      	set intern.DeepSee = $ZCONVERT(data.deepsee, "I", "UTF8")
+      	set intern.TET = $ZCONVERT(data.tet, "I", "UTF8")
+      	set intern.PET = $ZCONVERT(data.pet, "I", "UTF8")
+      	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
+      	set intern.Address = $ZCONVERT(data.city, "I", "UTF8")
       	
       	
-      	set student.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+      	
+      	
+      	set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
 		
-		$$$THROWONERROR(st, student.%Save())
+		$$$THROWONERROR(st, intern.%Save())
 	}
 	catch ex {
 		set st = ex.AsStatus()
@@ -231,7 +231,7 @@ Handling of BrokerAdmin</Description>
       	if $$$ISERR(st) set univer = ##class(Sti.Data.University).%New()
 	
       	set univer.Address = $ZCONVERT(data.address, "I", "UTF8")
-      	set univer.Faculty = ##class(Sti.Data.Faculty).%OpenId(data.faculty.id)
+      	set univer.Faculty = ##class(Sti.Data.University).%OpenId(data.faculty.id)
 		set univer.City = $ZCONVERT(data.city, "I", "UTF8")
 		set univer.Country = $ZCONVERT(data.country, "I", "UTF8")
 		set univer.FullName = $ZCONVERT(data.fullName, "I", "UTF8")

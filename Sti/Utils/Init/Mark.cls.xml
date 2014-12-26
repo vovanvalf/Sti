@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.Mark">
+<Super>BaseInit</Super>
+<TimeCreated>63546,66658.838052</TimeCreated>
+
+<Parameter name="PClassName">
+<Default>Mark</Default>
+</Parameter>
+
+<Method name="Import">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.Mark).%New()
+	set mark.Name ="Perfect"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	set mark = ##class(Sti.Data.Mark).%New()
+	set mark.Name ="Good"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	set mark = ##class(Sti.Data.Mark).%New()
+	set mark.Name ="Bad"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+</Class>
+</Export>

@@ -4,37 +4,12 @@
 <Super>%Persistent</Super>
 <TimeCreated>63538,82864.983724</TimeCreated>
 
-<Property name="ScienceGuid">
-<Description>
-ScienceGuid = guid of Sciense</Description>
-<Type>%String</Type>
-<Required>1</Required>
-</Property>
-
-<Property name="Guid">
-<Description>
-Guid = id</Description>
-<Type>%String</Type>
-<Required>1</Required>
-</Property>
-
 <Property name="Name">
 <Description>
 Name</Description>
-<Type>Sti.Data.Localization.LText</Type>
+<Type>%String</Type>
 <Required>1</Required>
-<Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
-
-<Index name="GuidIdx">
-<IdKey>1</IdKey>
-<Properties>Guid</Properties>
-<Unique>1</Unique>
-</Index>
-
-<Index name="NameIdx">
-<Properties>Name</Properties>
-</Index>
 
 <Method name="ConvertToProxyObject">
 <Description>
@@ -43,9 +18,7 @@ Convert to proxyObject (for JSON)</Description>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
-	set proxy.name = ..Name.Value
-	set proxy.guid = ..Guid
-	set proxy.scguid= ..ScienceGuid
+	set proxy.name = ..Name
 	
 	quit proxy
 ]]></Implementation>
@@ -59,8 +32,6 @@ Convert to proxyObject (for JSON)</Description>
 <IndexLocation>^Sti.Data.MarkI</IndexLocation>
 <StreamLocation>^Sti.Data.MarkS</StreamLocation>
 <Data name="MarkDefaultData">
-<Structure>listnode</Structure>
-<Subscript/>
 <Value name="1">
 <Value>%%CLASSNAME</Value>
 </Value>

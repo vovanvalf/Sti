@@ -4,32 +4,6 @@
 <Super>%Persistent,%XML.Adaptor,%Populate</Super>
 <TimeCreated>63527,76710.907034</TimeCreated>
 
-<Property name="Address">
-<Description>
-Адрес университета</Description>
-<Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
-<Parameter name="XMLREFERENCE" value="ID"/>
-</Property>
-
-<Property name="City">
-<Description>
-Город, в котором расположен университет</Description>
-<Type>Region</Type>
-</Property>
-
-<Property name="Country">
-<Description>
-Страна</Description>
-<Type>Region</Type>
-</Property>
-
-<Property name="Curator">
-<Description>
-Куратор университета</Description>
-<Type>Employee</Type>
-</Property>
-
 <Property name="FullName">
 <Description>
 Полное наименование университета</Description>
@@ -46,12 +20,12 @@
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
-<Property name="Contacts">
+<Property name="Address">
 <Description>
-Доп. контакты</Description>
-<Type>Employee</Type>
-<Cardinality>many</Cardinality>
-<Inverse>University</Inverse>
+Адрес университета</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
 <Property name="Web">
@@ -61,13 +35,35 @@ Web страница</Description>
 <Required>1</Required>
 </Property>
 
+<Property name="City">
+<Description>
+Город, в котором расположен университет</Description>
+<Type>Region</Type>
+</Property>
+
+<Property name="Curator">
+<Description>
+Страна
+Куратор университета</Description>
+<Type>Employee</Type>
+</Property>
+
+<Property name="Contacts">
+<Description>
+Доп. контакты</Description>
+<Type>Employee</Type>
+<Collection>list</Collection>
+</Property>
+
 <Property name="Interns">
 <Description>
-Массив стажеров</Description>
+Cтажёры</Description>
 <Type>Sti.Data.Intern</Type>
 <Cardinality>many</Cardinality>
 <Inverse>University</Inverse>
 <Relationship>1</Relationship>
+<Parameter name="XMLPROJECTION" value="XELEMENT"/>
+<Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
 <Method name="ConvertToProxyObject">
@@ -80,7 +76,6 @@ Convert to proxyObject (for JSON)</Description>
 	set proxy.address = ..Address.Value
 	set proxy.city = ..City.ConvertToProxyObject()
 	
-	set proxy.country = ..Country.ConvertToProxyObject()
 	set proxy.curator = ..Curator.ConvertToProxyObject()
 	set proxy.fullName = ..FullName.Value
 	set proxy.shortName = ..ShortName.Value
@@ -88,17 +83,16 @@ Convert to proxyObject (for JSON)</Description>
 	
 	set proxy.interns = ##class(%ListOfObjects).%New()
 	
-	set key = ""
+	/*set key = ""
 	for i=1:1:..Interns.Count(){
 		set key = ..Interns.Next(key)
 		do proxy.interns.Insert(..Interns.GetAt(key).ConvertToProxyObject())
-	}
+	}*/
 	
 	set proxy.employees = ##class(%ListOfObjects).%New()
 	set key = ""
 	for i=1:1:..Contacts.Count(){
-		set key = ..Contacts.Next(key)
-		do proxy.employees.Insert(..Interns.GetAt(key).ConvertToProxyObject())
+		do proxy.employees.Insert(..Contacts.GetAt(i).ConvertToProxyObject())
 	}
 	quit proxy
 ]]></Implementation>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.Employee">
-<Super>%Persistent,%XML.Adaptor,%Populate</Super>
+<Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63527,76710.695998</TimeCreated>
 
 <Property name="FirstName">
