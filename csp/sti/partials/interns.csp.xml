@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/partials/interns.csp" application="/csp/sti/" default="1"><![CDATA[
+<div class="row-fluid">
+	<div class="span1">
+	</div>
+	<div class="span10">
+		<!-- Свой компонент - таблица -->
+		<stigrid data="page.grid"/>
+	</div>
+	<div class="span1">
+	</div>
+</div>
+<br>
+<!-- Инфо-сообщения -->
+<dmalert data="page.alert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>
+</Export>

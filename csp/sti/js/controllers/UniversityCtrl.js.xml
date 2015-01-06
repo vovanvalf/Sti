@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/controllers/UniversityCtrl.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+//ddcd
+
+/*===========================================================================================
+Универ. Изменение/Добавление
+===========================================================================================*/
+
+controllersModule.controller('UniversityCtrl', function($scope, $routeParams, UniversitySrvc, FacultySrvc){
+   $scope.page = {university:{}};
+
+   // Инициализация данных
+   $scope.page.init = function(){
+      if ($routeParams.id){
+          $scope.page.formCaption = "Редактирование университета";
+          $scope.page.formBtnSubmitName = "Сохранить";
+          $scope.page.loadUniversity($routeParams.id);        
+      }
+      else{
+          $scope.page.formCaption = "Добавление университета";
+          $scope.page.formBtnSubmitName = "Добавить";
+      }
+      
+      $scope.page.loadFaculties();
+   };
+
+   // Загрузить универ по ИД
+   $scope.page.loadUniversity = function(id){
+      UniversitySrvc.get(id).then(
+          function(data){
+              $scope.page.university = data;
+          },
+          function(data, status, headers, config){
+              $scope.page.gralert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
+          });  
+   };
+
+
+   // Сохранить/создать (отправка формы). Передаем объект на сервер
+   $scope.page.submit = function(){
+      UniversitySrvc.save($scope.page.university).then(
+          function(data){
+              var msg = 'Изменения сохранены.';
+
+              if (!$routeParams.id){
+                  msg = 'Университет добавлен.';
+                  $scope.page.university = {};                        
+              }
+
+              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              $scope.pageForm.$setPristine();
+          },
+          function(data, status, headers, config){
+              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });
+   };
+
+   $scope.page.init(); 
+});
+
+]]></CSP>
+</Export>

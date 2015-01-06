@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/controllers/InternCtrl.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+//ddcdddd
+
+/*===========================================================================================
+Стажер. Изменение/Добавление
+===========================================================================================*/
+
+controllersModule.controller('InternCtrl', function($scope, $routeParams, InternSrvc, UniversitySrvc){
+   $scope.page = {intern:{}};
+
+   // Инициализация данных
+   $scope.page.init = function(){
+      if ($routeParams.id){
+          $scope.page.formCaption = "Редактирование стажера";
+          $scope.page.formBtnSubmitName = "Сохранить";
+          $scope.page.loadIntern($routeParams.id);        
+      }
+      else{
+          $scope.page.formCaption = "Добавление стажера";
+          $scope.page.formBtnSubmitName = "Добавить";
+
+          // Добавление стажера в определённый университет
+          if ($routeParams.unId && $routeParams.fcId){
+              $scope.page.intern = {university: {id: parseInt($routeParams.unId)}};            
+          	  $scope.page.loadUniversity($routeParams.unId);
+          }
+      }
+      
+      // Загрузить универы
+     // $scope.page.loadUniversity();
+   };
+
+   // Загрузить стажера по ИД
+   $scope.page.loadIntern = function(id){
+      InternSrvc.get(id).then(
+          function(data){
+              $scope.page.intern = data;
+         
+          },
+          function(data, status, headers, config){
+              $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });       
+   };
+
+   // Загрузить все универы
+  $scope.page.loadUniversity = function(id){
+      UniversitySrvc.getAll().then(
+          function(data){
+              $scope.page.universities = data.children;
+          },
+          function(data, status, headers, config){
+              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });      
+   };
+
+   // Сохранить/создать (отправка формы). Передаем объект на сервер
+   $scope.page.submit = function(){
+      InternSrvc.save($scope.page.intern).then(
+          function(data){
+              var msg = 'Изменения сохранены.';
+
+              if (!$routeParams.id){
+                  msg = 'Стажер добавлен.';
+                  $scope.page.intern = {};                        
+              }
+
+              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              // Сделать форму "чистой" (блокируется кнопка)
+              $scope.pageForm.$setPristine();
+          },
+          function(data, status, headers, config){
+              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });
+   };
+
+   $scope.page.init(); 
+});
+
+]]></CSP>
+</Export>

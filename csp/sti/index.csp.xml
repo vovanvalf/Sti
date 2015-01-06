@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/index.csp" application="/csp/sti/" default="1"><![CDATA[
+<!doctype html>
+
+<html>
+  <head>
+    <title>Демо</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+
+    <script>
+        /* Имя приложения для работы с REST, глобальная переменная */
+        var StiSetting = {appName: '#($GET(^Settings("Sti", "WebAppName")))#'};
+    </script>
+  </head>
+  <!-- Инициализация приложения, mainModule описан в app.js -->
+  <body ng-app="mainModule">
+    <div class="container-fluid">
+        <!-- Навигация -->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <a class="brand" href="">STI: Система стажёров и вузов академической программы</a>
+              
+              <div class="nav-responsive-collapse">
+                <ul class="nav">
+                  <li><a href="#/universities">Университеты</a></li>
+                  <li><a href="#/interns">Стажеры</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <!-- Контент
+             Директива ngView дополняет сервис $route, включая отображение шаблона по текущему адресу в основном файле (index.csp). 
+             Каждый раз, когда меняется адрес, меняется и представление в соответствии с настройкой сервиса $route
+        -->
+        <div ng-view>
+        </div>
+    </div>
+
+    <!-- Скрипты приложения -->
+    
+    <script language="javascript"  src="lib/jquery-1.7.2.min.js"></script>
+    <script language="javascript"  src="lib/bootstrap.min.js"></script>
+    <script language="javascript"  src="lib/bootstrap.js"></script>
+    <script language="javascript"  src="lib/angular.min.js"></script>
+
+    <script language="javascript"  src="js/app.js"></script>
+    
+    <script language="javascript"  src="js/controllers/AllInternCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/InternCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/AllUniversityCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/UniversityCtrl.js"></script>
+
+    <script language="javascript"  src="js/services/RESTSrvc.js"></script>
+    <script language="javascript"  src="js/services/InternSrvc.js"></script>
+    <script language="javascript"  src="js/services/UniversitySrvc.js"></script>
+    
+    <script language="javascript"  src="js/directives/stigrid.js"></script>
+    <script language="javascript"  src="js/directives/stialert.js"></script>
+    
+  </body>
+</html>
+]]></CSP>
+</Export>

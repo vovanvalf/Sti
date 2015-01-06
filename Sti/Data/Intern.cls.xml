@@ -35,15 +35,10 @@
 <Required>1</Required>
 </Property>
 
-<Property name="BirthDay">
-<Description>
-Дата рождения стажера</Description>
-<Type>%String</Type>
-<Required>1</Required>
-</Property>
-
 <Property name="University">
 <Description>
+Дата рождения стажера
+Property BirthDay As %Date(FORMAT = 3) [ Required ];
 Университет</Description>
 <Type>Sti.Data.University</Type>
 <Cardinality>one</Cardinality>
@@ -67,10 +62,10 @@
 <Required>1</Required>
 </Property>
 
-<Property name="EngScience">
+<Property name="engScience">
 <Description>
 Владение английским</Description>
-<Type>Mark</Type>
+<Type>EngScience</Type>
 </Property>
 
 <Property name="City">
@@ -82,8 +77,9 @@
 <Property name="Resume">
 <Description>
 Резюме</Description>
-<Type>%String</Type>
+<Type>%Text</Type>
 <Required>1</Required>
+<Parameter name="MAXLEN" value="10000"/>
 </Property>
 
 <Property name="MailAgree">
@@ -96,22 +92,25 @@
 <Property name="CacheScience">
 <Description>
 Опыт Cache</Description>
-<Type>%String</Type>
+<Type>%Text</Type>
 <Required>1</Required>
+<Parameter name="MAXLEN" value="5000"/>
 </Property>
 
 <Property name="EnsembleScience">
 <Description>
 Опыт Ensemble</Description>
-<Type>%String</Type>
+<Type>%Text</Type>
 <Required>1</Required>
+<Parameter name="MAXLEN" value="5000"/>
 </Property>
 
 <Property name="DeepSeeScience">
 <Description>
 Опыт DeepSee</Description>
-<Type>%String</Type>
+<Type>%Text</Type>
 <Required>1</Required>
+<Parameter name="MAXLEN" value="5000"/>
 </Property>
 
 <Property name="TET">
@@ -120,10 +119,10 @@
 <Type>%String</Type>
 </Property>
 
-<Property name="PET">
+<Property name="Pet">
 <Description>
 Оценка PET</Description>
-<Type>Mark</Type>
+<Type>PETScience</Type>
 </Property>
 
 <Index name="UniversityIndex">
@@ -131,11 +130,12 @@
 </Index>
 
 <Method name="ConvertToProxyObject">
+<FormalSpec>idPET:%String,idEng:%String</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
-	set proxy.birthday = ..BirthDay
+	//set proxy.birthday = $ZDATE(..BirthDay, 3)
 	set proxy.firstname = ..FirstName.Value
 	set proxy.lastname = ..LastName.Value
 	set proxy.middlename = ..MiddleName.Value
@@ -147,11 +147,11 @@
 	set proxy.ensemble = ..EnsembleScience
 	set proxy.deepsee = ..DeepSeeScience
 	set proxy.tet = ..TET
- 	set proxy.pet = ..PET.ConvertToProxyObject()
+ 	set proxy.pet = ..Pet.ConvertToProxyObject(idPET)
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
    	set proxy.university = ..University.ConvertToProxyObject()
-	set proxy.eng=..EngScience.ConvertToProxyObject()
+	set proxy.eng=..engScience.ConvertToProxyObject(idEng)
 	quit proxy
 ]]></Implementation>
 </Method>
@@ -287,6 +287,12 @@ ClassMethod Delete(internId As %String) As %Status
 </Value>
 <Value name="18">
 <Value>PET</Value>
+</Value>
+<Value name="19">
+<Value>engScience</Value>
+</Value>
+<Value name="20">
+<Value>Pet</Value>
 </Value>
 </Data>
 <Property name="%%CLASSNAME">

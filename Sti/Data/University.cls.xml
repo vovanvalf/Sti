@@ -52,7 +52,7 @@ Web страница</Description>
 <Description>
 Доп. контакты</Description>
 <Type>Employee</Type>
-<Collection>list</Collection>
+<Collection>array</Collection>
 </Property>
 
 <Property name="Interns">
@@ -81,7 +81,7 @@ Convert to proxyObject (for JSON)</Description>
 	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web
 	
-	set proxy.interns = ##class(%ListOfObjects).%New()
+	//set proxy.interns = ##class(%ListOfObjects).%New()
 	
 	/*set key = ""
 	for i=1:1:..Interns.Count(){
@@ -91,10 +91,13 @@ Convert to proxyObject (for JSON)</Description>
 	
 	set proxy.employees = ##class(%ListOfObjects).%New()
 	set key = ""
-	for i=1:1:..Contacts.Count(){
-		do proxy.employees.Insert(..Contacts.GetAt(i).ConvertToProxyObject())
+	for i=1:1:..Contacts.Count()
+	{
+		set key = ..Contacts.Next(key)
+		do proxy.employees.Insert(..Contacts.GetAt(key).ConvertToProxyObject())
 	}
-	quit proxy
+
+    quit proxy
 ]]></Implementation>
 </Method>
 

@@ -20,7 +20,7 @@
 	set intern.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
 	set intern.Email = "ivanov@mainuniversity.com"
 	set intern.Phone = "000"
-	set intern.BirthDay = "03.03.1994" 
+	//set intern.BirthDay !!!спросить
 	set intern.Skype = "NickName"
 	set intern.Resume = "It is My Resume"
 	set intern.MailAgree = "Yes"
@@ -29,13 +29,13 @@
 	set intern.EnsembleScience ="I little know"
 	set intern.TET = "Good" 
 	
-	set PET = ##class(Sti.Data.Mark).%New()
-	set PET = ##class(Sti.Data.Mark).%OpenId("1",3,.Status)
-	set intern.PET=PET
+	set PET = ##class(Sti.Data.PETScience).%New()
+	set PET = ##class(Sti.Data.PETScience).%OpenId("1",3,.Status)
+	set intern.Pet=PET
 	
-	set ENG = ##class(Sti.Data.Mark).%New()
-	set ENG = ##class(Sti.Data.Mark).%OpenId("2",3,.Status)
-	set intern.EngScience=ENG
+	set ENG = ##class(Sti.Data.EngScience).%New()
+	set ENG = ##class(Sti.Data.EngScience).%OpenId("1",3,.Status)
+	set intern.engScience=ENG
 	
 	set city = ##class(Sti.Data.Region).%New()
 	set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)

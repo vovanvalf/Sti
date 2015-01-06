@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/app.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+/*
+Рекомендации:
+Модуль сервисов для описания сервисов.
+Модуль контроллеров для описания котнроллеров.
+Модуль директив для описания директив.
+И модуль всего приложения, который зависит от вышеуказанных модулей и содержит код инициализации. (имя модуля указывается в ng-app на странице index.csp)
+
+
+
+Добавление маршрутов(when).
+[как называется маршрут], [путь до шаблона, который будет подгружен в блок ng-view], [контроллер, который будет связан с область видимости шаблона]
+
+otherwise
+Устанавливает определение маршрута, которое будет использоваться при изменении маршрута, когда никаких других совпадений не найдено.
+
+Можно сразу прописать параметр для страницы, т.е. совершив переход /intern/1 - мы в контроллере InternCtrl сможем получить доступ к этому параметру.
+$routeParams.id - параметр :id
+*/
+
+var servicesModule    = angular.module('servicesModule',[]);
+var controllersModule = angular.module('controllersModule', []);
+var directivesModule  = angular.module('directivesModule', []);
+var mainModule        = angular.module('mainModule', ['servicesModule', 'controllersModule', 'directivesModule']);
+
+mainModule.config(['$routeProvider', function($routeProvider) {
+	$routeProvider.when('/universities',      {templateUrl: 'partials/universities.csp',   controller: 'AllUniversityCtrl'});
+    $routeProvider.when('/university/:id',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
+    $routeProvider.when('/interns',    {templateUrl: 'partials/interns.csp', controller: 'AllInternCtrl'});
+    $routeProvider.when('/intern/:id', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
+    
+    $routeProvider.otherwise({redirectTo: '/interns'});
+  }]);
+]]></CSP>
+</Export>

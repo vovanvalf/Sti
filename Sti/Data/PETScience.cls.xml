@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.PETScience">
+<Super>%Persistent,Sti.Data.TestScience</Super>
+<TimeCreated>63550,84562.956372</TimeCreated>
+
+<Method name="ConvertToProxyObject">
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.value = ..Values.GetAt(id).Value
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.PETScienceD</DataLocation>
+<DefaultData>PETScienceDefaultData</DefaultData>
+<IdLocation>^Sti.Data.PETScienceD</IdLocation>
+<IndexLocation>^Sti.Data.PETScienceI</IndexLocation>
+<StreamLocation>^Sti.Data.PETScienceS</StreamLocation>
+<Data name="PETScienceDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+</Data>
+<Data name="Values">
+<Attribute>Values</Attribute>
+<Structure>subnode</Structure>
+<Subscript>"Values"</Subscript>
+</Data>
+</Storage>
+</Class>
+</Export>

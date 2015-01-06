@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/components/stigrid.csp" application="/csp/sti/" default="1"><![CDATA[
+ <table ng-class="data.cssClass" style="cursor: pointer;">
+    <caption class="text-left" style="padding-bottom: 5px;">
+        <b ng-bind="data.caption"></b>
+    </caption>
+    <thead>
+        <tr>
+            <th>#</th>
+            <!-- В цикле выводим названия столбцов, указываем для каждого столбца обработчик "клика" и иконку(сортировка) -->
+            <th ng-repeat="column in data.columns" ng-click="sort(column.property, isUp)">
+                <span ng-bind="column.name"></span>
+                <i ng-class="sortIcon" ng-show="column.property==predicate"></i>   
+            </th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <!-- Кнопки управления -->
+            <td colspan="{{data.columns.length + 1}}">
+                <button class="btn btn-small btn-success" ng-click="data.add()">Добавить</button>
+                <button class="btn btn-small btn-primary" ng-click="data.edit(data.selected)"   ng-show="data.selected">Изменить</button>
+                <button class="btn btn-small btn-danger"  ng-click="data.remove(data.selected)" ng-show="data.selected">Удалить</button>
+            </td>
+        </tr>   
+    </tfoot>
+    <tbody>
+        <!-- В цикле выводим строки таблицы (сортируем по выбранному столбцу) -->
+        <tr ng-repeat="item in data.items | orderBy:predicate:isUp" ng-class="item.rowCss" ng-click="select(item)">
+            <td ng-bind="$index + 1"></td>
+            <!-- В  цикле выводим ячейки таблицы для строки -->
+            <td ng-repeat="column in data.columns">
+                <!-- Получаем знчение свойства объекта с помощью хитрой функции -->
+                <span ng-bind="getPropertyValue(item, column.property)"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>]]></CSP>
+</Export>

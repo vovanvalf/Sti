@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/partials/universities.csp" application="/csp/sti/" default="1"><![CDATA[
+<!-- ГРУППЫ -->
+<div class="row-fluid">
+	<div class="span1">
+	</div>
+	<div class="span10">
+		<!-- Свой компонент - таблица -->
+		<stigrid data="page.ungrid"/>
+	</div>
+	<div class="span1">
+	</div>
+</div>
+<br>
+<!-- Инфо-сообщения -->
+<stialert data="page.gralert" span-right="1" span-middle="10" span-left="1"/>
+
+
+<!-- Если универ не выбран(т.е. selected == udefined), то показывать сообщение и скрывать таблицу со стажерами -->
+<div class="row-fluid" ng-hide="page.ungrid.selected" style="text-align: center;">
+	<i>Выберите группу для отображения студентов.</i>
+</div>
+
+<!-- Стажеры -->
+<div class="row-fluid" ng-show="page.ungrid.selected">
+	<div class="span1">
+	</div>
+	<div class="span10">
+		<!-- Свой компонент - таблица -->
+		<stigrid data="page.ingrid"/>
+	</div>
+	<div class="span1">
+	</div>
+</div>
+<br>
+<!-- Инфо-сообщения -->
+<stialert data="page.stalert" span-right="1" span-middle="10" span-left="1"/>
+]]></CSP>
+</Export>

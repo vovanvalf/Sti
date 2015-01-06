@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/css/custom.css" application="/csp/sti/" default="1"><![CDATA[
+
+.accordion-heading .accordion-toggle {
+background-color: #fafafa;
+background-image: -moz-linear-gradient(top,#fff,#F7F7F7);
+background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#F7F7F7));
+background-image: -webkit-linear-gradient(top,#fff,#F7F7F7);
+background-image: -o-linear-gradient(top,#fff,#F7F7F7);
+background-image: linear-gradient(to bottom,#fff,#F7F7F7);
+}
+
+.accordion-heading a {
+
+}
+.accordion-heading a:hover{
+	color: #444;
+	text-decoration: none;
+}
+
+.accordion-heading a{
+	color: #777;
+	text-decoration: none;
+}
+
+
+
+
+
+]]></CSP>
+</Export>

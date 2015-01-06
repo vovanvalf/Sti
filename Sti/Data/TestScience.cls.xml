@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.TestScience">
+<Abstract>1</Abstract>
+<TimeCreated>63550,84334.684327</TimeCreated>
+
+<Property name="Values">
+<Type>Sti.Data.Localization.LText</Type>
+<Collection>array</Collection>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+</Class>
+</Export>

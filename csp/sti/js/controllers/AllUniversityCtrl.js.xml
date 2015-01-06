@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/controllers/AllUniversityCtrl.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+//ddd
+
+/*===========================================================================================
+Все университеты
+===========================================================================================*/
+
+controllersModule.controller('AllUniversityCtrl', function($scope, $location, UniversitySrvc, InternSrvc){
+    $scope.page = {};
+
+    // Инициализация данных
+    $scope.page.init = function(){
+        /* Данные для таблицы с группами, объект будет передан в компонент dmgrid
+           Заголовок таблицы. 
+           Сss класс для таблицы. 
+           Имена колонок и имя свойства для доступа к значению.
+           Методы для работы с данными */
+        $scope.page.ungrid = {
+            caption: 'Университеты',
+            cssClass: 'table table-bordered table-hover',
+            columns: [{name: 'Университет', property: 'name'}],
+            add: $scope.page.addUniversity,
+            edit: $scope.page.editUniversity,
+            remove: $scope.page.removeUniversity
+        };
+
+        // Данные для таблицы со стажерами, объект будет передан в компонент stigrid
+        $scope.page.ingrid = {
+            caption: 'Стажеры',
+            cssClass: 'table table-bordered table-hover',
+            columns: [{name: 'Фамилия', property: 'lastname'}, 
+                      {name: 'Имя', property: 'firstname'},],
+            add: $scope.page.addIntern,
+            edit: $scope.page.editIntern,
+            remove: $scope.page.removeIntern
+        };
+
+        // Загрузить все университеты из БД
+        //$scope.page.loadUniversities();
+   };
+  
+
+    // Загрузить все университеты из БД
+    $scope.page.loadUniversities = function(){
+        UniversitySrvc.getAll().then(
+            function(data){
+                // Успех. Передать данные в грид
+                $scope.page.ungrid.items = data.children;
+            },
+            function(data, status, headers, config){
+                // Ошибка
+                $scope.page.gralert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
+            });      
+    };
+
+    // Загрузить стажеров университетов
+    $scope.page.loadUniversityInterns = function(university){
+        UniversitySrvc.getInterns(university.id).then(
+            function(data){
+                university.interns = data.children;
+            },
+            function(data, status, headers, config){
+                $scope.page.gralert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
+            });       
+    };
+
+    // Добавить универ. Переход на другую страницу
+    $scope.page.addUniversity = function(){
+        $location.path('/university/');
+    };
+
+    // Редактировать универ. Переход на другую страницу
+    $scope.page.editUniversity = function(university){
+        $location.path('/university/' + university.id);
+    };
+
+    // Удалить универ
+    $scope.page.removeUniversity = function(university){
+        UniversitySrvc.remove(university.id).then(
+            function(data){
+                $scope.page.gralert = {title: 'Готово!', msg: 'Университет удален.', cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+                $scope.page.loadUniversitys();
+                $scope.page.ungrid.selected = null;
+            },
+            function(data, status, headers, config){
+                $scope.page.gralert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+            });
+    };
+
+    // Добавить стажера в универ, которая выбрана в таблице. Переход на другую страницу
+    $scope.page.addIntern = function(){
+        $location.path('/intern/faculty/' + $scope.page.ungrid.selected.faculty.id + '/university/' + $scope.page.ungrid.selected.id);
+    };
+
+    // Редактировать стажера. Переход на другую страницу
+    $scope.page.editIntern = function(intern){
+        $location.path('/intern/' + intern.id);
+    };
+
+    // Удалить стажера
+    $scope.page.removeIntern = function(intern){
+        InternSrvc.remove(intern.id).then(
+            function(data){
+                $scope.page.stalert = {title: 'Готово!', msg: 'Стажер удален.', cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+                $scope.page.loadUniversityInterns($scope.page.ungrid.selected);
+                $scope.page.ingrid.selected = null;
+            },
+            function(data, status, headers, config){
+                $scope.page.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+            });
+    };
+
+    // Отслеживание выбранного университета, если изменилась, то заменить стажеров в таблице
+    $scope.$watch('page.ungrid.selected', function(){
+        if ($scope.page.ingrid.selected)
+      	   $scope.page.ingrid.items = $scope.page.ungrid.selected.interns;  
+    },true);
+
+    $scope.page.init(); 
+});
+
+]]></CSP>
+</Export>

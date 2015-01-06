@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/partials/university.csp" application="/csp/sti/" default="1"><![CDATA[
+
+<!-- Инфо-сообщения -->
+<stialert data="page.alert" span-right="4" span-middle="4" span-left="4"/>
+]]></CSP>
+</Export>

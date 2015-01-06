@@ -16,7 +16,7 @@ Handling of BrokerAdmin</Description>
 	set st = $$$OK
 	
 	try{
-		do ##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject().%ToJSON()
+		do ##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject("CBC20F73-49FC-4325-82AE-FEA3AE61DC20","7B2BEAD7-4C69-4924-93FE-9C8C1B235356").%ToJSON()
 	}
 	catch(ex){
 		set st = ex.AsStatus()
@@ -109,7 +109,7 @@ Handling of BrokerAdmin</Description>
 			&sql(FETCH IntCur INTO :id) 
 			quit:(SQLCODE '= 0)
 			
-			do proxy.children.Insert(##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject())
+			do proxy.children.Insert(##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject("CBC20F73-49FC-4325-82AE-FEA3AE61DC20","7B2BEAD7-4C69-4924-93FE-9C8C1B235356"))
 		}
 		
 		&sql(CLOSE IntCur)

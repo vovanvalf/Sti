@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/services/InternSrvc.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+/*===========================================================================================
+Стажер
+===========================================================================================*/
+
+servicesModule.factory('InternSrvc', function(RESTSrvc) {    
+    return {
+        /* Сохранить / создать студента */
+        save: function(intern){
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/intern', data: intern});
+        },
+        /* Удалить студента по ИД */
+        remove: function(id){
+            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.appName + '/intern/' + id});
+        },
+        /* Получить студента по ИД */
+        get: function(id){
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/intern/' + id});
+        },
+        /* Получить всех студентов */
+        getAll: function(){
+            return RESTSrvc.getPromise({method: 'GET', url:StiSetting.appName+'/intern'});
+        }
+    }
+});
+]]></CSP>
+</Export>
