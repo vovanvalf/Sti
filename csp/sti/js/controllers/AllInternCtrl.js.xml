@@ -11,7 +11,7 @@ controllersModule.controller('AllInternCtrl', function($scope, $location, Intern
 
    // Инициализация данных
    $scope.page.init = function(){
-     /* Данные для таблицы с группами, объект будет передан в компонент dmgrid
+     /* Данные для таблицы со стажерами, объект будет передан в компонент dmgrid
         Заголовок таблицы. 
         Сss класс для таблицы. 
         Имена колонок и имя свойства для доступа к значению.
@@ -22,24 +22,12 @@ controllersModule.controller('AllInternCtrl', function($scope, $location, Intern
             columns: [{name: 'Фамилия', property: 'lastname'}, 
                       {name: 'Имя', property: 'firstname'},
                       {name: 'Отчество', property: 'middlename'},
-                      {name: 'Email', property: 'email'},
-                      /* EngName
-                         EngSurName
-                         BirthDay*/
+                      {name: 'Дата рождения', property: ''},
                       {name: 'Университет', property: 'university.fullName'},/*Сделать как-нибудь ссылку*/
-                      /*Факультет
-                        Кафедра*/
-                      {name: 'Телефон', property: 'phone'},
-                      {name: 'Skype', property: 'skype'},
-                      {name: 'Уровень английского', property: 'eng.value'},
                       {name: 'Город', property: 'city.name'},
-                      {name: 'Резюме', property: 'resume'},/*Сделать файл или ссылку*/
-                      {name: 'Согласие на рассылку', property: 'agree'},
-                      {name: 'Опыт Cache', property: 'cache'},
-                      {name: 'Опыт Ensemble', property: 'ensemble'},
-                      {name: 'Опыт DeepSee', property: 'deepsee'},
-                      {name: 'Оценка TET', property: 'tet'},
-                      {name: 'Оценка PET', property: 'pet.value'}
+					   /* EngName
+                         EngSurName - эти свойства есть в ТЗ. Если будет мультиязычность - нет необходимости(уточнить у заказчика)
+                       */
                       ],
             add: $scope.page.addIntern,
             edit: $scope.page.editIntern,

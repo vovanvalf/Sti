@@ -2,13 +2,13 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/UniversityCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcd
+//ddcdddd
 
 /*===========================================================================================
-Универ. Изменение/Добавление
+Университет. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('UniversityCtrl', function($scope, $routeParams, UniversitySrvc, FacultySrvc){
+controllersModule.controller('UniversityCtrl', function($scope, $routeParams, UniversitySrvc){
    $scope.page = {university:{}};
 
    // Инициализация данных
@@ -21,23 +21,21 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Un
       else{
           $scope.page.formCaption = "Добавление университета";
           $scope.page.formBtnSubmitName = "Добавить";
-      }
-      
-      $scope.page.loadFaculties();
-   };
 
-   // Загрузить универ по ИД
+
+      }
+   };
+   // Загрузить стажера по ИД
    $scope.page.loadUniversity = function(id){
       UniversitySrvc.get(id).then(
           function(data){
               $scope.page.university = data;
+         
           },
           function(data, status, headers, config){
-              $scope.page.gralert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
-          });  
+              $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });       
    };
-
-
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
       UniversitySrvc.save($scope.page.university).then(
@@ -50,6 +48,7 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Un
               }
 
               $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              // Сделать форму "чистой" (блокируется кнопка)
               $scope.pageForm.$setPristine();
           },
           function(data, status, headers, config){
@@ -59,6 +58,8 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Un
 
    $scope.page.init(); 
 });
+
+
 
 ]]></CSP>
 </Export>

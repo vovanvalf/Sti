@@ -30,7 +30,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
       }
       
       // Загрузить универы
-     // $scope.page.loadUniversity();
+      $scope.page.loadUniversity();
    };
 
    // Загрузить стажера по ИД

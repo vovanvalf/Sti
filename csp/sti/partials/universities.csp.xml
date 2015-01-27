@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/universities.csp" application="/csp/sti/" default="1"><![CDATA[
-<!-- ГРУППЫ -->
+<!-- Университеты -->
 <div class="row-fluid">
 	<div class="span1">
 	</div>
@@ -13,28 +13,29 @@
 	</div>
 </div>
 <br>
-<!-- Инфо-сообщения -->
-<stialert data="page.gralert" span-right="1" span-middle="10" span-left="1"/>
-
-
-<!-- Если универ не выбран(т.е. selected == udefined), то показывать сообщение и скрывать таблицу со стажерами -->
+<div class="row-fluid" ng-show="page.ungrid.selected!=null">
+	<div class="span1">
+	</div>
+			<div class="span10">
+				<p><span class="spnTitle" ng-bind="'Сокращение'"></span>: <span ng-bind="page.ungrid.selected.shortName"></span></p>
+				<p><span class="spnTitle" ng-bind="'Адрес'"></span>: <span ng-bind="page.ungrid.selected.address"></span></p>
+				<p><span class="spnTitle" ng-bind="'Сайт'"></span>: <span ng-bind="page.ungrid.selected.web"></span></p>
+				<!--Сделать отдельную таблицу для инфо куратора!-->
+				<p><span class="spnTitle" ng-bind="'Куратор'"></span>: <span ng-bind="page.ungrid.selected.curator.lastName"></span></p>
+				<!--Сделать список контактов и инфо таблицу!-->
+				<p><span class="spnTitle" ng-bind="'Контакты'"></span>:</p> 
+			</div>
+			
+	<div class="span1">
+	</div>
+</div>
+<!-- Если универ не выбран(т.е. selected == udefined), то показывать сообщение -->
 <div class="row-fluid" ng-hide="page.ungrid.selected" style="text-align: center;">
-	<i>Выберите группу для отображения студентов.</i>
+	<i>Выберите университет для отображения полной информации.</i>
 </div>
 
-<!-- Стажеры -->
-<div class="row-fluid" ng-show="page.ungrid.selected">
-	<div class="span1">
-	</div>
-	<div class="span10">
-		<!-- Свой компонент - таблица -->
-		<stigrid data="page.ingrid"/>
-	</div>
-	<div class="span1">
-	</div>
-</div>
 <br>
 <!-- Инфо-сообщения -->
-<stialert data="page.stalert" span-right="1" span-middle="10" span-left="1"/>
+<stialert data="page.unalert" span-right="1" span-middle="10" span-left="1"/>
 ]]></CSP>
 </Export>

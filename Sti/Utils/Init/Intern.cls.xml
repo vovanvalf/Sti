@@ -20,7 +20,7 @@
 	set intern.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
 	set intern.Email = "ivanov@mainuniversity.com"
 	set intern.Phone = "000"
-	//set intern.BirthDay !!!спросить
+	//set intern.BirthDay !!!уточнить
 	set intern.Skype = "NickName"
 	set intern.Resume = "It is My Resume"
 	set intern.MailAgree = "Yes"

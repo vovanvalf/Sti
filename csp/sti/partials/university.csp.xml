@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/university.csp" application="/csp/sti/" default="1"><![CDATA[
+<div class="row-fluid">
+	<div class="span4">
+	</div>
+	<div class="span4">
+		<div class="accordion">
+			<div class="accordion-university">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" ng-bind="page.formCaption"></a>
+				</div>
+				<div class="accordion-body">
+					<div class="accordion-inner">
+						<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
+							<div class="control-group">
+						        <label class="control-label">Полное название*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.fullName" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+						        <label class="control-label">Сокращение*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.shortName" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+						        <label class="control-label">Город*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.city.name" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+						        <label class="control-label">Адрес*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.address" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+						        <label class="control-label">Сайт*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.web" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+						        <label class="control-label">Куратор*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.curator.firstName" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+						        <label class="control-label">Сотрудники*</label>
+						        <div class="controls">
+						            <input class="span12" type="text" ng-model="page.university.employees" required></input>
+						        </div>
+						    </div>
+						    <div class="control-group">
+					        	<div class="controls">
+						    		<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div class="span4">
+	</div>
+</div>
+
 
 <!-- Инфо-сообщения -->
 <stialert data="page.alert" span-right="4" span-middle="4" span-left="4"/>

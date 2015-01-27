@@ -45,27 +45,37 @@ Handling of BrokerAdmin</Description>
       	// Открыть не удалось - создаем
       	if $$$ISERR(st) set intern = ##class(Sti.Data.Intern).%New()
      
-      	set intern.LastName = $ZCONVERT(data.lastname, "I", "UTF8")
-      	set intern.FirstName = $ZCONVERT(data.firstname, "I", "UTF8")
-      	set intern.Email = $ZCONVERT(data.lastname, "I", "UTF8")
-      	set intern.MiddleName = $ZCONVERT(data.middlename, "I", "UTF8")
-      	
-      	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
+      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastname, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstname, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middlename, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
       	set intern.Email = $ZCONVERT(data.email, "I", "UTF8")
+      	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
       	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
-      	set intern.Agree = $ZCONVERT(data.agree, "I", "UTF8")
-      	set intern.Cache = $ZCONVERT(data.cache, "I", "UTF8")
-      	set intern.Ensemble = $ZCONVERT(data.ensemble, "I", "UTF8")
-      	set intern.DeepSee = $ZCONVERT(data.deepsee, "I", "UTF8")
-      	set intern.TET = $ZCONVERT(data.tet, "I", "UTF8")
-      	set intern.PET = $ZCONVERT(data.pet, "I", "UTF8")
       	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set intern.Address = $ZCONVERT(data.city, "I", "UTF8")
+      	set intern.MailAgree = $ZCONVERT(data.agree, "I", "UTF8")
+      	set intern.CacheScience = $ZCONVERT(data.cache, "I", "UTF8")
+      	set intern.EnsembleScience = $ZCONVERT(data.ensemble, "I", "UTF8")
+      	set intern.DeepSeeScience = $ZCONVERT(data.deepsee, "I", "UTF8")
+      	set intern.TET = $ZCONVERT(data.tet, "I", "UTF8")
+    
+    
+    /*ЭТО ВРЕМЕННАЯ ЗАМЕНА ДЛЯ ПРОВЕРКИ РАБОТОСПОСОБНОСТИ НУЖНО БУДЕТ СТАВИТЬ ЗНАЧЕНИЯ ИЗ ТАБЛИЦЫ КЛИЕНТА!*/  	
+	set PET = ##class(Sti.Data.PETScience).%New()
+	set PET = ##class(Sti.Data.PETScience).%OpenId("1",3,.Status)
+	set intern.Pet=PET
+	
+	set ENG = ##class(Sti.Data.EngScience).%New()
+	set ENG = ##class(Sti.Data.EngScience).%OpenId("1",3,.Status)
+	set intern.engScience=ENG
+	
+	set city = ##class(Sti.Data.Region).%New()
+	set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)
+	set intern.City=city
+    /*------------------------------------------------------------------------------------------*/  	
       	
       	
       	
-      	
-      	set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+        set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
 		
 		$$$THROWONERROR(st, intern.%Save())
 	}
@@ -126,7 +136,7 @@ Handling of BrokerAdmin</Description>
 
 <Method name="GetUniversitys">
 <Description>
-Все институты</Description>
+Все университеты</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -163,7 +173,7 @@ Handling of BrokerAdmin</Description>
 
 <Method name="DeleteUniversity">
 <Description>
-Удалить институт по ИД</Description>
+Удалить университет по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -182,7 +192,7 @@ Handling of BrokerAdmin</Description>
 	
 	try{
 		set proxy = ##class(%ZEN.proxyObject).%New()
-		// Открываем институт, конвертируем в proxy(полностью) и возвращаем стажеров
+		// Открываем универ, конвертируем в proxy(полностью) и возвращаем стажеров
 		set proxy.children = ##class(Sti.Data.University).%OpenId(unId).ConvertToProxyObject(1).Interns
 		do proxy.%ToJSON()
 	}
@@ -196,7 +206,7 @@ Handling of BrokerAdmin</Description>
 
 <Method name="GetUniversity">
 <Description>
-Получить институт по ИД</Description>
+Получить универ по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -216,7 +226,7 @@ Handling of BrokerAdmin</Description>
 
 <Method name="SaveUniversity">
 <Description>
-Создать / сохранить институт</Description>
+Создать / сохранить универ</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -226,20 +236,39 @@ Handling of BrokerAdmin</Description>
 	try{
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
       	
-      	set univer = ##class(Sti.Data.University).%OpenId(data.id,,.st)
+      	set university = ##class(Sti.Data.University).%OpenId(data.id,,.st)
       	
-      	if $$$ISERR(st) set univer = ##class(Sti.Data.University).%New()
+      	if $$$ISERR(st) set university = ##class(Sti.Data.University).%New()
+		set university.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I", "UTF8"))
+		set university.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I", "UTF8"))
+		set university.Address = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.address, "I", "UTF8"))
+		set university.Web = $ZCONVERT(data.web, "I", "UTF8")
+		w !, $CASE($$$ISERR(university.%Save()), 1: "Ошибка! Универ не создан!",:"Универ создан")
 	
-      	set univer.Address = $ZCONVERT(data.address, "I", "UTF8")
-      	set univer.Faculty = ##class(Sti.Data.University).%OpenId(data.faculty.id)
-		set univer.City = $ZCONVERT(data.city, "I", "UTF8")
-		set univer.Country = $ZCONVERT(data.country, "I", "UTF8")
-		set univer.FullName = $ZCONVERT(data.fullName, "I", "UTF8")
-		set univer.ShortName = $ZCONVERT(data.shortName, "I", "UTF8")
-		set univer.Web = $ZCONVERT(data.web, "I", "UTF8")
-	    set univer.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id)
 		
-		$$$THROWONERROR(st, group.%Save())
+		
+		set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
+		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.Email = "petorv@mainuniversity.com"
+		set curator.Phone = "000"
+		set university.Curator = curator
+		
+		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
+		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
+		set city = ##class(Sti.Data.Region).%OpenId("00077B9A-5B0C-49A0-9132-8C2D0D0112AF",3,.Status)
+		set university.City=city
+		
+		
+		/* Сделать сохранение контактов!
+		set employees = ##class(%ArrayOfObjects).%New() 
+		set employee = ##class(Sti.Data.Employee).%OpenId("1",3,.Status) 
+		do employees.SetAt(employee,"BEABA77F-25FE-46B1-AF38-98A21742796B")
+		set university.Contacts=employees*/
+	
+		$$$THROWONERROR(st, university.%Save())
 	}
 	catch ex {
 		set st = ex.AsStatus()

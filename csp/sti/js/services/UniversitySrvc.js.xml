@@ -3,28 +3,28 @@
 <CSP name="sti/js/services/UniversitySrvc.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 /*===========================================================================================
-Группа
+Университет
 ===========================================================================================*/
 
 servicesModule.factory('UniversitySrvc', function(RESTSrvc) {    
     return {
-        /* Сохранить / создать группу */
+        /* Сохранить / создать универ */
         save: function(university){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/university', data: university});
         },
-        /* Удалить группу по ИД */
+        /* Удалить универ по ИД */
         remove: function(id){
             return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.appName + '/university/' + id});
         },
-        /* Получить группу по ИД */
+        /* Получить универ по ИД */
         get: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university/' + id});
         },
-        /* Получить все группы */
+        /* Получить все универы */
         getAll: function(){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university'});
         },
-        /* Получить всех студентов группы */
+        /* Получить всех стажеров универа */
         getInterns: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university/' + id + '/intern'});
         }

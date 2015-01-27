@@ -8,19 +8,19 @@
 
 servicesModule.factory('InternSrvc', function(RESTSrvc) {    
     return {
-        /* Сохранить / создать студента */
+        /* Сохранить / создать стажера */
         save: function(intern){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/intern', data: intern});
         },
-        /* Удалить студента по ИД */
+        /* Удалить стажера по ИД */
         remove: function(id){
             return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.appName + '/intern/' + id});
         },
-        /* Получить студента по ИД */
+        /* Получить стажера по ИД */
         get: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/intern/' + id});
         },
-        /* Получить всех студентов */
+        /* Получить всех стажеров */
         getAll: function(){
             return RESTSrvc.getPromise({method: 'GET', url:StiSetting.appName+'/intern'});
         }

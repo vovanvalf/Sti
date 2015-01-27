@@ -6,6 +6,8 @@
 
 <Property name="FullName">
 <Description>
+Нужно добавить кафедру и факультет. Создать классы для кафедры и факультета и сделать зависимость "один ко многим" соответственно
+
 Полное наименование университета</Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
@@ -43,7 +45,6 @@ Web страница</Description>
 
 <Property name="Curator">
 <Description>
-Страна
 Куратор университета</Description>
 <Type>Employee</Type>
 </Property>
@@ -81,6 +82,7 @@ Convert to proxyObject (for JSON)</Description>
 	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web
 	
+	//вывод стажеров университета
 	//set proxy.interns = ##class(%ListOfObjects).%New()
 	
 	/*set key = ""
@@ -100,72 +102,6 @@ Convert to proxyObject (for JSON)</Description>
     quit proxy
 ]]></Implementation>
 </Method>
-
-<UDLText name="T">
-<Content><![CDATA[
-/*
-/// Create or save modified organization
-ClassMethod Save(data As %RegisteredObject, ByRef status) As University
-{
-	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Save", "ID="_data.id_"; ShortName="_$ZCONVERT(data.shortName, "I","UTF8"))
-	
-	if (data.id '= ""){
-		set university = ..%OpenId(data.id,3,.status)
-		set university.FullName.Value = $ZCONVERT(data.fullName, "I","UTF8")
-		set university.ShortName.Value = $ZCONVERT(data.shortName, "I","UTF8")
-		set university.Address.Value = $ZCONVERT(data.address, "I","UTF8")
-	}
-	else{
-		set university = ..%New()
-		set university.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I","UTF8"))
-		set university.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I","UTF8"))
-		set university.Address = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.legalAddress, "I","UTF8"))
-	}
-	
-	set university.WebSite = $REPLACE($REPLACE($ZCONVERT(data.web, "I","UTF8"),"http://",""), "https://","")
-	
-	set status = university.%Save()
-	
-	quit university
-}
-
-/// Delete organization, if it is available
-ClassMethod Delete(id) As %Status
-{
-	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_id)
-	
-	set university = ..%OpenId(id,4,.status)
-	quit:$$$ISERR(status) ##class(Sti.Utils.Msg).GetErrorStatus("openUniversity", "| "_status)
-	
-	set findId = ""
-	
-	// Checking: if in applications
-	&sql(SELECT ID INTO:findId FROM Sti_Data.Intern WHERE University = :id)
-	
-	// Quit, if has links
-	quit:findId'="" ##class(Sti.Utils.Msg).GetErrorStatus("deleteUniversityImpossible")
-	
-	// Delete localization
-	set status = ##class(Sti.Data.Localization.LText).Delete(university.FullName.%Id())
-	quit:$$$ISERR(status) status
-		
-	set status = ##class(Sti.Data.Localization.LText).Delete(university.ShortName.%Id())
-	quit:$$$ISERR(status) status
-		
-	set status = ##class(Sti.Data.Localization.LText).Delete(university.Address.%Id())
-	quit:$$$ISERR(status) status
-	
-	///Company, contacts? country, curator??
-	
-	// Delete organization
-	set status = ..%DeleteId(id, 4)
-	quit:$$$ISERR(status) ##class(Sti.Utils.Msg).GetErrorStatus("deleteUniversity", "| "_status)
-	
-	quit $$$OK
-}
-*/
-]]></Content>
-</UDLText>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>

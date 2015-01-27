@@ -21,9 +21,6 @@ do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
  	do ##class(Sti.Utils.Init.University).Import()
  	do ##class(Sti.Utils.Init.Intern).Import()
  	
- 	//do ##class(Sti.Utils.Init.PETScience).Import()
-
-	
  	do ..Settings()
 ]]></Implementation>
 </Method>

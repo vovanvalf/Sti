@@ -37,7 +37,7 @@
 
 <Property name="University">
 <Description>
-Дата рождения стажера
+Дата рождения стажера. уточнить в документации
 Property BirthDay As %Date(FORMAT = 3) [ Required ];
 Университет</Description>
 <Type>Sti.Data.University</Type>
@@ -50,7 +50,7 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 
 <Property name="Phone">
 <Description>
-Телефон</Description>
+Телефон. переделать в числовой</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
@@ -76,7 +76,7 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 
 <Property name="Resume">
 <Description>
-Резюме</Description>
+Резюме. Тип файл или ссылка(можно добавить доп. переменную) </Description>
 <Type>%Text</Type>
 <Required>1</Required>
 <Parameter name="MAXLEN" value="10000"/>
@@ -84,7 +84,7 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 
 <Property name="MailAgree">
 <Description>
-Согласие на получение рассылки</Description>
+Согласие на получение рассылки. СДЕЛАТЬ boolean, а на клиенте - checkbox</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
@@ -115,7 +115,7 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 
 <Property name="TET">
 <Description>
-Оценка TET</Description>
+Оценка TET Сделать как Pet!</Description>
 <Type>%String</Type>
 </Property>
 
@@ -135,6 +135,7 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
+	//узнать подробнее о типе "дата" и реализовать вывод на клиенте и в REST
 	//set proxy.birthday = $ZDATE(..BirthDay, 3)
 	set proxy.firstname = ..FirstName.Value
 	set proxy.lastname = ..LastName.Value
@@ -155,75 +156,6 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 	quit proxy
 ]]></Implementation>
 </Method>
-
-<UDLText name="T">
-<Content><![CDATA[
-/*/// Create or save modified intern
-ClassMethod Save(data As %RegisteredObject, ByRef status) As Sti.Data.Employee
-{
-	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Save", 
-	"ID="_data.id_
-	"; LastName="_$ZCONVERT(data.lastName, "I","UTF8")_
-	"; FirstName="_$ZCONVERT(data.firstName, "I","UTF8")_
-	"; MiddleName="_$ZCONVERT(data.middleName, "I","UTF8")_
-	"; BirthDay="_data.birthDay_
-	"; Skype="_data.skype_
-    "; Email="_data.email_
-	"; Phone="_data.phone)
-
-	if (data.id '= ""){
-		set intern = ..%OpenId(data.id,3,.status)
-		set intern.LastName.Value = $ZCONVERT(data.lastName, "I","UTF8")
-		set intern.FirstName.Value = $ZCONVERT(data.firstName, "I","UTF8")
-		set intern.MiddleName.Value = $ZCONVERT(data.middleName, "I","UTF8")
-	}
-	else{
-		set intern = ..%New()
-		set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I","UTF8"), "Sti.Data.Localization.Translation;internLTextValue")
-		set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I","UTF8"), "Sti.Data.Localization.Translation;internLTextValue")
-		set intern.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I","UTF8"), "Sti.Data.Localization.Translation;internLTextValue")
-	}
-	
-	set intern.BirthDay = $ZCONVERT(data.birthDay, "I","UTF8")
-	set intern.Email = $ZCONVERT(data.email, "I","UTF8")
-	set intern.Phone = $ZCONVERT(data.phone, "I","UTF8")
-	set intern.Skype = $ZCONVERT(data.skype, "I","UTF8")
-	
-	if (data.city.exist) set data.city.id = data.city.exist.id
-	set intern.City = ##class(Sti.Data.City).%OpenId(data.city.id,3,.status)
-	
-	if (data.university.exist) set data.university.id = data.university.exist.id
-	set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id,3,.status)
-	
-	
-	set status = intern.%Save()
-
-	quit intern
-}
-
-/// Delete intern if it is available
-ClassMethod Delete(internId As %String) As %Status
-{
-	set intern = ..%OpenId(internId, 4)
-
-	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".Delete", "ID="_internId_"; LastName="_intern.LastName.Value_"; FirstName="_intern.FirstName.Value_"; Email="_intern.Email)
-	
-	set st = ##class(Sti.Data.Localization.LText).Delete(intern.LastName.%Id())
-	quit:$$$ISERR(st) st
-		
-	set st = ##class(Sti.Data.Localization.LText).Delete(intern.FirstName.%Id())
-	quit:$$$ISERR(st) st
-		
-	set st = ##class(Sti.Data.Localization.LText).Delete(intern.MiddleName.%Id())
-	quit:$$$ISERR(st) st
-	
-	set st = ..%DeleteId(internId,4)
-	quit:$$$ISERR(st) ##class(Sti.Utils.Msg).GetErrorStatus("deleteintern", " | "_st) 
-	
-	quit $$$OK
-}*/
-]]></Content>
-</UDLText>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>

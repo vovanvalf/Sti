@@ -28,20 +28,20 @@ Private request processor for administrator</Description>
 
 
 
-<!-- Все институты -->
-<Route Url="/univer" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversitys"/> 
+<!-- Все университеты -->
+<Route Url="/university" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversitys"/> 
 
-<!-- Все стажеры института -->
-<Route Url="/univer/:id/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversityInterns"/> 
+<!-- Все стажеры университета -->
+<Route Url="/university/:id/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversityInterns"/> 
 
-<!-- Получить институт по ИД -->
-<Route Url="/univer/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversity"/> 
+<!-- Получить университет по ИД -->
+<Route Url="/university/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversity"/> 
 
-<!-- Сохранить / создать институт -->
-<Route Url="/univer" Method="POST" Call="Sti.Web.JsonAdmin:SaveUniversity"/> 
+<!-- Сохранить / создать университет -->
+<Route Url="/university" Method="POST" Call="Sti.Web.JsonAdmin:SaveUniversity"/> 
 
-<!-- Удалить институт -->
-<Route Url="/univer/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteUniversity"/> 
+<!-- Удалить университет -->
+<Route Url="/university/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteUniversity"/> 
 
 
 </Routes>

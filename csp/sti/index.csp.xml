@@ -5,7 +5,7 @@
 
 <html>
   <head>
-    <title>Демо</title>
+    <title>Система стажёров и вузов академической программы</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- Подключение CSS -->
@@ -24,7 +24,7 @@
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
-              <a class="brand" href="">STI: Система стажёров и вузов академической программы</a>
+              <a class="brand" href="">Система стажёров и вузов академической программы</a>
               
               <div class="nav-responsive-collapse">
                 <ul class="nav">
