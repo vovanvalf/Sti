@@ -134,6 +134,29 @@ Handling of BrokerAdmin</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="GetInternsForGrid">
+<Description>
+Get all interns for grid</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.params, 1))
+      	
+      	set whereCondition = ""
+      	
+      	do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.Intern", "Sti.Data.Intern", params, whereCondition).%ToJSON()
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
 <Method name="GetUniversitys">
 <Description>
 Все университеты</Description>
@@ -220,6 +243,29 @@ Handling of BrokerAdmin</Description>
 		set st = ex.AsStatus()
 	}
 	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversitiesForGrid">
+<Description>
+Get all interns for grid</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.params, 1))
+      	
+      	set whereCondition = ""
+      	
+      	do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.University", "Sti.Data.University", params, whereCondition).%ToJSON()
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
 	quit st
 ]]></Implementation>
 </Method>

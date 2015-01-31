@@ -16,19 +16,19 @@
 							<div class="control-group">
 						        <label class="control-label">Фамилия*</label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="page.intern.lastname" required></input>
+						            <input class="span12" type="text" ng-model="page.intern.lastName" required></input>
 						        </div>
 						    </div>
 						    <div class="control-group">
 						        <label class="control-label">Имя*</label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="page.intern.firstname" required></input>
+						            <input class="span12" type="text" ng-model="page.intern.firstName" required></input>
 						        </div>
 						    </div>
 						    <div class="control-group">
 						        <label class="control-label">Отчество*</label>
 						        <div class="controls">
-						            <input class="span12" type="text" ng-model="page.intern.middlename" required></input>
+						            <input class="span12" type="text" ng-model="page.intern.middleName" required></input>
 						        </div>
 						    </div>
 						    <div class="control-group">

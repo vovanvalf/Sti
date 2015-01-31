@@ -9,13 +9,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- Подключение CSS -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/custom.css">
 
-    <script>
+    <script language="javascript">
         /* Имя приложения для работы с REST, глобальная переменная */
         var StiSetting = {appName: '#($GET(^Settings("Sti", "WebAppName")))#'};
     </script>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+  
+    <script language="javascript"  src="lib/jquery-1.11.0.min.js"></script>
+    <script language="javascript"  src="lib/bootstrap.min.js"></script>
+    <script language="javascript"  src="lib/angular/angular.min.js"></script>
+    <script language="javascript"  src="lib/angular/angular-route.min.js"></script>
+    <script language="javascript"  src="lib/angular/angular-cookies.min.js"></script>
+
+	<script language="javascript" src="lib/ui-bootstrap-tpls-0.5.0.js"></script>
   </head>
   <!-- Инициализация приложения, mainModule описан в app.js -->
   <body ng-app="mainModule">
@@ -46,10 +55,9 @@
 
     <!-- Скрипты приложения -->
     
-    <script language="javascript"  src="lib/jquery-1.7.2.min.js"></script>
-    <script language="javascript"  src="lib/bootstrap.min.js"></script>
-    <script language="javascript"  src="lib/bootstrap.js"></script>
-    <script language="javascript"  src="lib/angular.min.js"></script>
+
+
+    
 
     <script language="javascript"  src="js/app.js"></script>
     
@@ -61,6 +69,7 @@
     <script language="javascript"  src="js/services/RESTSrvc.js"></script>
     <script language="javascript"  src="js/services/InternSrvc.js"></script>
     <script language="javascript"  src="js/services/UniversitySrvc.js"></script>
+    <script language="javascript"  src="js/services/UtilsSrvc.js"></script>
     
     <script language="javascript"  src="js/directives/stigrid.js"></script>
     <script language="javascript"  src="js/directives/stialert.js"></script>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/services/UtilsSrvs.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+//dd?ddd?
+
+/*===========================================================================================
+Utils
+===========================================================================================*/
+
+servicesModule.factory('UtilsSrvc', function( $filter) {
+	
+	return {
+
+        getIndexes: function(array, objField, valueField){
+            var indexes = [];
+            
+            if (!array) return indexes;
+            
+            for (var i = 0; i < array.length; i++) {
+                if (array[i][objField] == valueField)
+                    indexes.push(i);
+            };
+            return indexes;
+        },
+        getValidDate: function(str){
+	        var date = new Date(str);
+	        if (isNaN(date))
+	        	return "";
+	        	
+	        return $filter('date')(date, 'yyyy-MM-dd');
+	    },
+        getPropertyValue: function (item, propertyStr, defaultValue){
+            var value;
+            defaultValue = defaultValue ? defaultValue : '';
+
+            try{
+                var properties = propertyStr.split('.');
+                
+                switch(properties.length){
+                    case 1:
+                        value = item[properties[0]];
+                        break;
+                    case 2:
+                        value = item[properties[0]][properties[1]];
+                        break;
+                    case 3:
+                        value = item[properties[0]][properties[1]][properties[2]];
+                        break;
+                    case 4:
+                        value = item[properties[0]][properties[1]][properties[2]][properties[3]];
+                        break;
+                    case 5:
+                        value = item[properties[0]][properties[1]][properties[2]][properties[3]][properties[4]];
+                        break;
+                }
+            }
+            catch(ex){
+                //console.log('C????? ??????' + propertyStr);
+            }
+
+            return value == undefined ? defaultValue : value;
+        },
+        base64Encode: function(s) {
+    		return btoa(unescape(encodeURIComponent(s)));
+  		},
+  		base64Decode: function(s) {
+    		return decodeURIComponent(escape(atob(s)));
+  		}
+    }
+});
+  
+]]></CSP>
+</Export>

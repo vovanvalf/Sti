@@ -2,14 +2,108 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/AllUniversityCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddd
-
 /*===========================================================================================
 Все университеты
 ===========================================================================================*/
 
 controllersModule.controller('AllUniversityCtrl', function($scope, $location, UniversitySrvc, InternSrvc){
-    $scope.page = {};
+       $scope.universitiesTable = {state: {}};
+
+		$scope.init = function(){
+ 
+        $scope.universitiesTable.columns = [
+                          {name: 'Университет', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Страна', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Город', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                           ];
+        $scope.universitiesTable.properties = [
+        				  	{
+	        				  	name: 'fullName',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: true,
+	        					getCssClass: function(item){ 
+                                    return 'cellLink';
+                                },
+	        				},
+	        				{
+	        				  	name: 'city.parentName',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: true,
+	        				  	getCssClass: function(item){ 
+                                    return 'cellLink';
+                                }
+	        				},
+	        				{
+	        				  	name: 'city.name',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: true,
+	        				  	getCssClass: function(item){ 
+                                    return 'cellLink';
+                                }
+	        				}]; 
+	        				
+        $scope.universitiesTable.pageSize = 7;
+        $scope.universitiesTable.pageCurr = 1;
+        $scope.universitiesTable.itemsTotal = 0;
+        $scope.universitiesTable.selectedItems = [];
+        $scope.universitiesTable.multiSelectMode = false;
+        $scope.universitiesTable.forciblyUpdate = 0;
+        $scope.universitiesTable.refresh();
+    };
+
+    // 
+    $scope.universitiesTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
+        UniversitySrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {}).then(
+            function(data){
+	            data = data.children;
+                $scope.universitiesTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
+                $scope.universitiesTable.itemsTotal = data.itemsTotal;
+                $scope.universitiesTable.items = data.items;
+            },
+            function(data){
+                console.log('Ошибка!!!!', data);
+            });
+    };
+
+	$scope.universitiesTable.refresh = function(){ 
+        $scope.universitiesTable.forciblyUpdate++; 
+    };
+    
+    $scope.universitiesTable.add = function(){
+        $location.path('/university/'); 
+    };
+
+    $scope.universitiesTable.edit = function(item){
+        $location.path('/university/' + item.id);
+    };
+
+    $scope.universitiesTable.remove = function(item){       
+            UniversitySrvc.remove(item.id).then(
+                function(data){
+                    $scope.universitiesTable.selectedItems = [];
+                    $scope.universitiesTable.refresh();
+                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Университет удален.', 'success', true);
+                },
+                function(data, status, headers, config){
+                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                });
+            
+    };
+    
+    $scope.universitiesTable.onSelect = function(item){
+        console.log('Selected row ',item);       
+    };
+
+    $scope.universitiesTable.onSelectCell = function(item, property){
+        /*if (!item) return;
+        property.onClickCell(item);*/
+    };
+
+
+	$scope.init();
+	
+    
+    /*$scope.page = {};
 
     // Инициализация данных
     $scope.page.init = function(){
@@ -17,7 +111,7 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
            Заголовок таблицы. 
            Сss класс для таблицы. 
            Имена колонок и имя свойства для доступа к значению.
-           Методы для работы с данными */
+           Методы для работы с данными 
         $scope.page.ungrid = {
             caption: 'Университеты',
             cssClass: 'table table-bordered table-hover',
@@ -50,7 +144,7 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
     $scope.page.loadUniversityInterns = function(university){
         UniversitySrvc.getInterns(university.id).then(
             function(data){
-                university.interns = data.children;
+                university.universities = data.children;
             },
             function(data, status, headers, config){
                 $scope.page.unalert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
@@ -79,7 +173,7 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
                 $scope.page.gralert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
             });
     };
-    $scope.page.init(); 
+    $scope.page.init(); */
 });
 
 ]]></CSP>

@@ -38,7 +38,10 @@
 <Property name="University">
 <Description>
 Дата рождения стажера. уточнить в документации
-Property BirthDay As %Date(FORMAT = 3) [ Required ];
+Property BirthDay As %Date(FORMAT = 15) [ Required ];
+$ZDATE(intern.EndDate,15) сервер
+$ZDATEH(аналогично)клиент
+input type date
 Университет</Description>
 <Type>Sti.Data.University</Type>
 <Cardinality>one</Cardinality>
@@ -137,9 +140,9 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 	set proxy.id = ..%Id()
 	//узнать подробнее о типе "дата" и реализовать вывод на клиенте и в REST
 	//set proxy.birthday = $ZDATE(..BirthDay, 3)
-	set proxy.firstname = ..FirstName.Value
-	set proxy.lastname = ..LastName.Value
-	set proxy.middlename = ..MiddleName.Value
+	set proxy.firstName = ..FirstName.Value
+	set proxy.lastName = ..LastName.Value
+	set proxy.middleName = ..MiddleName.Value
 	set proxy.phone = ..Phone
 	set proxy.email = ..Email
 	set proxy.skype = ..Skype
@@ -148,12 +151,13 @@ Property BirthDay As %Date(FORMAT = 3) [ Required ];
 	set proxy.ensemble = ..EnsembleScience
 	set proxy.deepsee = ..DeepSeeScience
 	set proxy.tet = ..TET
- 	set proxy.pet = ..Pet.ConvertToProxyObject(idPET)
+ 	
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
    	set proxy.university = ..University.ConvertToProxyObject()
+   	quit proxy
 	set proxy.eng=..engScience.ConvertToProxyObject(idEng)
-	quit proxy
+	set proxy.pet = ..Pet.ConvertToProxyObject(idPET)
 ]]></Implementation>
 </Method>
 

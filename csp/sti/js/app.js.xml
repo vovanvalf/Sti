@@ -21,10 +21,14 @@ otherwise
 $routeParams.id - параметр :id
 */
 
-var servicesModule    = angular.module('servicesModule',[]);
-var controllersModule = angular.module('controllersModule', []);
-var directivesModule  = angular.module('directivesModule', []);
-var mainModule        = angular.module('mainModule', ['servicesModule', 'controllersModule', 'directivesModule']);
+
+var servicesModule     = angular.module('servicesModule', ['ngRoute','ngCookies', 'ui.bootstrap']);
+var controllersModule  = angular.module('controllersModule', ['servicesModule']);
+var directivesModule   = angular.module('directivesModule', []);
+var localizationModule = angular.module('localizationModule', []);
+var filterModule       = angular.module('filterModule', []);
+var mainModule         = angular.module('mainModule', ['localizationModule',  'filterModule', 'servicesModule', 'controllersModule', 'directivesModule']);
+
 
 mainModule.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/universities',      {templateUrl: 'partials/universities.csp',   controller: 'AllUniversityCtrl'});

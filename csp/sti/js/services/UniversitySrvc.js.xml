@@ -24,6 +24,18 @@ servicesModule.factory('UniversitySrvc', function(RESTSrvc) {
         getAll: function(){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university'});
         },
+         getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
+            var first = pageSize * (pageCurr - 1) + 1;
+            var obj = {sqlName: sqlName, 
+                       isDown: isDown, 
+                       first: first, 
+                       last: first + pageSize - 1,
+                       searchSqlName: searchSqlName, 
+                       searchText: searchText,
+                       other: other};
+            
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/university/grid', data: obj});
+        },
         /* Получить всех стажеров универа */
         getInterns: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university/' + id + '/intern'});
