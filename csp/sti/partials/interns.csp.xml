@@ -47,61 +47,36 @@
 </div>
 
 
-{{internsTable.selectedItems}}
 
-<!-- Если стажер не выбран(т.е. selectedItems == udefined), то показывать сообщение -->
-<div class="row-fluid" ng-hide="grid.selectedItems" style="text-align: center;">
+
+<!-- Если стажер не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internsTable.selectedItems}}-->
+<div class="row-fluid" ng-hide="internsTable.selectedItems[0]" style="text-align: center;">
 	<i>Выберите стажёра для отображения полной информации.</i>
 </div>
 
-<div class="row-fluid">
+<div class="row-fluid" ng-show="internsTable.selectedItems[0]!=null">
 	 <tabset>
 		<tab heading="{{'Информация'}}">
 			<div class="span6">
 				<p><span class="spnTitle" ng-bind="'Электронная почта'"></span>: <span ng-bind="internsTable.selectedItems[0].email"></span></p>
 				<p><span class="spnTitle" ng-bind="'Телефон'"></span>: <span ng-bind="internsTable.selectedItems[0].phone"></span></p>
-            </div>
-			<div class="span6">
 				<p><span class="spnTitle" ng-bind="'Скайп'"></span>: <span ng-bind="internsTable.selectedItems[0].skype"></span></p>
 				<p><span class="spnTitle" ng-bind="'Резюме'"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
+				<p><span class="spnTitle" ng-bind="'Кафедра'"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
+				<p><span class="spnTitle" ng-bind="'Факультет'"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
+				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'"></span>: <span ng-bind="internsTable.selectedItems[0].agree"></span></p><!--Нужно ли оно здесь?--> 
+            </div>
+			<div class="span6">
+				<p><span class="spnTitle" ng-bind="'Уровень английского'"></span>: <span ng-bind="internsTable.selectedItems[0].eng.value"></span></p>
+				<p><span class="spnTitle" ng-bind="'Опыт Cache'"></span>: <span ng-bind="internsTable.selectedItems[0].cache"></span></p> 
+                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'"></span>: <span ng-bind="internsTable.selectedItems[0].ensemble"></span></p> 
+				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'"></span>: <span ng-bind="internsTable.selectedItems[0].deepsee"></span></p>
+				<p><span class="spnTitle" ng-bind="'Оценка TET'"></span>: <span ng-bind="internsTable.selectedItems[0].tet"></span></p>
+				<p><span class="spnTitle" ng-bind="'Оценка PET'"></span>: <span ng-bind="internsTable.selectedItems[0].pet.value"></span></p>
 			</div>
 		</tab>
-		<tab heading="{{'Просто вкладка'}}">
-			<div class="span6">
-				<p><span class="spnTitle" ng-bind="'Электронная почта'"></span>: <span ng-bind="internsTable.selectedItems[0].email"></span></p>
-				<p><span class="spnTitle" ng-bind="'Телефон'"></span>: <span ng-bind="internsTable.selectedItems[0].phone"></span></p>
-            </div>
-			<div class="span6">
-				<p><span class="spnTitle" ng-bind="'Скайп'"></span>: <span ng-bind="internsTable.selectedItems[0].skype"></span></p>
-				<p><span class="spnTitle" ng-bind="'Резюме'"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
-			</div>
-		</tab>	
 	</tabset>
 </div>
-<!--
-<div class="row-fluid" ng-show="internsTable.selectedItems!=null">
-	<div class="span1">
-	</div>
-			<div class="span10">
-				<p><span class="spnTitle" ng-bind="'Электронная почта'"></span>: <span ng-bind="internsTable.item.lastName"></span></p>
-				<p><span class="spnTitle" ng-bind="'Телефон'"></span>: <span ng-bind="grid.selectedItems.phone"></span></p>
-				<p><span class="spnTitle" ng-bind="'Skype'"></span>: <span ng-bind="grid.selectedItems.skype"></span></p>
-				<p><span class="spnTitle" ng-bind="'Уровень английского'"></span>: <span ng-bind="grid.selectedItems.eng.value"></span></p>
-				<!--Сделать ссылку на файл или текст!
-				<p><span class="spnTitle" ng-bind="'Резюме'"></span>: <span ng-bind="grid.selectedItems.resume"></span></p> 
-				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'"></span>: <span ng-bind="grid.selectedItems.agree"></span></p> 
-				<p><span class="spnTitle" ng-bind="'Опыт Cache'"></span>: <span ng-bind="grid.selectedItems.cache"></span></p> 
-                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'"></span>: <span ng-bind="grid.selectedItems.ensemble"></span></p> 
-				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'"></span>: <span ng-bind="grid.selectedItems.deepsee"></span></p>
-				<p><span class="spnTitle" ng-bind="'Оценка TET'"></span>: <span ng-bind="grid.selectedItems.tet"></span></p>
-				<p><span class="spnTitle" ng-bind="'Опыт Pet'"></span>: <span ng-bind="grid.selectedItems.pet.value"></span></p>
-				<p><span class="spnTitle" ng-bind="'Кафедра'"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!
-				<p><span class="spnTitle" ng-bind="'Факультет'"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!    
-			</div>
-			
-	<div class="span1">
-	</div>
-</div>-->
 <br>
 <!-- Инфо-сообщения -->
 <stialert data="inalert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>

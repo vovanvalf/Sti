@@ -13,32 +13,32 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
  
         $scope.universitiesTable.columns = [
                           {name: 'Университет', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
-                          {name: 'Страна', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
-                          {name: 'Город', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Страна', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Город', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                            ];
         $scope.universitiesTable.properties = [
         				  	{
 	        				  	name: 'fullName',
 	        				  	cellStyle: {textAlign: 'left'},
-	        				  	cellSelectable: true,
+	        				  	cellSelectable: false,
 	        					getCssClass: function(item){ 
-                                    return 'cellLink';
+                                    return '';
                                 },
 	        				},
 	        				{
 	        				  	name: 'city.parentName',
 	        				  	cellStyle: {textAlign: 'left'},
-	        				  	cellSelectable: true,
+	        				  	cellSelectable: false,
 	        				  	getCssClass: function(item){ 
-                                    return 'cellLink';
+                                    return '';
                                 }
 	        				},
 	        				{
 	        				  	name: 'city.name',
 	        				  	cellStyle: {textAlign: 'left'},
-	        				  	cellSelectable: true,
+	        				  	cellSelectable: false,
 	        				  	getCssClass: function(item){ 
-                                    return 'cellLink';
+                                    return '';
                                 }
 	        				}]; 
 	        				

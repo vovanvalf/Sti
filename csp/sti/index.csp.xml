@@ -8,13 +8,13 @@
     <title>Система стажёров и вузов академической программы</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <!-- Подключение CSS -->
-
     <script language="javascript">
         /* Имя приложения для работы с REST, глобальная переменная */
         var StiSetting = {appName: '#($GET(^Settings("Sti", "WebAppName")))#'};
     </script>
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
   
@@ -28,7 +28,7 @@
   </head>
   <!-- Инициализация приложения, mainModule описан в app.js -->
   <body ng-app="mainModule">
-    <div class="container-fluid">
+  <div class="container-fluid">
         <!-- Навигация -->
         <div class="navbar">
           <div class="navbar-inner">
@@ -54,11 +54,6 @@
     </div>
 
     <!-- Скрипты приложения -->
-    
-
-
-    
-
     <script language="javascript"  src="js/app.js"></script>
     
     <script language="javascript"  src="js/controllers/AllInternCtrl.js"></script>

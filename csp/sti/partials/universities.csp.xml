@@ -49,23 +49,34 @@
 	<div class="span1">
 	</div>
 			<div class="span10">
-				<p><span class="spnTitle" ng-bind="'Сокращение'"></span>: <span ng-bind="page.ungrid.selected.shortName"></span></p>
-				<p><span class="spnTitle" ng-bind="'Адрес'"></span>: <span ng-bind="page.ungrid.selected.address"></span></p>
-				<p><span class="spnTitle" ng-bind="'Сайт'"></span>: <span ng-bind="page.ungrid.selected.web"></span></p>
-				<!--Сделать отдельную таблицу для инфо куратора!-->
-				<p><span class="spnTitle" ng-bind="'Куратор'"></span>: <span ng-bind="page.ungrid.selected.curator.lastName"></span></p>
-				<!--Сделать список контактов и инфо таблицу!-->
-				<p><span class="spnTitle" ng-bind="'Контакты'"></span>:</p> 
+				
+				
 			</div>
 			
 	<div class="span1">
 	</div>
 </div>
 <!-- Если универ не выбран(т.е. selected == udefined), то показывать сообщение -->
-<div class="row-fluid" ng-hide="page.ungrid.selected" style="text-align: center;">
+<div class="row-fluid" ng-hide="universitiesTable.selectedItems[0]" style="text-align: center;">
 	<i>Выберите университет для отображения полной информации.</i>
 </div>
-
+<div class="row-fluid" ng-show="universitiesTable.selectedItems[0]!=null">
+	 <tabset>
+		<tab heading="{{'Информация'}}">
+			<div class="span6">
+				<p><span class="spnTitle" ng-bind="'Сокращение'"></span>: <span ng-bind="universitiesTable.selectedItems[0].shortName"></span></p>
+				<p><span class="spnTitle" ng-bind="'Адрес'"></span>: <span ng-bind="universitiesTable.selectedItems[0].address"></span></p>
+				<p><span class="spnTitle" ng-bind="'Сайт'"></span>: <span ng-bind="universitiesTable.selectedItems[0].web"></span></p>
+            </div>
+			<div class="span6">
+				<!--Сделать отдельную таблицу для инфо куратора!-->
+				<p><span class="spnTitle" ng-bind="'Куратор'"></span>: <span ng-bind="universitiesTable.selectedItems[0].curator.lastName"></span></p>
+				<!--Сделать список контактов и инфо таблицу!-->
+				<p><span class="spnTitle" ng-bind="'Контакты'"></span>:</p> 
+			</div>
+		</tab>
+	</tabset>
+</div>
 <br>
 <!-- Инфо-сообщения -->
 <stialert data="page.unalert" span-right="1" span-middle="10" span-left="1"/>
