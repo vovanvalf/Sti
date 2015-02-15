@@ -35,8 +35,10 @@ mainModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/university/:id',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
     $routeProvider.when('/interns',    {templateUrl: 'partials/interns.csp', controller: 'AllInternCtrl'});
     $routeProvider.when('/intern/:id', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
+    $routeProvider.when('/intern', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
+     $routeProvider.when('/university',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
     
-    $routeProvider.otherwise({redirectTo: '/interns'});
+    //$routeProvider.otherwise({redirectTo: '/interns'});
   }]);
 ]]></CSP>
 </Export>

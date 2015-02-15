@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.MarkBase">
+<Abstract>1</Abstract>
+<TimeCreated>63585,75755.383444</TimeCreated>
+
+<Property name="Value">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Code">
+<Type>%Integer</Type>
+</Property>
+</Class>
+</Export>

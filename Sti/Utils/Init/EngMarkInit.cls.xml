@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.EngMarkInit">
+<Super>Sti.Utils.Init.BaseInit</Super>
+<TimeCreated>63586,1427.001449</TimeCreated>
+
+<Parameter name="PClassName">
+<Default>EngMark</Default>
+</Parameter>
+
+<Method name="Import">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="Pre-Intermediate"
+	set mark.Code=1
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="Upper-Elementary"
+	set mark.Code=1
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="Elementary"
+	set mark.Code=1
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+]]></Implementation>
+</Method>
+</Class>
+</Export>

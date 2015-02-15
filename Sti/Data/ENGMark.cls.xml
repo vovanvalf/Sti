@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.ENGMark">
+<Super>%Persistent,Sti.Data.MarkBase</Super>
+<TimeCreated>63585,85434.06941</TimeCreated>
+
+<Method name="ConvertToProxyObject">
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	
+	set proxy.id = ..%Id()
+	set proxy.value = ..Value
+	set proxy.code = ..Code
+	
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.ENGMarkD</DataLocation>
+<DefaultData>ENGMarkDefaultData</DefaultData>
+<IdLocation>^Sti.Data.ENGMarkD</IdLocation>
+<IndexLocation>^Sti.Data.ENGMarkI</IndexLocation>
+<StreamLocation>^Sti.Data.ENGMarkS</StreamLocation>
+<Data name="ENGMarkDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Value</Value>
+</Value>
+<Value name="3">
+<Value>Code</Value>
+</Value>
+</Data>
+<Data name="Values">
+<Attribute>Values</Attribute>
+<Structure>subnode</Structure>
+<Subscript>"Values"</Subscript>
+</Data>
+<Data name="arrayMark">
+<Attribute>arrayMark</Attribute>
+<Structure>subnode</Structure>
+<Subscript>"arrayMark"</Subscript>
+</Data>
+</Storage>
+</Class>
+</Export>

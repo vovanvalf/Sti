@@ -5,12 +5,13 @@
 
 <html>
   <head>
-    <title>Система стажёров и вузов академической программы</title>
+    <title ng-bind="'Система стажёров'|localize"></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script language="javascript">
         /* Имя приложения для работы с REST, глобальная переменная */
         var StiSetting = {appName: '#($GET(^Settings("Sti", "WebAppName")))#'};
+        StiSetting.lang = "en";
     </script>
     
     <!-- Подключение CSS -->
@@ -25,6 +26,10 @@
     <script language="javascript"  src="lib/angular/angular-cookies.min.js"></script>
 
 	<script language="javascript" src="lib/ui-bootstrap-tpls-0.5.0.js"></script>
+	
+	    <script language="javascript">
+    document.write('<script language="javascript" src="js/localization/locale_' + StiSetting.lang + '.js"><\/script>'); 
+   </script>  
   </head>
   <!-- Инициализация приложения, mainModule описан в app.js -->
   <body ng-app="mainModule">
@@ -33,8 +38,7 @@
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
-              <a class="brand" href="">Система стажёров и вузов академической программы</a>
-              
+             <a class="brand"  ng-bind="'Система стажёров и вузов академической программы'|localize"></a>
               <div class="nav-responsive-collapse">
                 <ul class="nav">
                   <li><a href="#/universities">Университеты</a></li>
@@ -56,6 +60,7 @@
     <!-- Скрипты приложения -->
     <script language="javascript"  src="js/app.js"></script>
     
+    
     <script language="javascript"  src="js/controllers/AllInternCtrl.js"></script>
     <script language="javascript"  src="js/controllers/InternCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllUniversityCtrl.js"></script>
@@ -69,6 +74,11 @@
     <script language="javascript"  src="js/directives/stigrid.js"></script>
     <script language="javascript"  src="js/directives/stialert.js"></script>
     
+    
+    <script language="javascript"  src="js/localization/dict.js"></script>
+    <script language="javascript"  src="js/localization/filter.js"></script>
+    <script language="javascript"  src="js/filters/cacheDate.js"></script>
+  
   </body>
 </html>
 ]]></CSP>

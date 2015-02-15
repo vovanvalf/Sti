@@ -4,12 +4,11 @@
 <div class="row-fluid">
 	<div class="span1">
 	</div>
-	<div class="span10">
 		<!-- Свой компонент - таблица -->
 		 <stigrid style="border-radius: 4px 0 4px 4px;"
 	    	grid="internsTable.state"
 		    table-class="table table-bordered table-hover"
-		    caption="'Стажеры'"
+		    caption="'Стажёры'|localize"
 		    columns="internsTable.columns"
 		    items="internsTable.items"
 		    properties="internsTable.properties"
@@ -41,7 +40,6 @@
 	    	
  			forcibly-update="internsTable.forciblyUpdate"
 		/>
-	</div>
 	<div class="span1">
 	</div>
 </div>
@@ -56,23 +54,23 @@
 
 <div class="row-fluid" ng-show="internsTable.selectedItems[0]!=null">
 	 <tabset>
-		<tab heading="{{'Информация'}}">
+		<tab heading="{{'Информация'|localize}}">
 			<div class="span6">
-				<p><span class="spnTitle" ng-bind="'Электронная почта'"></span>: <span ng-bind="internsTable.selectedItems[0].email"></span></p>
-				<p><span class="spnTitle" ng-bind="'Телефон'"></span>: <span ng-bind="internsTable.selectedItems[0].phone"></span></p>
-				<p><span class="spnTitle" ng-bind="'Скайп'"></span>: <span ng-bind="internsTable.selectedItems[0].skype"></span></p>
-				<p><span class="spnTitle" ng-bind="'Резюме'"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
-				<p><span class="spnTitle" ng-bind="'Кафедра'"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
-				<p><span class="spnTitle" ng-bind="'Факультет'"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
-				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'"></span>: <span ng-bind="internsTable.selectedItems[0].agree"></span></p><!--Нужно ли оно здесь?--> 
+				<p><span class="spnTitle" ng-bind="'Email'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].email"></span></p>
+				<p><span class="spnTitle" ng-bind="'Телефон'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].phone"></span></p>
+				<p><span class="spnTitle" ng-bind="'Skype'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].skype"></span></p>
+				<p><span class="spnTitle" ng-bind="'Резюме'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
+				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
+				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
+				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].agree"></span></p><!--Нужно ли оно здесь?--> 
             </div>
 			<div class="span6">
-				<p><span class="spnTitle" ng-bind="'Уровень английского'"></span>: <span ng-bind="internsTable.selectedItems[0].eng.value"></span></p>
-				<p><span class="spnTitle" ng-bind="'Опыт Cache'"></span>: <span ng-bind="internsTable.selectedItems[0].cache"></span></p> 
-                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'"></span>: <span ng-bind="internsTable.selectedItems[0].ensemble"></span></p> 
-				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'"></span>: <span ng-bind="internsTable.selectedItems[0].deepsee"></span></p>
-				<p><span class="spnTitle" ng-bind="'Оценка TET'"></span>: <span ng-bind="internsTable.selectedItems[0].tet"></span></p>
-				<p><span class="spnTitle" ng-bind="'Оценка PET'"></span>: <span ng-bind="internsTable.selectedItems[0].pet.value"></span></p>
+				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].eng.value"></span></p>
+				<p><span class="spnTitle" ng-bind="'Опыт Cache'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].cache"></span></p> 
+                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].ensemble"></span></p> 
+				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].deepsee"></span></p>
+				<p><span class="spnTitle" ng-bind="'Оценка TET'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].tet"></span></p>
+				<p><span class="spnTitle" ng-bind="'Оценка PET'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].pet.value"></span></p>
 			</div>
 		</tab>
 	</tabset>

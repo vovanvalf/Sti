@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/localization/dict.js" application="/csp/sti/" default="1"><![CDATA[
+//---
+
+localizationModule.constant('StiDictionary', {
+  toEnglish: {
+	  	'Стажёр':'Intern',
+        'Имя':'Name',
+	  	'Фамилия': 'Last Name',
+ 		'Отчество':'Middle name',
+        'Город':'City',
+		'Университет':'University',
+		'Телефон':'Telephone',
+		'Резюме':'Resume',
+		'Согласие на рассылку':'Agreement to newsletter',
+		'Уровень английского':'English level',
+		'Опыт Cache':'Experience Cache',
+		'Опыт DeepSee':'Experience DeepSee',
+		'Опыт Ensemble':'Experience Ensemble',
+		'Оценка TET':'Evaluation of TET',
+		'Оценка PET':'Evaluation of PET',
+		'Полное название':'Full name',
+		'Аббревиатура':'Abbreviation',
+		'Адрес университета':'Address of the University',
+		'Web-страница':'Web-page',
+		'Куратор':'Curator',
+		'Доп. контакты':'Extras. contact information',
+		'Система стажёров и вузов академической программы':'System interns and universities academic program',
+		'Информация':'Information',
+		'Кафедра':'Chair',
+		'Факультет':'Faculty',
+		'Стажёры':'Interns',
+		'Университеты':'Universities'
+  },
+  toRussian: {
+  },
+  getTranslate: function(word, toLanguage){
+	var def = function(key){
+		//console.log("'" + key + "' : '',");
+		
+		return key;	
+	};  
+	 
+		  
+    switch(toLanguage){
+        case 'en':
+            return this.toEnglish[word] ? this.toEnglish[word] : def(word);
+
+    }
+    
+    return word;
+  }
+});
+]]></CSP>
+</Export>

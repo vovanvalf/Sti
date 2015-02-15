@@ -16,7 +16,7 @@ Handling of BrokerAdmin</Description>
 	set st = $$$OK
 	
 	try{
-		do ##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject("CBC20F73-49FC-4325-82AE-FEA3AE61DC20","7B2BEAD7-4C69-4924-93FE-9C8C1B235356").%ToJSON()
+		do ##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject().%ToJSON()
 	}
 	catch(ex){
 		set st = ex.AsStatus()
@@ -45,9 +45,9 @@ Handling of BrokerAdmin</Description>
       	// Открыть не удалось - создаем
       	if $$$ISERR(st) set intern = ##class(Sti.Data.Intern).%New()
      
-      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastname, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
-      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstname, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middlename, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
       	set intern.Email = $ZCONVERT(data.email, "I", "UTF8")
       	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
       	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
@@ -60,13 +60,13 @@ Handling of BrokerAdmin</Description>
     
     
     /*ЭТО ВРЕМЕННАЯ ЗАМЕНА ДЛЯ ПРОВЕРКИ РАБОТОСПОСОБНОСТИ НУЖНО БУДЕТ СТАВИТЬ ЗНАЧЕНИЯ ИЗ ТАБЛИЦЫ КЛИЕНТА!*/  	
-	set PET = ##class(Sti.Data.PETScience).%New()
-	set PET = ##class(Sti.Data.PETScience).%OpenId("1",3,.Status)
-	set intern.Pet=PET
+	set PET = ##class(Sti.Data.PETMark).%New()
+	set PET = ##class(Sti.Data.PETMark).%OpenId("1",3,.Status)
+	set intern.petMark=PET
 	
-	set ENG = ##class(Sti.Data.EngScience).%New()
-	set ENG = ##class(Sti.Data.EngScience).%OpenId("1",3,.Status)
-	set intern.engScience=ENG
+	set ENG = ##class(Sti.Data.ENGMark).%New()
+	set ENG = ##class(Sti.Data.ENGMark).%OpenId("1",3,.Status)
+	set intern.engMark=ENG
 	
 	set city = ##class(Sti.Data.Region).%New()
 	set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)
@@ -119,7 +119,7 @@ Handling of BrokerAdmin</Description>
 			&sql(FETCH IntCur INTO :id) 
 			quit:(SQLCODE '= 0)
 			
-			do proxy.children.Insert(##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject("CBC20F73-49FC-4325-82AE-FEA3AE61DC20","7B2BEAD7-4C69-4924-93FE-9C8C1B235356"))
+			do proxy.children.Insert(##class(Sti.Data.Intern).%OpenId(id).ConvertToProxyObject())
 		}
 		
 		&sql(CLOSE IntCur)

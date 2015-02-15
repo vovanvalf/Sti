@@ -6,7 +6,7 @@
 Все стажеры
 ===========================================================================================*/
 
-controllersModule.controller('AllInternCtrl', function($scope, $location, InternSrvc, UtilsSrvc){
+controllersModule.controller('AllInternCtrl', function($scope, $location, $filter, InternSrvc, UtilsSrvc){
 
 $scope.internsTable = {state: {}};
 
@@ -16,6 +16,7 @@ $scope.init = function(){
                           {name: 'Фамилия', sqlName: 'LastName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
                           {name: 'Имя', sqlName: 'FirstName', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Отчество', sqlName: 'MiddleName', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Дата рождения', sqlName: 'BirthDay', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, filter: 'date'},
                           {name: 'Университет', sqlName: 'University', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Город', sqlName: 'City', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
         
@@ -42,6 +43,14 @@ $scope.init = function(){
 	        				},
 	        				{
 	        				  	name: 'middleName',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: false,
+	        				  	getCssClass: function(item){ 
+                                    return '';
+                                }
+	        				},
+	        				{
+	        				  	name: 'birthDate',  filter: 'date', filterParam: $filter('localize')('d MMMM y'),
 	        				  	cellStyle: {textAlign: 'left'},
 	        				  	cellSelectable: false,
 	        				  	getCssClass: function(item){ 
@@ -86,14 +95,6 @@ $scope.init = function(){
                 $scope.internsTable.items = data.items;
                 
                 
-                if ($scope.internsTable.selectedItems && 
-                	$scope.internsTable.items && 
-                	$scope.internsTable.selectedItems.length == 0 && 
-                	$scope.internsTable.items.length != 0){
-                    var selected = $scope.internsTable.items[0];
-                    selected.rowClass = 'success';
-                    $scope.internsTable.selectedItems = [selected];
-                }
             },
             function(data){
                 console.log('Ошибка!!!!', data);

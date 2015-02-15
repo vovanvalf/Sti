@@ -35,10 +35,16 @@
 <Required>1</Required>
 </Property>
 
+<Property name="BirthDay">
+<Description>
+Дата рождения стажера</Description>
+<Type>%Date</Type>
+<Required>1</Required>
+<Parameter name="FORMAT" value="3"/>
+</Property>
+
 <Property name="University">
 <Description>
-Дата рождения стажера. уточнить в документации
-Property BirthDay As %Date(FORMAT = 15) [ Required ];
 $ZDATE(intern.EndDate,15) сервер
 $ZDATEH(аналогично)клиент
 input type date
@@ -65,10 +71,10 @@ input type date
 <Required>1</Required>
 </Property>
 
-<Property name="engScience">
+<Property name="engMark">
 <Description>
 Владение английским</Description>
-<Type>EngScience</Type>
+<Type>ENGMark</Type>
 </Property>
 
 <Property name="City">
@@ -122,10 +128,10 @@ input type date
 <Type>%String</Type>
 </Property>
 
-<Property name="Pet">
+<Property name="petMark">
 <Description>
 Оценка PET</Description>
-<Type>PETScience</Type>
+<Type>PETMark</Type>
 </Property>
 
 <Index name="UniversityIndex">
@@ -133,13 +139,11 @@ input type date
 </Index>
 
 <Method name="ConvertToProxyObject">
-<FormalSpec>idPET:%String,idEng:%String</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
-	//узнать подробнее о типе "дата" и реализовать вывод на клиенте и в REST
-	//set proxy.birthday = $ZDATE(..BirthDay, 3)
+	set proxy.birthDate = $ZDATE(..BirthDay, 3)
 	set proxy.firstName = ..FirstName.Value
 	set proxy.lastName = ..LastName.Value
 	set proxy.middleName = ..MiddleName.Value
@@ -151,13 +155,12 @@ input type date
 	set proxy.ensemble = ..EnsembleScience
 	set proxy.deepsee = ..DeepSeeScience
 	set proxy.tet = ..TET
- 	
+ 	set proxy.eng = ..engMark.ConvertToProxyObject()
+	set proxy.pet = ..petMark.ConvertToProxyObject()
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
    	set proxy.university = ..University.ConvertToProxyObject()
    	quit proxy
-	set proxy.eng=..engScience.ConvertToProxyObject(idEng)
-	set proxy.pet = ..Pet.ConvertToProxyObject(idPET)
 ]]></Implementation>
 </Method>
 
@@ -229,6 +232,12 @@ input type date
 </Value>
 <Value name="20">
 <Value>Pet</Value>
+</Value>
+<Value name="21">
+<Value>engMark</Value>
+</Value>
+<Value name="22">
+<Value>petMark</Value>
 </Value>
 </Data>
 <Property name="%%CLASSNAME">

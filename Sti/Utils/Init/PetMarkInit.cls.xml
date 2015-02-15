@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.PetMarkInit">
+<Super>Sti.Utils.Init.BaseInit</Super>
+<TimeCreated>63586,1833.696862</TimeCreated>
+
+<Parameter name="PClassName">
+<Default>PetMark</Default>
+</Parameter>
+
+<Method name="Import">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.PETMark).%New()
+	do mark.Create(20,23,21,11)
+	do mark.GetGeneralMark()
+	set mark.Code=1
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.PETMark).%New()
+	do mark.Create(1,1,1,1)
+	do mark.GetGeneralMark()
+	set mark.Code=2
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.PETMark).%New()
+	do mark.Create(25,24,23,21)
+	do mark.GetGeneralMark()
+	set mark.Code=3
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.PETMark).%New()
+	do mark.Create(11,22,25,2)
+	do mark.GetGeneralMark()
+	set mark.Code=4
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+]]></Implementation>
+</Method>
+</Class>
+</Export>
