@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.Internship">
+<Super>BaseInit</Super>
+<TimeCreated>63606,84512.876551</TimeCreated>
+
+<Parameter name="PClassName">
+<Default>InternShip</Default>
+</Parameter>
+
+<Method name="Import">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	w !,"=== "_..#PClassName_" ==="
+	
+	set internship = ##class(Sti.Data.Internship).%New()
+	set internship.Name = ##class(Sti.Data.Localization.LText).Create("Обработка газа")
+	set internship.DateBegin=$ZDATEH("2014-05-16", 15)
+	set internship.DateEnd=$ZDATEH("2014-07-29", 15)
+	set internship.MaxPeople=3
+	set internship.IsInUse=1
+	
+	set curator = ##class(Sti.Data.Employee).%New()
+	set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Булгаков", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set curator.Email = "master@maininternship.com"
+	set curator.Phone = "202020"
+	set internship.Curator = curator
+	
+	set city = ##class(Sti.Data.Region).%New()
+	set city = ##class(Sti.Data.Region).%OpenId("00BCDA6B-2190-46B3-BA5D-6FFD31BA6C01",3,.Status)
+	set internship.City=city
+	
+	set internship.Street= ##class(Sti.Data.Localization.LText).Create("Борисова 5", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set internship.Room="224d"
+	
+	set company = ##class(Sti.Data.Company).%New()
+	set company= ##class(Sti.Data.Company).%OpenId("1",3,.Stats)
+	set internship.Company=company
+	
+	w !, $CASE($$$ISERR(internship.%Save()), 1: "Ошибка! Стажировка не создан!",:"Стажировка создан")
+	
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+</Class>
+</Export>

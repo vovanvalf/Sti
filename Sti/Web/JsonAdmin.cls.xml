@@ -8,6 +8,9 @@ Handling of BrokerAdmin</Description>
 
 <Method name="GetIntern">
 <Description>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Получить стажёра по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
@@ -159,6 +162,9 @@ Get all interns for grid</Description>
 
 <Method name="GetUniversitys">
 <Description>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Все университеты</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
@@ -295,11 +301,12 @@ Get all interns for grid</Description>
 		
 		set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
 		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.Email = "petorv@mainuniversity.com"
-		set curator.Phone = "000"
+		///ТУТ ПОМЕНЯЛ!
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
+		set curator.Email = data.contact.email
+		set curator.Phone = data.contact.phone
 		set university.Curator = curator
 		
 		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
@@ -315,6 +322,313 @@ Get all interns for grid</Description>
 		set university.Contacts=employees*/
 	
 		$$$THROWONERROR(st, university.%Save())
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetCompanies">
+<Description>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Все компания</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE CoCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data."Company")	
+		
+		&sql(OPEN CoCur)
+		for  
+		{	
+			&sql(FETCH CoCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.Company).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE CoCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="DeleteCompany">
+<Description>
+Удалить компания по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ##class(Sti.Data.Company).%DeleteId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetCompanyInternship">
+<Description>
+Все стажировки компания</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>coId:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		// Открываем универ, конвертируем в proxy(полностью) и возвращаем стажеров
+		set proxy.children = ##class(Sti.Data.Company).%OpenId(coId).ConvertToProxyObject(1).Interns
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetCompany">
+<Description>
+Получить компания по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{	
+		do ##class(Sti.Data.Company).%OpenId(id).ConvertToProxyObject().%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetCompaniesForGrid">
+<Description>
+Get all company for grid</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.params, 1))
+      	
+      	set whereCondition = ""
+      	
+      	do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.Company", "Sti.Data.Company", params, whereCondition).%ToJSON()
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveCompany">
+<Description>
+Создать / сохранить компания</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+      	
+      	set university = ##class(Sti.Data.Company).%OpenId(data.id,,.st)
+      	     	
+      	if $$$ISERR(st) set company = ##class(Sti.Data.Company).%New()
+      	set company.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I", "UTF8"))
+		set company.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I", "UTF8"))
+		set company.LegalAddress = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.legalAddress, "I", "UTF8"))
+		set company.MailAddress = data.mailAddress
+		set company.WebSite=data.webSite
+		
+		set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.contact.id,,.st)
+		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.lastName, "I", "UTF8"))
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.firstName, "I", "UTF8"))
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.middleName, "I", "UTF8"))
+		set curator.Email = data.contact.email
+		set curator.Phone = data.contact.phone
+		set company.Contact = curator
+	
+		/*set employees = ##class(%ArrayOfObjects).%New() 
+		set employee = ##class(Sti.Data.Employee).%OpenId("1",3,.Status) 
+		do employees.SetAt(employee,"BEABA77F-25FE-40B1-AF38-99A21742796B")
+		w !, $CASE($$$ISERR(curator.%Save()) || $$$ISERR(company.%Save()), 1: "Ошибка! Контакт  не создан!",:"Контакт создан")
+	
+		set company.Employees=employees*/
+	
+		$$$THROWONERROR(st, company.%Save())
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetInternship">
+<Description>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Получить стажировка по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		do ##class(Sti.Data.Internship).%OpenId(id).ConvertToProxyObject().%ToJSON()
+	}
+	catch(ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveInternship">
+<Description>
+Создать / сохранить стажировка</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	
+	try{
+		// Преобразовали входную строку JSON в объект proxyObject
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+      	
+      	// Открываем студента по ИД
+      	set internship = ##class(Sti.Data.Internship).%OpenId(data.id,,.st)
+      	
+      	// Открыть не удалось - создаем
+      	if $$$ISERR(st) set internship = ##class(Sti.Data.Internship).%New()
+        
+        
+        set internship.Name = ##class(Sti.Data.Localization.LText).Create(data.name)
+		set internship.DateBegin=$ZDATEH(data.dateBegin, 15)
+		set internship.DateEnd=$ZDATEH(data.dateEnd, 15)
+		set internship.MaxPeople=date.maxPeople
+		set internship.IsInUse=data.isInUse
+	
+		set curator = ##class(Sti.Data.Employee).%New()
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
+		set curator.Email = data.curator.email
+		set curator.Phone = data.curator.phone
+		set internship.Curator = curator
+		 	
+		set internship.Street= ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.street, "I", "UTF8"))
+		set internship.Room=data.room
+		
+		/*Тут может быть ошибка!*/
+		set internship.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
+		set internship.Company = ##class(Sti.Data.Company).%OpenId(data.company.id)
+		
+		$$$THROWONERROR(st, internship.%Save())
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="DeleteInternship">
+<Description>
+Удалить стажировка по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ##class(Sti.Data.Internship).%DeleteId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetInternships">
+<Description>
+Все стажировка</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE IntsCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.Internship)	
+		
+		&sql(OPEN IntsCur)
+		for  
+		{	
+			&sql(FETCH IntsCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.Internship).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE IntsCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetInternshipsForGrid">
+<Description>
+Get all internship for grid</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.params, 1))
+      	
+      	set whereCondition = ""
+      	
+      	do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.Internship", "Sti.Data.Internship", params, whereCondition).%ToJSON()
 	}
 	catch ex {
 		set st = ex.AsStatus()

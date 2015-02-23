@@ -19,7 +19,11 @@ do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
  	do ##class(Sti.Utils.Init.Region).Import()
  	do ##class(Sti.Utils.Init.Employee).Import()
  	do ##class(Sti.Utils.Init.University).Import()
+ 	do ##class(Sti.Utils.Init.Company).Import()
+ 	do ##class(Sti.Utils.Init.Internship).Import()
  	do ##class(Sti.Utils.Init.Intern).Import()
+ 	
+ 	
  	
  	do ..Settings()
 ]]></Implementation>
@@ -31,11 +35,13 @@ do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
 
 	do $CLASSMETHOD("Sti.Data.University", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Employee", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Internship", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Company", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Intern", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.ENGMark", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.PETMark", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Region", "%KillExtent")
-	
+
 	
 	do $CLASSMETHOD("Sti.Data.Localization.LTextValue", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Localization.LTextLanguage", "%KillExtent")

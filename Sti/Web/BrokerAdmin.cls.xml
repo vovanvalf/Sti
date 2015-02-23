@@ -14,6 +14,8 @@ Private request processor for administrator</Description>
 <XData name="UrlMap">
 <Data><![CDATA[
 <Routes>
+
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 <!-- Получить всех стажеров -->
 <Route Url="/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetInterns"/> 
 
@@ -30,6 +32,7 @@ Private request processor for administrator</Description>
 <Route Method="POST" Url="/intern/grid" Call="Sti.Web.JsonAdmin:GetInternsForGrid"/>
 
 
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 <!-- Все университеты -->
 <Route Url="/university" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversitys"/> 
 
@@ -47,6 +50,45 @@ Private request processor for administrator</Description>
 
 <!-- GET ALL [GRID], Intern -->
 <Route Method="POST" Url="/university/grid" Call="Sti.Web.JsonAdmin:GetUniversitiesForGrid"/>
+
+
+
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!-- Все компании -->
+<Route Url="/company" Method="GET" Call="Sti.Web.JsonAdmin:GetCompanies"/> 
+
+<!-- Все стажеровки компании -->
+<Route Url="/company/:id/internship" Method="GET" Call="Sti.Web.JsonAdmin:GetCompanyInternship"/> 
+
+<!-- Получить компанию по ИД -->
+<Route Url="/company/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetCompany"/> 
+
+<!-- Сохранить / создать компанию -->
+<Route Url="/company" Method="POST" Call="Sti.Web.JsonAdmin:SaveCompany"/> 
+
+<!-- Удалить компанию -->
+<Route Url="/company/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteCompany"/> 
+
+<!-- GET ALL [GRID], Companies -->
+<Route Method="POST" Url="/company/grid" Call="Sti.Web.JsonAdmin:GetCompaniesForGrid"/>
+
+
+
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!-- Получить все стажировки -->
+<Route Url="/internship" Method="GET" Call="Sti.Web.JsonAdmin:GetInternships"/> 
+
+<!-- Получить стажировку по ИД -->
+<Route Url="/internship/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetInternship"/> 
+
+<!-- Сохранить / создать стажировку -->
+<Route Url="/internship" Method="POST" Call="Sti.Web.JsonAdmin:SaveInternship"/> 
+
+<!-- Удалить стажировку -->
+<Route Url="/internship/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteInternship"/> 
+
+<!-- GET ALL [GRID], Internship -->
+<Route Method="POST" Url="/internship/grid" Call="Sti.Web.JsonAdmin:GetInternshipsForGrid"/>
 
 </Routes>
 ]]></Data>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Company">
+<Super>%Persistent,%XML.Adaptor</Super>
+<TimeCreated>63606,78505.184001</TimeCreated>
+
+<Property name="Interships">
+<Description>
+Interships</Description>
+<Type>Sti.Data.Internship</Type>
+<Cardinality>many</Cardinality>
+<Inverse>Company</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Property name="FullName">
+<Description>
+Full name of organization</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="ShortName">
+<Description>
+Short name of organization</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="LegalAddress">
+<Description>
+Legal address</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="MailAddress">
+<Description>
+Mail address</Description>
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Contact">
+<Description>
+Contact person</Description>
+<Type>Employee</Type>
+</Property>
+
+<Property name="WebSite">
+<Description>
+Web-site</Description>
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<UDLText name="T">
+<Content><![CDATA[
+// Relationship Employees As Sti.Data.Employee[ Cardinality = many, Inverse = Company ];
+
+]]></Content>
+</UDLText>
+
+<Method name="ConvertToProxyObject">
+<Description>
+All employees</Description>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.fullName=..FullName.Value
+	set proxy.shortName=..ShortName.Value
+	set proxy.legalAddress=..LegalAddress.Value
+	set proxy.mailAddress=..MailAddress
+	set proxy.webSite=..WebSite
+	set proxy.contact=..Contact.ConvertToProxyObject()
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.CompanyD</DataLocation>
+<DefaultData>CompanyDefaultData</DefaultData>
+<IdLocation>^Sti.Data.CompanyD</IdLocation>
+<IndexLocation>^Sti.Data.CompanyI</IndexLocation>
+<StreamLocation>^Sti.Data.CompanyS</StreamLocation>
+<Data name="CompanyDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>FullName</Value>
+</Value>
+<Value name="3">
+<Value>ShortName</Value>
+</Value>
+<Value name="4">
+<Value>LegalAddress</Value>
+</Value>
+<Value name="5">
+<Value>MailAddress</Value>
+</Value>
+<Value name="6">
+<Value>Contact</Value>
+</Value>
+<Value name="7">
+<Value>WebSite</Value>
+</Value>
+<Value name="8">
+<Value>Intership</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

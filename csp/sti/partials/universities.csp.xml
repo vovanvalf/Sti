@@ -70,9 +70,11 @@
             </div>
 			<div class="span8">
 				<!--Сделать отдельную таблицу для инфо куратора!-->
-				<p><span class="spnTitle" ng-bind="'Куратор'|localize"></span>: <span ng-bind="(universitiesTable.selectedItems[0].curator.lastName)+'  '+(universitiesTable.selectedItems[0].curator.firstName)+'  '+(universitiesTable.selectedItems[0].curator.middleName)+' Телефон: '+(universitiesTable.selectedItems[0].curator.phone)"></span></p>
+				<p><span class="spnTitle" ng-bind="'Куратор'|localize"></span>:</p> 
+				<p><span ng-bind="(universitiesTable.selectedItems[0].curator.lastName)+'  '+(universitiesTable.selectedItems[0].curator.firstName)+'  '+(universitiesTable.selectedItems[0].curator.middleName)+' Телефон: '+(universitiesTable.selectedItems[0].curator.phone)"></span></p>
 				<!--Сделать список контактов и инфо таблицу!-->
-				<p><span class="spnTitle" ng-bind="'Доп. контакты'|localize"></span>: <span ng-bind="(universitiesTable.selectedItems[0].employees[0].lastName)+'  '+(universitiesTable.selectedItems[0].employees[0].firstName)+'  '+(universitiesTable.selectedItems[0].employees[0].middleName)+' Телефон: '+(universitiesTable.selectedItems[0].employees[0].phone)"></span></p> 
+				<p><span class="spnTitle" ng-bind="'Доп. контакты'|localize"></span>:</p>
+				<p><span ng-bind="(universitiesTable.selectedItems[0].employees[0].lastName)+'  '+(universitiesTable.selectedItems[0].employees[0].firstName)+'  '+(universitiesTable.selectedItems[0].employees[0].middleName)+' Телефон: '+(universitiesTable.selectedItems[0].employees[0].phone)"></span></p> 
 			</div>
 		</tab>
 	</tabset>

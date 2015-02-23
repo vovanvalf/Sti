@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Internship">
+<Super>%Persistent</Super>
+<TimeCreated>63606,78099.288893</TimeCreated>
+
+<Property name="Name">
+<Description>
+Name</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="DateBegin">
+<Description>
+Date of begin</Description>
+<Type>%Date</Type>
+<Required>1</Required>
+<Parameter name="FORMAT" value="3"/>
+</Property>
+
+<Property name="DateEnd">
+<Description>
+Date of end </Description>
+<Type>%Date</Type>
+<Required>1</Required>
+<Parameter name="FORMAT" value="3"/>
+</Property>
+
+<Property name="MaxPeople">
+<Description>
+MaxPeople</Description>
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="IsInUse">
+<Description>
+Is active</Description>
+<Type>%Boolean</Type>
+<InitialExpression>1</InitialExpression>
+<Required>1</Required>
+</Property>
+
+<Property name="Curator">
+<Description>
+Curator</Description>
+<Type>Employee</Type>
+</Property>
+
+<Property name="City">
+<Description>
+City of Intership</Description>
+<Type>Region</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Street">
+<Description>
+Address</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Room">
+<Description>
+Room</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Method name="ConvertToProxyObject">
+<Description>
+Latitude
+Property Latitude As %Float [ Required ];
+Longitude
+Property Longitude As %Float [ Required ];</Description>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.name=..Name.Value
+	set proxy.dateBegin=$ZDATE(..DateBegin, 3)
+	set proxy.dateEnd=$ZDATE(..DateEnd, 3)
+	set proxy.maxPeople=..MaxPeople
+	set proxy.isInActive=..IsInUse
+	set proxy.curator=..Curator.ConvertToProxyObject()
+	set proxy.city=..City.ConvertToProxyObject()
+	set proxy.street=..Street.Value
+	set proxy.room=..Room
+	//set proxy.latitude=..Latitude
+	//set proxy.longitude=..Longitude
+	set proxy.company=..Company.ConvertToProxyObject()
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Property name="Company">
+<Type>Sti.Data.Company</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Interships</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Index name="CompanyIndex">
+<Properties>Company</Properties>
+</Index>
+
+<Property name="shpInterns">
+<Type>Sti.Data.Intern</Type>
+<Cardinality>many</Cardinality>
+<Inverse>Internship</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.InternshipD</DataLocation>
+<DefaultData>InternshipDefaultData</DefaultData>
+<IdLocation>^Sti.Data.InternshipD</IdLocation>
+<IndexLocation>^Sti.Data.InternshipI</IndexLocation>
+<StreamLocation>^Sti.Data.InternshipS</StreamLocation>
+<Data name="InternshipDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Name</Value>
+</Value>
+<Value name="3">
+<Value>DateBegin</Value>
+</Value>
+<Value name="4">
+<Value>DateEnd</Value>
+</Value>
+<Value name="5">
+<Value>MaxPeople</Value>
+</Value>
+<Value name="6">
+<Value>IsInUse</Value>
+</Value>
+<Value name="7">
+<Value>Curator</Value>
+</Value>
+<Value name="8">
+<Value>City</Value>
+</Value>
+<Value name="9">
+<Value>Street</Value>
+</Value>
+<Value name="10">
+<Value>Room</Value>
+</Value>
+<Value name="11">
+<Value>Company</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>
