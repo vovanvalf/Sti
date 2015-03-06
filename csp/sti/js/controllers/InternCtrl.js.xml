@@ -8,7 +8,7 @@
 Стажер. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('InternCtrl', function($scope, $routeParams, InternSrvc, UniversitySrvc){
+controllersModule.controller('InternCtrl', function($scope, $routeParams, InternSrvc, UniversitySrvc, InternshipSrvc){
    $scope.page = {intern:{}};
 
    // Инициализация данных
@@ -27,10 +27,15 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
               $scope.page.intern = {university: {id: parseInt($routeParams.unId)}};            
           	  $scope.page.loadUniversity($routeParams.unId);
           }
+          if ($routeParams.coId && $routeParams.fcId){
+              $scope.page.intern = {internship: {id: parseInt($routeParams.coId)}};            
+          	  $scope.page.loadInternship($routeParams.coId);
+          }
       }
       
       // Загрузить универы
       $scope.page.loadUniversity();
+      $scope.page.loadInternship();
    };
 
    // Загрузить стажера по ИД
@@ -50,6 +55,16 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
       UniversitySrvc.getAll().then(
           function(data){
               $scope.page.universities = data.children;
+          },
+          function(data, status, headers, config){
+              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });      
+   };
+   // Загрузить все стажировки
+  $scope.page.loadInternship = function(id){
+      InternshipSrvc.getAll().then(
+          function(data){
+              $scope.page.internships = data.children;
           },
           function(data, status, headers, config){
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  

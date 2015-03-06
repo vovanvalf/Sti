@@ -33,10 +33,19 @@ var mainModule         = angular.module('mainModule', ['localizationModule',  'f
 mainModule.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/universities',      {templateUrl: 'partials/universities.csp',   controller: 'AllUniversityCtrl'});
     $routeProvider.when('/university/:id',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
+    $routeProvider.when('/university',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
+      
     $routeProvider.when('/interns',    {templateUrl: 'partials/interns.csp', controller: 'AllInternCtrl'});
     $routeProvider.when('/intern/:id', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
     $routeProvider.when('/intern', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
-     $routeProvider.when('/university',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
+    
+    $routeProvider.when('/internships',    {templateUrl: 'partials/internships.csp', controller: 'AllInternshipCtrl'});
+    $routeProvider.when('/internship/:id', {templateUrl: 'partials/internship.csp',  controller: 'InternshipCtrl'});
+    $routeProvider.when('/internship', {templateUrl: 'partials/internship.csp',  controller: 'InternshipCtrl'});
+   
+   	$routeProvider.when('/companies',      {templateUrl: 'partials/companies.csp',   controller: 'AllCompanyCtrl'});
+    $routeProvider.when('/company/:id',   {templateUrl: 'partials/company.csp',    controller: 'CompanyCtrl'});
+    $routeProvider.when('/company',   {templateUrl: 'partials/company.csp',    controller: 'CompanyCtrl'});
     
     //$routeProvider.otherwise({redirectTo: '/interns'});
   }]);

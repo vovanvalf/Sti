@@ -6,6 +6,50 @@ Handling of BrokerAdmin</Description>
 <Super>Json</Super>
 <TimeCreated>63098,81450.05769</TimeCreated>
 
+<Method name="GetCities">
+<Description>
+Method="GET" Url="/json/city/:startsWith"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>word:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	if $L(word) < 2 quit $$$OK
+	
+	set proxyItems = ##class(%ListOfObjects).%New()	
+	set lang = $$$SessionLanguage
+	set word = word_"%"
+	
+	&sql(DECLARE RegionCurr CURSOR FOR 
+		 	 SELECT TOP 500 reg.ID As id, ltV.Value As name, reg.ParentRegion->Name->Value as parentName, reg.ParentRegion->ParentRegion->Name->Value
+		 	 FROM Sti_Data_Localization.LTextValue as ltV
+		 	 INNER JOIN 
+		 	 Sti_Data.Region as reg ON reg.Name = ltV.LText
+			 WHERE reg.HLevel = 2 AND ltV.Lang = :lang AND ltV.Value LIKE :word
+			 ORDER BY name, parentName)	
+		
+	&sql(OPEN RegionCurr)
+	for  
+	{	
+		&sql(FETCH RegionCurr INTO :id, :name, :parent, :greatParent) 
+		quit:(SQLCODE '= 0)
+		set proxyItem = ##class(%ZEN.proxyObject).%New()
+		set proxyItem.id = id
+		set proxyItem.name = name
+		set proxyItem.parentName = parent
+		set proxyItem.greatParentName = greatParent
+		do proxyItems.Insert(proxyItem)
+	}
+		
+	&sql(CLOSE RegionCurr)
+	
+	set proxyResult = ##class(%ZEN.proxyObject).%New()
+	set proxyResult.children = proxyItems
+	do proxyResult.%ToJSON()
+	    
+	q $$$OK
+]]></Implementation>
+</Method>
+
 <Method name="GetIntern">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +121,7 @@ Handling of BrokerAdmin</Description>
     /*------------------------------------------------------------------------------------------*/  	
       	
       	
-      	
+      	set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
         set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
 		
 		$$$THROWONERROR(st, intern.%Save())
@@ -295,33 +339,25 @@ Get all interns for grid</Description>
 		set university.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I", "UTF8"))
 		set university.Address = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.address, "I", "UTF8"))
 		set university.Web = $ZCONVERT(data.web, "I", "UTF8")
-		w !, $CASE($$$ISERR(university.%Save()), 1: "Ошибка! Универ не создан!",:"Универ создан")
 	
-		
-		
 		set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
 		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
-		///ТУТ ПОМЕНЯЛ!
+		set curator = ##class(Sti.Data.Employee).%New()
 		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
 		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
 		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
-		set curator.Email = data.contact.email
-		set curator.Phone = data.contact.phone
-		set university.Curator = curator
+		set curator.Email = data.curator.email
+		set curator.Phone = data.curator.phone
 		
+		$$$THROWONERROR(st,curator.%Save() )
+		
+		set university.Curator = curator
 		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
 		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
 		set city = ##class(Sti.Data.Region).%OpenId("00077B9A-5B0C-49A0-9132-8C2D0D0112AF",3,.Status)
 		set university.City=city
-		
-		
-		/* Сделать сохранение контактов!
-		set employees = ##class(%ArrayOfObjects).%New() 
-		set employee = ##class(Sti.Data.Employee).%OpenId("1",3,.Status) 
-		do employees.SetAt(employee,"BEABA77F-25FE-46B1-AF38-98A21742796B")
-		set university.Contacts=employees*/
 	
-		$$$THROWONERROR(st, university.%Save())
+		$$$THROWONERROR(st, university.%Save() )
 	}
 	catch ex {
 		set st = ex.AsStatus()
@@ -459,7 +495,7 @@ Get all company for grid</Description>
 	try{
 		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
       	
-      	set university = ##class(Sti.Data.Company).%OpenId(data.id,,.st)
+      	set company = ##class(Sti.Data.Company).%OpenId(data.id,,.st)
       	     	
       	if $$$ISERR(st) set company = ##class(Sti.Data.Company).%New()
       	set company.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I", "UTF8"))
@@ -468,13 +504,13 @@ Get all company for grid</Description>
 		set company.MailAddress = data.mailAddress
 		set company.WebSite=data.webSite
 		
-		set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.contact.id,,.st)
-		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.lastName, "I", "UTF8"))
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.firstName, "I", "UTF8"))
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.middleName, "I", "UTF8"))
-		set curator.Email = data.contact.email
-		set curator.Phone = data.contact.phone
+		/*Заменить этот костыль!!*/
+		set curator = ##class(Sti.Data.Employee).%New()
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.Email = "petorv@mainuniversity.com"
+		set curator.Phone = "000"
 		set company.Contact = curator
 	
 		/*set employees = ##class(%ArrayOfObjects).%New() 
@@ -537,25 +573,35 @@ Get all company for grid</Description>
       	if $$$ISERR(st) set internship = ##class(Sti.Data.Internship).%New()
         
         
-        set internship.Name = ##class(Sti.Data.Localization.LText).Create(data.name)
+        set internship.Name = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.name, "I", "UTF8"))
 		set internship.DateBegin=$ZDATEH(data.dateBegin, 15)
 		set internship.DateEnd=$ZDATEH(data.dateEnd, 15)
-		set internship.MaxPeople=date.maxPeople
-		set internship.IsInUse=data.isInUse
+		set internship.MaxPeople=data.maxPeople
+		
 	
+	
+		/*Заменить этот костыль!!*/
 		set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
-		set curator.Email = data.curator.email
-		set curator.Phone = data.curator.phone
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
+		set curator.Email = "petorv@mainuniversity.com"
+		set curator.Phone = "000"
 		set internship.Curator = curator
 		 	
 		set internship.Street= ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.street, "I", "UTF8"))
 		set internship.Room=data.room
 		
-		/*Тут может быть ошибка!*/
-		set internship.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
+		
+			set city = ##class(Sti.Data.Region).%New()
+			set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)
+			set internship.City=city
+			
+			
+			set internship.IsInUse=1
+		/*-------------------------------------------------------------------------------------------*/	
+			
+			
 		set internship.Company = ##class(Sti.Data.Company).%OpenId(data.company.id)
 		
 		$$$THROWONERROR(st, internship.%Save())

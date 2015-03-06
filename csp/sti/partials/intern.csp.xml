@@ -26,6 +26,8 @@
 								<input class="span12"  type="text" ng-model="page.intern.city.name" required></input>
 								<label class="control-label" ng-bind="'Университет'|localize">:</label>
 								<select class="span12" ng-model="page.intern.university.id" ng-options="university.id as university.fullName for university in page.universities" required></select>
+					    		<label class="control-label" ng-bind="'Стажировка'|localize">:</label>
+								<select class="span12" ng-model="page.intern.internship.id" ng-options="internship.id as internship.name for internship in page.internships" required></select>
 					    	</div>
 							<div class="span4">
 								<label class="control-label" ng-bind="'Email'|localize">:</label>

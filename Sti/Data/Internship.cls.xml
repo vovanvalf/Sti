@@ -84,7 +84,7 @@ Property Longitude As %Float [ Required ];</Description>
 	set proxy.dateBegin=$ZDATE(..DateBegin, 3)
 	set proxy.dateEnd=$ZDATE(..DateEnd, 3)
 	set proxy.maxPeople=..MaxPeople
-	set proxy.isInActive=..IsInUse
+	set proxy.isInUse=..IsInUse
 	set proxy.curator=..Curator.ConvertToProxyObject()
 	set proxy.city=..City.ConvertToProxyObject()
 	set proxy.street=..Street.Value

@@ -11,7 +11,10 @@
     <script language="javascript">
         /* Имя приложения для работы с REST, глобальная переменная */
         var StiSetting = {appName: '#($GET(^Settings("Sti", "WebAppName")))#'};
-        StiSetting.lang = "en";
+        StiSetting.lang = "ru";
+        if (window.location.href.indexOf('?lang=en') > 0)
+        	StiSetting.lang = "en";
+        
     </script>
     
     <!-- Подключение CSS -->
@@ -41,8 +44,10 @@
              <a class="brand"  ng-bind="'Система стажёров и вузов академической программы'|localize"></a>
               <div class="nav-responsive-collapse">
                 <ul class="nav">
-                  <li><a href="#/universities">Университеты</a></li>
+                  <li><a href="#/internships">Стажировки</a></li>
                   <li><a href="#/interns">Стажеры</a></li>
+                  <li><a href="#/companies">Компании</a></li>
+                  <li><a href="#/universities">Университеты</a></li>
                 </ul>
               </div>
             </div>
@@ -65,10 +70,17 @@
     <script language="javascript"  src="js/controllers/InternCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllUniversityCtrl.js"></script>
     <script language="javascript"  src="js/controllers/UniversityCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/AllInternshipCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/InternshipCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/AllCompanyCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/CompanyCtrl.js"></script>
 
     <script language="javascript"  src="js/services/RESTSrvc.js"></script>
     <script language="javascript"  src="js/services/InternSrvc.js"></script>
+    <script language="javascript"  src="js/services/InternshipSrvc.js"></script>
     <script language="javascript"  src="js/services/UniversitySrvc.js"></script>
+    <script language="javascript"  src="js/services/CompanySrvc.js"></script>
+    <script language="javascript"  src="js/services/RegionSrvc.js"></script>
     <script language="javascript"  src="js/services/UtilsSrvc.js"></script>
     
     <script language="javascript"  src="js/directives/stigrid.js"></script>

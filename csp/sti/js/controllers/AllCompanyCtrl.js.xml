@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/controllers/AllCompanyCtrl.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+/*===========================================================================================
+Все университеты
+===========================================================================================*/
+
+controllersModule.controller('AllCompanyCtrl', function($scope, $location, CompanySrvc, InternshipSrvc){
+       $scope.companiesTable = {state: {}};
+
+		$scope.init = function(){
+ 
+        $scope.companiesTable.columns = [
+                          {name: 'Компания', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Адрес', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Количество стажеровок', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true}
+                           ];
+        $scope.companiesTable.properties = [
+        				  	{
+	        				  	name: 'fullName',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: false,
+	        					getCssClass: function(item){ 
+                                    return '';
+                                },
+	        				},
+	        				{
+	        				  	name: 'legalAddress',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: false,
+	        					getCssClass: function(item){ 
+                                    return '';
+                                },
+	        				},
+	        				{
+	        				  	name: 'legalAddress',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: false,
+	        					getCssClass: function(item){ 
+                                    return '';
+                                },
+	        				}]; 
+	        				
+        $scope.companiesTable.pageSize = 7;
+        $scope.companiesTable.pageCurr = 1;
+        $scope.companiesTable.itemsTotal = 0;
+        $scope.companiesTable.selectedItems = [];
+        $scope.companiesTable.multiSelectMode = false;
+        $scope.companiesTable.forciblyUpdate = 0;
+        $scope.companiesTable.refresh();
+    };
+
+    // 
+    $scope.companiesTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
+        CompanySrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {}).then(
+            function(data){
+	            data = data.children;
+                $scope.companiesTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
+                $scope.companiesTable.itemsTotal = data.itemsTotal;
+                $scope.companiesTable.items = data.items;
+            },
+            function(data){
+                console.log('Ошибка!!!!', data);
+            });
+    };
+
+	$scope.companiesTable.refresh = function(){ 
+        $scope.companiesTable.forciblyUpdate++; 
+    };
+    
+    $scope.companiesTable.add = function(){
+        $location.path('/company/'); 
+    };
+
+    $scope.companiesTable.edit = function(item){
+        $location.path('/company/' + item.id);
+    };
+
+    $scope.companiesTable.remove = function(item){       
+            CompanySrvc.remove(item.id).then(
+                function(data){
+                    $scope.companiesTable.selectedItems = [];
+                    $scope.companiesTable.refresh();
+                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Университет удален.', 'success', true);
+                },
+                function(data, status, headers, config){
+                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                });
+            
+    };
+    
+    $scope.companiesTable.onSelect = function(item){
+        console.log('Selected row ',item);       
+    };
+
+    $scope.companiesTable.onSelectCell = function(item, property){
+        /*if (!item) return;
+        property.onClickCell(item);*/
+    };
+
+
+	$scope.init();
+	
+    
+    /*$scope.page = {};
+
+    // Инициализация данных
+    $scope.page.init = function(){
+        /* Данные для таблицы с универами, объект будет передан в компонент dmgrid
+           Заголовок таблицы. 
+           Сss класс для таблицы. 
+           Имена колонок и имя свойства для доступа к значению.
+           Методы для работы с данными 
+        $scope.page.ungrid = {
+            caption: 'Университеты',
+            cssClass: 'table table-bordered table-hover',
+            columns: [{name: 'Университет', property: 'fullName'},
+            		  {name: 'Страна', property: 'city.parentName'},
+            		  {name: 'Город', property: 'city.name'}],
+            add: $scope.page.addUniversity,
+            edit: $scope.page.editUniversity,
+            remove: $scope.page.removeUniversity
+        };
+        // Загрузить все университеты из БД
+        $scope.page.loadUniversities();
+   };
+  
+
+    // Загрузить все университеты из БД
+    $scope.page.loadUniversities = function(){
+        UniversitySrvc.getAll().then(
+            function(data){
+                // Успех. Передать данные в грид
+                $scope.page.ungrid.items = data.children;
+            },
+            function(data, status, headers, config){
+                // Ошибка
+                $scope.page.unalert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
+            });      
+    };
+
+    // Загрузить стажеров университетов
+    $scope.page.loadUniversityInterns = function(university){
+        UniversitySrvc.getInterns(university.id).then(
+            function(data){
+                university.universities = data.children;
+            },
+            function(data, status, headers, config){
+                $scope.page.unalert = {title: 'Внимание!', msg: 'Университеты не загружены. ' + data, cssClass: 'alert alert-error', visible: true};  
+            });       
+    };
+
+    // Добавить универ. Переход на другую страницу
+    $scope.page.addUniversity = function(){
+        $location.path('/university/');
+    };
+
+    // Редактировать универ. Переход на другую страницу
+    $scope.page.editUniversity = function(university){
+        $location.path('/university/' + university.id);
+    };
+
+    // Удалить универ
+    $scope.page.removeUniversity = function(university){
+        UniversitySrvc.remove(university.id).then(
+            function(data){
+                $scope.page.gralert = {title: 'Готово!', msg: 'Университет удален.', cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+                $scope.page.loadUniversities();
+                $scope.page.ungrid.selected = null;
+            },
+            function(data, status, headers, config){
+                $scope.page.gralert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+            });
+    };
+    $scope.page.init(); */
+});]]></CSP>
+</Export>

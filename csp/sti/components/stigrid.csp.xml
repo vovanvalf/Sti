@@ -8,7 +8,7 @@
         <tr>
             <th class="tableNumber" ng-hide="grid.hideNumbersColumn">#</th>
             <th ng-repeat="column in columns" ng-hide="column.hidden" ng-style="column.captionStyle" ng-click="sort(column, column.isDown)" ng-class="{selectableMode:column.isSortable}">
-                <span ng-bind="column.name"></span>
+                <span ng-bind="column.name|localize"></span>
                 <i class="fa fa-sort-down fa-lg pull-right" ng-show="column.isDown && column.isSorted"  style="margin-top: 0px;"></i>
                 <i class="fa fa-sort-up fa-lg pull-right"   ng-show="!column.isDown && column.isSorted" style="margin-top: 6px;"></i>
                 <i class="fa fa-search pull-right"          ng-show="column.isSearched"                 style="margin-top: 3px; padding-right: 4px;"></i>   

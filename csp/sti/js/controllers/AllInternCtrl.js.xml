@@ -18,8 +18,8 @@ $scope.init = function(){
                           {name: 'Отчество', sqlName: 'MiddleName', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Дата рождения', sqlName: 'BirthDay', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, filter: 'date'},
                           {name: 'Университет', sqlName: 'University', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Город', sqlName: 'City', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
-        
+                          {name: 'Город', sqlName: 'City', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+        				  {name: 'Стажировка', sqlName: 'Internship', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
         $scope.internsTable.properties = [
         				  	{
 	        				  	name: 'lastName',
@@ -72,8 +72,15 @@ $scope.init = function(){
 	        				  	getCssClass: function(item){ 
                                     return '';
                                 }
-	        				}
-	        				
+	        				},
+	        				{
+	        				  	name: 'internship.name',
+	        				  	cellStyle: {textAlign: 'left'},
+	        				  	cellSelectable: false,
+	        				  	getCssClass: function(item){ 
+                                    return '';
+                                }
+	        				}	        				
 	        				]; 
 
         $scope.internsTable.pageSize = 7;

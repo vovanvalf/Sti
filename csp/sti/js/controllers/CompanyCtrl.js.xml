@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/controllers/UniversityCtrl.js" application="/csp/sti/" default="1"><![CDATA[
+<CSP name="sti/js/controllers/CompanyCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 //ddcdddd
 
@@ -8,15 +8,15 @@
 Университет. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('UniversityCtrl', function($scope, $routeParams, RegionSrvc, UniversitySrvc ){
-   $scope.page = {university:{}};
-   $scope.cities = [];
+controllersModule.controller('CompanyCtrl', function($scope, $routeParams, CompanySrvc){
+   $scope.page = {company:{}};
+
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
           $scope.page.formCaption = "Редактирование университета";
           $scope.page.formBtnSubmitName = "Сохранить";
-          $scope.page.loadUniversity($routeParams.id);        
+          $scope.page.loadCompany($routeParams.id);        
       }
       else{
           $scope.page.formCaption = "Добавление университета";
@@ -26,25 +26,25 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
       }
    };
    // Загрузить стажера по ИД
-   $scope.page.loadUniversity = function(id){
-      UniversitySrvc.get(id).then(
+   $scope.page.loadCompany = function(id){
+      CompanySrvc.get(id).then(
           function(data){
-              $scope.page.university = data;
+              $scope.page.company = data;
          
           },
           function(data, status, headers, config){
-              $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.coalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });       
    };
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
-      UniversitySrvc.save($scope.page.university).then(
+      CompanySrvc.save($scope.page.company).then(
           function(data){
               var msg = 'Изменения сохранены.';
 
               if (!$routeParams.id){
                   msg = 'Университет добавлен.';
-                  $scope.page.university = {};                        
+                  $scope.page.company = {};                        
               }
 
               $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
@@ -55,26 +55,9 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
-   
-   $scope.loadCities = function(startsWith){       
-        if(!startsWith || startsWith.length == 0)
-            $scope.cities = [];
-        
-        if (!startsWith || startsWith.length != 2)
-            return;  
 
-        RegionSrvc.getAllCitiesStartsWith(startsWith).then(
-            function(data){
-                $scope.cities = data;
-            },
-            function(response){
-                $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
-            }); 
-    };
-    
    $scope.page.init(); 
 });
-
 
 
 ]]></CSP>

@@ -45,17 +45,6 @@
 	</div>
 </div>
 <br>
-<div class="row-fluid" ng-show="page.ungrid.selected!=null">
-	<div class="span1">
-	</div>
-			<div class="span10">
-				
-				
-			</div>
-			
-	<div class="span1">
-	</div>
-</div>
 <!-- Если универ не выбран(т.е. selected == udefined), то показывать сообщение -->
 <div class="row-fluid" ng-hide="universitiesTable.selectedItems[0]" style="text-align: center;">
 	<i>Выберите университет для отображения полной информации.</i>

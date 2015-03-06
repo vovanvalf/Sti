@@ -169,6 +169,7 @@ input type date
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
    	set proxy.university = ..University.ConvertToProxyObject()
+   	set proxy.internship=..Internship.ConvertToProxyObject()
    	quit proxy
 ]]></Implementation>
 </Method>

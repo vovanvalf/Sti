@@ -2,50 +2,127 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/university.csp" application="/csp/sti/" default="1"><![CDATA[
 <div class="row-fluid">
-	<div class="span10">
-	</div>
 	<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
-	<div class="span10">
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" ng-bind="'Университет'|localize"></a>
-				</div>
-				<div class="accordion-body">
-					<div class="accordion-inner">
-						 <div class="row-fluid">
-							<div class="span4">
-								<label class="control-label" ng-bind="'Полное название'|localize">:</label>
-								 <input class="span12" type="text" ng-model="page.university.fullName" required></input>
-								<label class="control-label" ng-bind="'Аббревиатура'|localize">:</label>
-								<input class="span12" type="text" ng-model="page.university.shortName" required></input>
-								<label class="control-label" ng-bind="'Город'|localize">:</label>
-								<input class="span12" type="text" ng-model="page.university.city.name" required></input>
-								<label class="control-label" ng-bind="'Адрес университета'|localize">:</label>
-								<input class="span12" type="text" ng-model="page.university.address" required></input>
-								<label class="control-label" ng-bind="'Web-страница'|localize">:</label>
-								<input class="span12" type="text" ng-model="page.university.web" required></input>
-					    	</div>
-							<div class="span4">
-								<label class="control-label" ng-bind="'Куратор'|localize">:</label>
-								<input class="span12" type="text" ng-model="page.university.curator.firstName" required></input>
-								<label class="control-label" ng-bind="'Доп. контакты'|localize">:</label>
-								<input class="span12" type="text" ng-model="page.university.employees" required></input>
+	    <div class="span10">
+			<div class="accordion">
+			    <div class="accordion-group">
+				  <tabset>
+	  			 	<tab heading="{{'Основная информация'|localize}}">
+					    <div class="accordion-heading">
+							<a class="accordion-toggle" ng-bind="''"></a>
+						</div>
+						<div class="accordion-body">
+							<div class="accordion-inner">
+						 		<div class="row-fluid">
+									<div class="span4">
+										<label class="control-label" ng-bind="'Полное название'|localize">:</label>
+								 		<input class="span12" type="text" ng-model="page.university.fullName" required></input>
+										<label class="control-label" ng-bind="'Аббревиатура'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.shortName" required></input>
+															            <div class="controls">
+					               <input class="span12" 
+					                	   style="margin-bottom: 0;"
+					                	   type="text" 
+					                	   title="{{'Город, Регион, Страна'|localize}}" 
+					                	   ng-model="page.university.city" 
+					                	   ng-change="loadCities(page.university.city)" 
+					                	   placeholder="{{'Поиск'|localize}}" 
+					                	   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+					                	  >
+					               </input>
+					                <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
+					            </div>
+					            
+					            
+										<input class="span12" type="text" ng-model="page.university.city.name" required></input>
+										<label class="control-label" ng-bind="'Адрес университета'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.address" required></input>
+										<label class="control-label" ng-bind="'Web-страница'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.web" required></input>
+					    			</div>
+								</div>
 							</div>
 						</div>
-					</div>
+					</tab>
+					<tab heading="{{'Куратор'|localize}}">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" ng-bind="''"></a>
+						</div>
+						<div class="accordion-body">
+							<div class="accordion-inner">
+						 		<div class="row-fluid">
+									<div class="span4">
+						    			<label class="control-label" ng-bind="'Имя'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.curator.firstName" required></input>
+										<label class="control-label" ng-bind="'Фамилия'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.curator.lastName" required></input>
+										<label class="control-label" ng-bind="'Отчество'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.curator.middleName" required></input>
+										<label class="control-label" ng-bind="'Телефон'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.curator.phone" required></input>
+										<label class="control-label" ng-bind="'Электронный адрес'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.curator.email" required></input>
+									</div>
+								</div>
+							</div>
+						</div>
+				 	</tab>
+				 	<tab heading="{{'Доп. контакты'|localize}}">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" ng-bind="''"></a>
+						</div>
+						<div class="accordion-body">
+							<div class="accordion-inner">
+						 		<div class="row-fluid">
+				 		 		<!--<stigrid style="border-radius: 4px 0 4px 4px;"
+	    							grid="universitiesTable.state"
+		   							table-class="table table-bordered table-hover"
+		    						caption="'Университеты'|localize"
+		    						columns="universitiesTable.columns"
+		    						items="universitiesTable.items"
+		    						properties="universitiesTable.properties"
+		    						update-items="universitiesTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+
+		    						page-curr="universitiesTable.pageCurr"
+		    						page-total="universitiesTable.pageTotal"
+		    						page-size="universitiesTable.pageSize"
+		    						navigator-visible="true"
+
+		    						selectable="true"
+		    						selected-items="universitiesTable.selectedItems"
+		    						multi-select-mode="universitiesTable.multiSelectMode"
+ 									on-select="universitiesTable.onSelect(item)"
+ 									on-select-cell="universitiesTable.onSelectCell(item, property)"
+
+ 									action-column-visible="true"
+		    						action-column-icon="'fa fa-plus-circle'"
+		    						action-column-title="'Добавить'"
+		    						action-column-method="universitiesTable.add()"
+
+		    						first-row-action-icon="'fa fa-pencil'"
+		    						first-row-action-title="'Изменить'"
+		    						first-row-action-method="universitiesTable.edit(item)"
+	    	
+	    							second-row-action-icon="'fa fa-times'"
+		    						second-row-action-title="'Удалить'"
+		    						second-row-action-method="universitiesTable.remove(item)"
+	    	
+ 									forcibly-update="universitiesTable.forciblyUpdate"
+								/>	-->
+				 				</div>
+							</div>
+						</div>
+				 	</tab>
+				   </tabset>
 				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			 <div class="controls">
-				   <button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
-			 </div>
-		</div>				
-	</div>
-	</form>
-	<div class="span10">
-	</div>
+			<div class="control-group">
+			 	<div class="controls">
+				   	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+			 	</div>
+			</div>				
+        </div>
+    </form>
 </div>
 <stialert data="page.alert" span-right="4" span-middle="4" span-left="4"/>
 ]]></CSP>

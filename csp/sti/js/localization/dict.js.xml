@@ -31,13 +31,27 @@ localizationModule.constant('StiDictionary', {
 		'Кафедра':'Chair',
 		'Факультет':'Faculty',
 		'Стажёры':'Interns',
-		'Университеты':'Universities'
+		'Университеты':'Universities',
+		'Место обучения' : 'Location of study',
+		'Адрес' : 'Address',
+		'Аудитория' : 'Classroom',
+		'Стажировки' : 'Internships',
+		'Название стажировки' : 'Name of internship',
+		'Компания' : 'Company',
+		'Дата начала' : 'Date of start',
+		'Дата окончания' : 'Date of end',
+		'Количество свободных мест' : 'Number of seats',
+		'Заявки' : 'Requests',
+		'Максимальное количество учеников' : 'Maximum number of students',
+		'Стажировка' : 'Internship',
+        'Страна' : 'Country',
+        'Дата рождения' : 'Birthday'
   },
   toRussian: {
   },
   getTranslate: function(word, toLanguage){
 	var def = function(key){
-		//console.log("'" + key + "' : '',");
+		console.log("'" + key + "' : '',");
 		
 		return key;	
 	};  
