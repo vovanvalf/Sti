@@ -14,12 +14,12 @@ $scope.init = function(){
  
         $scope.internshipsTable.columns = [
                           {name: 'Название стажировки', sqlName: 'Name->Value', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
-                          {name: 'Компания', sqlName: 'Company', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Город', sqlName: 'City', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Дата начала', sqlName: 'DateBegin', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, filter: 'date'},
-                          {name: 'Дата окончания', sqlName: 'DateEnd', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true, filter: 'date'},
-                          {name: 'Количество свободных мест', sqlName: 'MaxPeople', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Заявки', sqlName: 'MaxPeople', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
+                          {name: 'Компания', sqlName: 'Company->FullName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Город', sqlName: 'City->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Дата начала', sqlName: 'DateBegin', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
+                          {name: 'Дата окончания', sqlName: 'DateEnd', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
+                          {name: 'Количество стажёров', sqlName: 'NumberOfStudent', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Состояние', sqlName: 'IsInUse', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
         
         $scope.internshipsTable.properties = [
         				  	{
@@ -63,7 +63,7 @@ $scope.init = function(){
                                 }
 	        				},
 	        				{
-	        				  	name: 'maxPeople',
+	        				  	name: 'numberOfStudent',
 	        				  	cellStyle: {textAlign: 'left'},
 	        				  	cellSelectable: false,
 	        				  	getCssClass: function(item){ 
@@ -71,7 +71,7 @@ $scope.init = function(){
                                 }
 	        				},
 	        				{
-	        				  	name: 'maxPeople',
+	        				  	name: 'isInUse',
 	        				  	cellStyle: {textAlign: 'left'},
 	        				  	cellSelectable: false,
 	        				  	getCssClass: function(item){ 

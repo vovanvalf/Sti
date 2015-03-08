@@ -12,9 +12,9 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
 		$scope.init = function(){
  
         $scope.universitiesTable.columns = [
-                          {name: 'Университет', sqlName: 'FullName', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
-                          {name: 'Страна', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Город', sqlName: 'City', isSorted: true, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Университет', sqlName: 'FullName->Value', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
+                          {name: 'Регион', sqlName: 'City->ParentRegion->Name->Value', isSorted: true, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Город', sqlName: 'City->Name->Value', isSorted: true, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                            ];
         $scope.universitiesTable.properties = [
         				  	{

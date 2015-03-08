@@ -6,6 +6,109 @@ Handling of BrokerAdmin</Description>
 <Super>Json</Super>
 <TimeCreated>63098,81450.05769</TimeCreated>
 
+<Method name="CheckAdmin">
+<Description>
+Check access, authorization call, if needed</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>isLogin:%Boolean</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	if (isLogin = 1){
+		if (##class(Sti.Data.Internship).CheckDeletePrivilege() = $$$OK){
+			w "{""privileges"":""all""}"
+		}
+		else{
+			w "{""privileges"":""read""}"
+		}
+		q $$$OK
+	}
+
+    #; Don't want the session token
+    Set %response.OutputSessionToken=0
+            
+    #; Set the Http Status
+    Set %response.Status="401 Unauthorized"
+        
+    #; Write out the header
+    Do %response.WriteHTTPHeader()
+            
+    Set %session.EndSession=1
+
+	
+ 	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="GetEngMarks">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE EngCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.ENGMark)	
+		
+		&sql(OPEN EngCur)
+		for  
+		{	
+			&sql(FETCH EngCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.ENGMark).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE EngCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetPetMarks">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE PetCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.PETMark)	
+		
+		&sql(OPEN PetCur)
+		for  
+		{	
+			&sql(FETCH PetCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.PETMark).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE PetCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
 <Method name="GetCities">
 <Description>
 Method="GET" Url="/json/city/:startsWith"</Description>
@@ -91,7 +194,7 @@ Method="GET" Url="/json/city/:startsWith"</Description>
       	
       	// Открыть не удалось - создаем
       	if $$$ISERR(st) set intern = ##class(Sti.Data.Intern).%New()
-     
+        
       	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
       	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
       	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
@@ -99,28 +202,30 @@ Method="GET" Url="/json/city/:startsWith"</Description>
       	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
       	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
       	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set intern.MailAgree = $ZCONVERT(data.agree, "I", "UTF8")
+      	set intern.MailAgree = data.agree = $$$YES
       	set intern.CacheScience = $ZCONVERT(data.cache, "I", "UTF8")
       	set intern.EnsembleScience = $ZCONVERT(data.ensemble, "I", "UTF8")
       	set intern.DeepSeeScience = $ZCONVERT(data.deepsee, "I", "UTF8")
       	set intern.TET = $ZCONVERT(data.tet, "I", "UTF8")
-    
-    
-    /*ЭТО ВРЕМЕННАЯ ЗАМЕНА ДЛЯ ПРОВЕРКИ РАБОТОСПОСОБНОСТИ НУЖНО БУДЕТ СТАВИТЬ ЗНАЧЕНИЯ ИЗ ТАБЛИЦЫ КЛИЕНТА!*/  	
-	set PET = ##class(Sti.Data.PETMark).%New()
-	set PET = ##class(Sti.Data.PETMark).%OpenId("1",3,.Status)
-	set intern.petMark=PET
+      	set intern.BirthDay=$ZDATEH(data.birthDate, 15)
+    	
+	set intern.petMark = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,,.st)
+	if $$$ISERR(st) set pet = ##class(Sti.Data.PETMark).%New()
+    set pet = ##class(Sti.Data.PETMark).%New()
+	set pet = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,3,.Status)
+	set intern.petMark=pet
 	
-	set ENG = ##class(Sti.Data.ENGMark).%New()
-	set ENG = ##class(Sti.Data.ENGMark).%OpenId("1",3,.Status)
-	set intern.engMark=ENG
-	
-	set city = ##class(Sti.Data.Region).%New()
-	set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)
-	set intern.City=city
-    /*------------------------------------------------------------------------------------------*/  	
-      	
-      	
+	set intern.engMark = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,,.st)
+	if $$$ISERR(st) set eng = ##class(Sti.Data.ENGMark).%New()
+    set eng = ##class(Sti.Data.ENGMark).%New()
+	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,3,.Status)
+	set intern.engMark=eng
+		     	
+      	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
+		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
+		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
+		set intern.City=city
+		
       	set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
         set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
 		
@@ -352,9 +457,10 @@ Get all interns for grid</Description>
 		$$$THROWONERROR(st,curator.%Save() )
 		
 		set university.Curator = curator
+		
 		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
 		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
-		set city = ##class(Sti.Data.Region).%OpenId("00077B9A-5B0C-49A0-9132-8C2D0D0112AF",3,.Status)
+		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
 		set university.City=city
 	
 		$$$THROWONERROR(st, university.%Save() )
@@ -504,21 +610,19 @@ Get all company for grid</Description>
 		set company.MailAddress = data.mailAddress
 		set company.WebSite=data.webSite
 		
-		/*Заменить этот костыль!!*/
+		set company.Contact = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
+		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
 		set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.Email = "petorv@mainuniversity.com"
-		set curator.Phone = "000"
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.lastName, "I", "UTF8"))
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.firstName, "I", "UTF8"))
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.middleName, "I", "UTF8"))
+		set curator.Email = data.contact.email
+		set curator.Phone = data.contact.phone
+		
+		$$$THROWONERROR(st,curator.%Save() )
+		
 		set company.Contact = curator
-	
-		/*set employees = ##class(%ArrayOfObjects).%New() 
-		set employee = ##class(Sti.Data.Employee).%OpenId("1",3,.Status) 
-		do employees.SetAt(employee,"BEABA77F-25FE-40B1-AF38-99A21742796B")
-		w !, $CASE($$$ISERR(curator.%Save()) || $$$ISERR(company.%Save()), 1: "Ошибка! Контакт  не создан!",:"Контакт создан")
-	
-		set company.Employees=employees*/
+		
 	
 		$$$THROWONERROR(st, company.%Save())
 	}
@@ -577,31 +681,27 @@ Get all company for grid</Description>
 		set internship.DateBegin=$ZDATEH(data.dateBegin, 15)
 		set internship.DateEnd=$ZDATEH(data.dateEnd, 15)
 		set internship.MaxPeople=data.maxPeople
-		
-	
-	
-		/*Заменить этот костыль!!*/
-		set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
-		set curator.Email = "petorv@mainuniversity.com"
-		set curator.Phone = "000"
-		set internship.Curator = curator
-		 	
 		set internship.Street= ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.street, "I", "UTF8"))
 		set internship.Room=data.room
+		set internship.IsInUse=data.isInUse=$$$YES
 		
+		set internship.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
+		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
+		set curator = ##class(Sti.Data.Employee).%New()
+		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
+		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
+		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
+		set curator.Email = data.curator.email
+		set curator.Phone = data.curator.phone
 		
-			set city = ##class(Sti.Data.Region).%New()
-			set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)
-			set internship.City=city
-			
-			
-			set internship.IsInUse=1
-		/*-------------------------------------------------------------------------------------------*/	
-			
-			
+		$$$THROWONERROR(st,curator.%Save() )
+		set internship.Curator = curator
+		 	
+		set internship.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
+		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
+		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
+		set internship.City=city
+				
 		set internship.Company = ##class(Sti.Data.Company).%OpenId(data.company.id)
 		
 		$$$THROWONERROR(st, internship.%Save())

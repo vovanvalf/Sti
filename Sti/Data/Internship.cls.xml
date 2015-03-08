@@ -37,9 +37,8 @@ MaxPeople</Description>
 
 <Property name="IsInUse">
 <Description>
-Is active</Description>
+Активная</Description>
 <Type>%Boolean</Type>
-<InitialExpression>1</InitialExpression>
 <Required>1</Required>
 </Property>
 
@@ -63,38 +62,21 @@ Address</Description>
 <Required>1</Required>
 </Property>
 
+<Property name="NumberOfStudent">
+<Description>
+Количество свободных мест</Description>
+<Type>%Integer</Type>
+<Calculated>1</Calculated>
+<SqlComputeCode>set {NumberOfStudent} = ##class({%%CLASSNAME}).GetNumberOfStudent({%%ID})</SqlComputeCode>
+<SqlComputed>1</SqlComputed>
+</Property>
+
 <Property name="Room">
 <Description>
 Room</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
-
-<Method name="ConvertToProxyObject">
-<Description>
-Latitude
-Property Latitude As %Float [ Required ];
-Longitude
-Property Longitude As %Float [ Required ];</Description>
-<ReturnType>%ZEN.proxyObject</ReturnType>
-<Implementation><![CDATA[
-	set proxy = ##class(%ZEN.proxyObject).%New()
-	set proxy.id = ..%Id()
-	set proxy.name=..Name.Value
-	set proxy.dateBegin=$ZDATE(..DateBegin, 3)
-	set proxy.dateEnd=$ZDATE(..DateEnd, 3)
-	set proxy.maxPeople=..MaxPeople
-	set proxy.isInUse=..IsInUse
-	set proxy.curator=..Curator.ConvertToProxyObject()
-	set proxy.city=..City.ConvertToProxyObject()
-	set proxy.street=..Street.Value
-	set proxy.room=..Room
-	//set proxy.latitude=..Latitude
-	//set proxy.longitude=..Longitude
-	set proxy.company=..Company.ConvertToProxyObject()
-	quit proxy
-]]></Implementation>
-</Method>
 
 <Property name="Company">
 <Type>Sti.Data.Company</Type>
@@ -113,6 +95,84 @@ Property Longitude As %Float [ Required ];</Description>
 <Inverse>Internship</Inverse>
 <Relationship>1</Relationship>
 </Property>
+
+<Method name="ConvertToProxyObject">
+<Description>
+Latitude
+Property Latitude As %Float [ Required ];
+Longitude
+Property Longitude As %Float [ Required ];</Description>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.name=..Name.Value
+	set proxy.dateBegin=$ZDATE(..DateBegin, 3)
+	set proxy.dateEnd=$ZDATE(..DateEnd, 3)
+	set proxy.maxPeople=..MaxPeople
+	set proxy.numberOfStudent=..NumberOfStudent
+	set proxy.isInUse=..IsInUse
+	set proxy.curator=..Curator.ConvertToProxyObject()
+	set proxy.city=..City.ConvertToProxyObject()
+	set proxy.street=..Street.Value
+	set proxy.room=..Room
+	set proxy.freeSeats=..MaxPeople-..NumberOfStudent
+	//set proxy.latitude=..Latitude
+	//set proxy.longitude=..Longitude
+	set proxy.company=..Company.ConvertToProxyObject()
+	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="GetNumberOfStudent">
+<Description>
+Free seats in the internship</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>internshipId:%String</FormalSpec>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[
+	set count = 0
+	
+	/*&sql(SELECT COUNT(ID) As TotalCount INTO :count
+	 	 FROM Sti_Data.Participant 
+		 WHERE Competition = :internshipId AND IsActive = 1)*/
+		 
+	&sql(SELECT COUNT(ID) As TotalCount INTO :count
+		 FROM Sti_Data.Intern
+		WHERE Internship = :internshipId)	 
+		 
+	
+	quit count
+]]></Implementation>
+</Method>
+
+<Method name="CheckDeletePrivilege">
+<Description>
+Check delete privilege</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	SET SQLCODE=""
+	&sql(%CHECKPRIV DELETE ON Sti_Data.Internship)
+	if (SQLCODE = 100) || ($UserName = "UnknownUser") quit ##class(Sti.Utils.Msg).GetErrorStatus("error_NoPrivilegeForDelete", " USERNAME="_$USERNAME)
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="CheckUpdatePrivilege">
+<Description>
+Check update privilege</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	SET SQLCODE=""
+	&sql(%CHECKPRIV UPDATE ON Sti_Data.Internship)
+	if (SQLCODE = 100) || ($UserName = "UnknownUser") quit ##class(Sti.Utils.Msg).GetErrorStatus("error_NoPrivilegeForUpdate", " USERNAME="_$USERNAME)
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>

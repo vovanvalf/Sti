@@ -15,6 +15,10 @@ Private request processor for administrator</Description>
 <Data><![CDATA[
 <Routes>
 
+<!-- Check access, authorization call, if needed -->
+<Route Method="GET" Url="/checkAdmin/:isLogin" Call="Sti.Web.JsonAdmin:CheckAdmin"/>
+
+<!-- City get -->
 <Route Method="GET" Url="/json/city/:startsWith" Call="Sti.Web.JsonAdmin:GetCities"/>
 
 <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -91,6 +95,18 @@ Private request processor for administrator</Description>
 
 <!-- GET ALL [GRID], Internship -->
 <Route Method="POST" Url="/internship/grid" Call="Sti.Web.JsonAdmin:GetInternshipsForGrid"/>
+
+
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!-- Получить все оценки english -->
+<Route Url="/eng" Method="GET" Call="Sti.Web.JsonAdmin:GetEngMarks"/> 
+
+<!-- Получить все оценки tet -->
+<Route Url="/tet" Method="GET" Call="Sti.Web.JsonAdmin:GetTetMarks"/>
+
+<!-- Получить все оценки pet -->
+<Route Url="/pet" Method="GET" Call="Sti.Web.JsonAdmin:GetPetMarks"/>
+
 
 </Routes>
 ]]></Data>

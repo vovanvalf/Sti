@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.ENGMark">
-<Super>%Persistent,Sti.Data.MarkBase</Super>
+<Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63585,85434.06941</TimeCreated>
+
+<Property name="Value">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
 
 <Method name="ConvertToProxyObject">
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
-	
 	set proxy.id = ..%Id()
 	set proxy.value = ..Value
-	set proxy.code = ..Code
-	
 	quit proxy
 ]]></Implementation>
 </Method>

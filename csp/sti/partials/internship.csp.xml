@@ -1,54 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/internship.csp" application="/csp/sti/" default="1"><![CDATA[
-
 <div class="row-fluid">
-<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
-	<div class="span10">
-	</div>
-	<div class="span10">
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" ng-bind="'Стажировка'|localize"></a>
-				</div>
-				<div class="accordion-body">
-					<div class="accordion-inner">
-						 <div class="row-fluid">
-							<div class="span4">
-								<label class="control-label" ng-bind="'Название стажировки'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.internship.name" required></input>
-								<label class="control-label" ng-bind="'Компания'|localize">:</label>
-								<select class="span12" ng-model="page.internship.company.id" ng-options="company.id as company.fullName for company in page.companies" required></select>
-								<label class="control-label" ng-bind="'Дата начала'|localize">:</label>
-								<input class="span12"  type="date" ng-model="page.internship.dateBegin" required></input>
-								<label class="control-label" ng-bind="'Дата окончания'|localize">:</label>
-								<input class="span12"  type="date" ng-model="page.internship.dateEnd" required></input>
-							</div>
-							<div class="span4">
-								<label class="control-label" ng-bind="'Максимальное количество учеников'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.internship.maxPeople" required></input>
-								<label class="control-label" ng-bind="'Адрес'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.internship.street" required></input>
-								<label class="control-label" ng-bind="'Аудитория'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.internship.room" required></input>
+	<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
+	    <div class="span10">
+			<div class="accordion">
+			    <div class="accordion-group">
+				  <tabset>
+	  			 	<tab heading="{{'Основная информация'|localize}}">
+					    <div class="accordion-heading">
+							<a class="accordion-toggle" ng-bind="''"></a>
+						</div>
+						<div class="accordion-body">
+							<div class="accordion-inner">
+						 		<div class="row-fluid">
+									<div class="span4">
+										<label class="control-label" ng-bind="'Название стажировки'|localize">:</label>
+										<input class="span12"  type="text" ng-model="page.internship.name" required></input>
+										<label class="control-label" ng-bind="'Компания'|localize">:</label>
+										<select class="span12" ng-model="page.internship.company.id" ng-options="company.id as company.fullName for company in page.companies" required></select>
+										<label class="control-label" ng-bind="'Дата начала'|localize">:</label>
+										<input class="span12"  type="date" ng-model="page.internship.dateBegin" required></input>
+										<label class="control-label" ng-bind="'Дата окончания'|localize">:</label>
+										<input class="span12"  type="date" ng-model="page.internship.dateEnd" required></input>
+					               		<div class="controls">
+					               				<label class="control-label" ng-bind="'Город'|localize">:</label>
+					               				<input class="span12" 
+					                			   style="margin-bottom: 0;"
+					                			   type="text" 
+					                			   title="{{'Город, Регион, Страна'|localize}}" 
+					                			   ng-model="page.internship.city" 
+					                	 		   ng-change="loadCities(page.internship.city)" 
+					                	 		   placeholder="{{'Поиск'|localize}}" 
+					                	   		   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+					                	  		>
+					               				</input>
+					                			<i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиdск города по названию'|localize"></i>
+					            		</div>
+					    			</div>
+					    			<div class="span4">
+										<label class="control-label" ng-bind="'Максимальное количество учеников'|localize">:</label>
+										<input class="span12"  type="text" ng-model="page.internship.maxPeople" required></input>
+										<label class="control-label" ng-bind="'Адрес'|localize">:</label>
+										<input class="span12"  type="text" ng-model="page.internship.street" required></input>
+										<label class="control-label" ng-bind="'Аудитория'|localize">:</label>
+										<input class="span12"  type="text" ng-model="page.internship.room" required></input>
+										<label class="checkbox"  >
+			    					   		<input type="checkbox" ng-model="page.internship.isInUse">{{'Активна'|localize}}
+			    				        </label>
+									</div>
+							  </div>
 							</div>
 						</div>
-					</div>
+					</tab>
+					<tab heading="{{'Куратор'|localize}}">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" ng-bind="''"></a>
+						</div>
+						<div class="accordion-body">
+							<div class="accordion-inner">
+						 		<div class="row-fluid">
+									<div class="span4">
+										<label class="control-label" ng-bind="'Фамилия'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.internship.curator.lastName" required></input>
+						    			<label class="control-label" ng-bind="'Имя'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.internship.curator.firstName" required></input>
+										<label class="control-label" ng-bind="'Отчество'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.internship.curator.middleName" required></input>
+										<label class="control-label" ng-bind="'Телефон'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.internship.curator.phone" required></input>
+										<label class="control-label" ng-bind="'Электронный адрес'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.internship.curator.email" required></input>
+									</div>
+								</div>
+							</div>
+						</div>
+				 	</tab>
+				   </tabset>
 				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
-			</div>
-	 	</div>
-	</div>
-	</form>
-	<div class="span10">
-	</div>
+			<div class="control-group">
+			 	<div class="controls">
+				   	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+			 	</div>
+			</div>				
+        </div>
+    </form>
 </div>
 <stialert data="page.alert" span-right="4" span-middle="4" span-left="4"/>
+
 
 ]]></CSP>
 </Export>

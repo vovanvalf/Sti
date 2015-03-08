@@ -22,7 +22,7 @@ $routeParams.id - параметр :id
 */
 
 
-var servicesModule     = angular.module('servicesModule', ['ngRoute','ngCookies', 'ui.bootstrap']);
+var servicesModule     = angular.module('servicesModule', ['ngCookies', 'ui.bootstrap']);
 var controllersModule  = angular.module('controllersModule', ['servicesModule']);
 var directivesModule   = angular.module('directivesModule', []);
 var localizationModule = angular.module('localizationModule', []);

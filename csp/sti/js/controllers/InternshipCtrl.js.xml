@@ -8,9 +8,9 @@
 Стажировка. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('InternshipCtrl', function($scope, $routeParams, InternshipSrvc, CompanySrvc){
+controllersModule.controller('InternshipCtrl', function($scope, $routeParams, InternshipSrvc, CompanySrvc, RegionSrvc){
    $scope.page = {internship:{}};
-
+	$scope.cities = [];
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
@@ -38,6 +38,7 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
       InternshipSrvc.get(id).then(
           function(data){
               $scope.page.internship = data;
+               $scope.page.internship.isInUse=$scope.page.internship.isInUse == 1;
          
           },
           function(data, status, headers, config){
@@ -75,7 +76,21 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
+	$scope.loadCities = function(startsWith){       
+        if(!startsWith || startsWith.length == 0)
+            $scope.cities = [];
+        
+        if (!startsWith || startsWith.length != 2)
+            return;  
 
+        RegionSrvc.getAllCitiesStartsWith(startsWith).then(
+            function(data){
+                $scope.cities = data.children;
+            },
+            function(response){
+                $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
+            }); 
+    };
    $scope.page.init(); 
 });
 

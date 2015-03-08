@@ -1,91 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.PETMark">
-<Super>%Persistent,Sti.Data.MarkBase</Super>
+<Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63585,81052.906738</TimeCreated>
 
-<Property name="ReadingMark">
-<Type>%Integer</Type>
+<Property name="Value">
+<Type>%String</Type>
 <Required>1</Required>
 </Property>
-
-<Property name="WritingMark">
-<Type>%Integer</Type>
-<Required>1</Required>
-</Property>
-
-<Property name="ListeningMark">
-<Type>%Integer</Type>
-<Required>1</Required>
-</Property>
-
-<Property name="SpeakingMark">
-<Type>%Integer</Type>
-<Required>1</Required>
-</Property>
-
-<Method name="Create">
-<FormalSpec>R:%Integer,W:%Integer,L:%Integer,S:%Integer</FormalSpec>
-<ReturnType>%String</ReturnType>
-<Implementation><![CDATA[
-	
-	if (((R+W)>50) || (R<0) || (W<0) || (L>25) || (L<0) || (S>25) || (S<0))
-	{ 
-		quit "err"
-	}
-	set ..ReadingMark=R
-	set ..WritingMark=W
-	set ..ListeningMark=L
-	set ..SpeakingMark=S
-]]></Implementation>
-</Method>
-
-<Method name="GetReadingMark">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	quit ..ReadingMark
-]]></Implementation>
-</Method>
-
-<Method name="GetWritingMark">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	quit ..WritingMark
-]]></Implementation>
-</Method>
-
-<Method name="GetListeningMark">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	quit ..ListeningMark
-]]></Implementation>
-</Method>
-
-<Method name="GetSpeakingMark">
-<ReturnType>%Integer</ReturnType>
-<Implementation><![CDATA[	quit ..SpeakingMark
-]]></Implementation>
-</Method>
-
-<Method name="GetGeneralMark">
-<ReturnType>%String</ReturnType>
-<Implementation><![CDATA[
-	set summ=..ListeningMark+..ReadingMark+..WritingMark+..SpeakingMark
-	w summ
-	if (summ>89) &&(summ<101) {
-		set ..Value = "Pass with distinction"
-	}
-	elseif ((summ>84) &&(summ<90)){
-		set ..Value ="Pass with merit"
-	}
-	elseif ((summ>69) &&(summ<85)){
-		set ..Value = "Pass"
-	}
-	elseif ((summ>64) &&(summ<70)){
-		set ..Value = "A2 level"
-	}
-	elseif (summ<65){
-		set ..Value = "Not pass"
-	}
-]]></Implementation>
-</Method>
 
 <Method name="ConvertToProxyObject">
 <ReturnType>%ZEN.proxyObject</ReturnType>
@@ -93,44 +15,8 @@
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
 	set proxy.value = ..Value
-	set proxy.code = ..Code
 	quit proxy
 ]]></Implementation>
 </Method>
-
-<Storage name="Default">
-<Type>%Library.CacheStorage</Type>
-<DataLocation>^Sti.Data.PETMarkD</DataLocation>
-<DefaultData>PETMarkDefaultData</DefaultData>
-<IdLocation>^Sti.Data.PETMarkD</IdLocation>
-<IndexLocation>^Sti.Data.PETMarkI</IndexLocation>
-<StreamLocation>^Sti.Data.PETMarkS</StreamLocation>
-<Data name="PETMarkDefaultData">
-<Value name="1">
-<Value>%%CLASSNAME</Value>
-</Value>
-<Value name="2">
-<Value>ReadingMark</Value>
-</Value>
-<Value name="3">
-<Value>Code</Value>
-</Value>
-<Value name="4">
-<Value>ListeningMark</Value>
-</Value>
-<Value name="5">
-<Value>Value</Value>
-</Value>
-<Value name="6">
-<Value>WritingMark</Value>
-</Value>
-<Value name="7">
-<Value>SpeakinggMark</Value>
-</Value>
-<Value name="8">
-<Value>SpeakingMark</Value>
-</Value>
-</Data>
-</Storage>
 </Class>
 </Export>

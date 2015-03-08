@@ -8,9 +8,9 @@
 Стажер. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('InternCtrl', function($scope, $routeParams, InternSrvc, UniversitySrvc, InternshipSrvc){
+controllersModule.controller('InternCtrl', function($scope, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc){
    $scope.page = {intern:{}};
-
+	$scope.cities = [];
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
@@ -36,6 +36,8 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
       // Загрузить универы
       $scope.page.loadUniversity();
       $scope.page.loadInternship();
+      $scope.page.loadEngMarks();
+      $scope.page.loadPetMarks();
    };
 
    // Загрузить стажера по ИД
@@ -43,7 +45,8 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
       InternSrvc.get(id).then(
           function(data){
               $scope.page.intern = data;
-         
+              $scope.page.intern.agree=$scope.page.intern.agree == 1;
+             
           },
           function(data, status, headers, config){
               $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
@@ -70,7 +73,27 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
-
+	
+  // Загрузить все eng
+  $scope.page.loadEngMarks = function(id){
+      MarksSrvc.getEngAll().then(
+          function(data){
+              $scope.page.engmarks = data.children;
+          },
+          function(data, status, headers, config){
+              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });      
+   };
+  // Загрузить все pet
+  $scope.page.loadPetMarks = function(id){
+      MarksSrvc.getPetAll().then(
+          function(data){
+              $scope.page.petmarks = data.children;
+          },
+          function(data, status, headers, config){
+              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+          });      
+   };
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
       InternSrvc.save($scope.page.intern).then(
@@ -90,7 +113,21 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Intern
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
+    $scope.loadCities = function(startsWith){       
+        if(!startsWith || startsWith.length == 0)
+            $scope.cities = [];
+        
+        if (!startsWith || startsWith.length != 2)
+            return;  
 
+        RegionSrvc.getAllCitiesStartsWith(startsWith).then(
+            function(data){
+                $scope.cities = data.children;
+            },
+            function(response){
+                $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
+            }); 
+    };
    $scope.page.init(); 
 });
 

@@ -103,7 +103,7 @@ input type date
 <Property name="MailAgree">
 <Description>
 Согласие на получение рассылки. СДЕЛАТЬ boolean, а на клиенте - checkbox</Description>
-<Type>%String</Type>
+<Type>%Boolean</Type>
 <Required>1</Required>
 </Property>
 

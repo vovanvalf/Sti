@@ -65,7 +65,7 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
 
         RegionSrvc.getAllCitiesStartsWith(startsWith).then(
             function(data){
-                $scope.cities = data;
+                $scope.cities = data.children;
             },
             function(response){
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);

@@ -8,7 +8,7 @@
 	<stigrid style="border-radius: 4px 0 4px 4px;"
 	    	grid="companiesTable.state"
 		    table-class="table table-bordered table-hover"
-		    caption="'Университеты'|localize"
+		    caption="'Компании'|localize"
 		    columns="companiesTable.columns"
 		    items="companiesTable.items"
 		    properties="companiesTable.properties"
@@ -68,10 +68,13 @@
 				<p><span class="spnTitle" ng-bind="'Email'|localize"></span>: <span ng-bind="companiesTable.selectedItems[0].mailAddress"></span></p>
 				<p><span class="spnTitle" ng-bind="'Web-страница'|localize"></span>: <span ng-bind="companiesTable.selectedItems[0].webSite"></span></p>
             </div>
+		</tab>
+		<tab heading="{{'Контактное лицо'|localize}}">
 			<div class="span8">
-				<!--Сделать отдельную таблицу для инфо куратора!-->
-				<p><span class="spnTitle" ng-bind="'Куратор'|localize"></span>:</p> 
-				<p><span ng-bind="(companiesTable.selectedItems[0].contact.lastName)+'  '+(companiesTable.selectedItems[0].contact.firstName)+'  '+(companiesTable.selectedItems[0].contact.middleName)+' Телефон: '+(companiesTable.selectedItems[0].contact.phone)"></span></p>
+				<p><span class="spnTitle" ng-bind="'Контактное лицо'|localize"></span>:</p> 
+				<p><span ng-bind="(companiesTable.selectedItems[0].contact.lastName)+'  '+(companiesTable.selectedItems[0].contact.firstName)+'  '+(companiesTable.selectedItems[0].contact.middleName)"></span></p>
+				<p><span class="spnTitle" ng-bind="'Телефон куратора'|localize"></span>: <span ng-bind="companiesTable.selectedItems[0].contact.phone"></span></p>
+				<p><span class="spnTitle" ng-bind="'Email куратора'|localize"></span>: <span ng-bind="companiesTable.selectedItems[0].contact.email"></span></p>
 			</div>
 		</tab>
 	</tabset>

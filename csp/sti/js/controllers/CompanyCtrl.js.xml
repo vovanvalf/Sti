@@ -5,7 +5,7 @@
 //ddcdddd
 
 /*===========================================================================================
-Университет. Изменение/Добавление
+Компания. Изменение/Добавление
 ===========================================================================================*/
 
 controllersModule.controller('CompanyCtrl', function($scope, $routeParams, CompanySrvc){
@@ -25,7 +25,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, Compa
 
       }
    };
-   // Загрузить стажера по ИД
+   // Загрузить компанию по ИД
    $scope.page.loadCompany = function(id){
       CompanySrvc.get(id).then(
           function(data){
@@ -43,7 +43,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, Compa
               var msg = 'Изменения сохранены.';
 
               if (!$routeParams.id){
-                  msg = 'Университет добавлен.';
+                  msg = 'Компания добавлена.';
                   $scope.page.company = {};                        
               }
 

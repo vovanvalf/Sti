@@ -59,10 +59,17 @@
 				<p><span class="spnTitle" ng-bind="'Место обучения'|localize"></span>: <span ng-bind="(internshipsTable.selectedItems[0].city.name)+', '+(internshipsTable.selectedItems[0].city.parentName)"></span></p>
 				<p><span class="spnTitle" ng-bind="'Адрес'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].street"></span></p>
 				<p><span class="spnTitle" ng-bind="'Аудитория'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].room"></span></p>
-				<p><span class="spnTitle" ng-bind="'Куратор'|localize"></span>:</p> 
-				<p><span ng-bind="(internshipsTable.selectedItems[0].curator.lastName)+'  '+(internshipsTable.selectedItems[0].curator.firstName)+'  '+(internshipsTable.selectedItems[0].curator.middleName)+' Телефон: '+(internshipsTable.selectedItems[0].curator.phone)"></span></p>
+				<p><span class="spnTitle" ng-bind="'Количество свободных мест'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].freeSeats"></span></p>
 			</div>
 		</tab>
+		<tab heading="{{'Куратор'|localize}}">
+			<div class="span6">
+				<p><span class="spnTitle" ng-bind="'Куратор'|localize"></span>:</p> 
+				<p><span ng-bind="(internshipsTable.selectedItems[0].curator.lastName)+'  '+(internshipsTable.selectedItems[0].curator.firstName)+'  '+(internshipsTable.selectedItems[0].curator.middleName)"></span></p>
+				<p><span class="spnTitle" ng-bind="'Телефон куратора'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].curator.phone"></span></p>
+				<p><span class="spnTitle" ng-bind="'Email куратора'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].curator.email"></span></p>
+			</div>
+		</tab>	
 	</tabset>
 </div>
 <br>

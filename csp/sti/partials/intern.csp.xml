@@ -22,8 +22,20 @@
 								<input class="span12"  type="text" ng-model="page.intern.lastName" required></input>
 								<label class="control-label" ng-bind="'Отчество'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.intern.middleName" required></input>
+								<label class="control-label" ng-bind="'Дата рождения'|localize">:</label>
+								<input class="span12"  type="date" ng-model="page.intern.birthDate" required></input>
 								<label class="control-label" ng-bind="'Город'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.intern.city.name" required></input>
+								<input class="span12" 
+					                	   style="margin-bottom: 0;"
+					                	   type="text" 
+					                	   title="{{'Город, Регион, Страна'|localize}}" 
+					                	   ng-model="page.intern.city" 
+					                	   ng-change="loadCities(page.intern.city)" 
+					                	   placeholder="{{'Поиск'|localize}}" 
+					                	   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+					                	  >
+					            </input>
+					            <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
 								<label class="control-label" ng-bind="'Университет'|localize">:</label>
 								<select class="span12" ng-model="page.intern.university.id" ng-options="university.id as university.fullName for university in page.universities" required></select>
 					    		<label class="control-label" ng-bind="'Стажировка'|localize">:</label>
@@ -38,14 +50,13 @@
 								<input class="span12"  type="text" ng-model="page.intern.skype" required></input>
 								<label class="control-label" ng-bind="'Резюме'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.intern.resume" required></input>
-                                <label class="control-label" ng-bind="'Согласие на рассылку'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.intern.agree" required></input>
+  								<label class="control-label" ng-bind="'Уровень английского'|localize">:</label>
+								<select class="span12" ng-model="page.intern.eng.id" ng-options="eng.id as eng.value for eng in page.engmarks" required></select>
+								<label class="control-label" ng-bind="'Опыт Cache'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.intern.cache" required></input>    
 							</div>
 							<div class="span4">
-								<label class="control-label" ng-bind="'Уровень английского'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.intern.eng.value" required></input>
-								<label class="control-label" ng-bind="'Опыт Cache'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.intern.cache" required></input>
+							
 						        <label class="control-label" ng-bind="'Опыт DeepSee'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.intern.deepsee" required></input>	
 								<label class="control-label" ng-bind="'Опыт Ensemble'|localize">:</label>
@@ -53,7 +64,10 @@
 								<label class="control-label" ng-bind="'Оценка TET'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.intern.tet" required></input>
 								<label class="control-label" ng-bind="'Оценка PET'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.intern.pet.value" required></input>								 
+								<select class="span12" ng-model="page.intern.pet.id" ng-options="pet.id as pet.value for pet in page.petmarks" required></select>	
+								<label class="checkbox"  >
+			    					 <input type="checkbox" ng-model="page.intern.agree">{{'Согласие на рассылку'|localize}}
+			    				</label>							 
 						   </div>
 						</div>
 					</div>

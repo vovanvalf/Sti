@@ -57,13 +57,14 @@
 				<p><span class="spnTitle" ng-bind="'Адрес университета'|localize"></span>: <span ng-bind="universitiesTable.selectedItems[0].address"></span></p>
 				<p><span class="spnTitle" ng-bind="'Web-страница'|localize"></span>: <span ng-bind="universitiesTable.selectedItems[0].web"></span></p>
             </div>
+		</tab>
+		<tab heading="{{'Куратор'|localize}}">
 			<div class="span8">
-				<!--Сделать отдельную таблицу для инфо куратора!-->
+				<!--Сделать отдельную таблицу для работников!-->
 				<p><span class="spnTitle" ng-bind="'Куратор'|localize"></span>:</p> 
-				<p><span ng-bind="(universitiesTable.selectedItems[0].curator.lastName)+'  '+(universitiesTable.selectedItems[0].curator.firstName)+'  '+(universitiesTable.selectedItems[0].curator.middleName)+' Телефон: '+(universitiesTable.selectedItems[0].curator.phone)"></span></p>
-				<!--Сделать список контактов и инфо таблицу!-->
-				<p><span class="spnTitle" ng-bind="'Доп. контакты'|localize"></span>:</p>
-				<p><span ng-bind="(universitiesTable.selectedItems[0].employees[0].lastName)+'  '+(universitiesTable.selectedItems[0].employees[0].firstName)+'  '+(universitiesTable.selectedItems[0].employees[0].middleName)+' Телефон: '+(universitiesTable.selectedItems[0].employees[0].phone)"></span></p> 
+				<p><span ng-bind="(universitiesTable.selectedItems[0].curator.lastName)+'  '+(universitiesTable.selectedItems[0].curator.firstName)+'  '+(universitiesTable.selectedItems[0].curator.middleName)"></span></p>
+				<p><span class="spnTitle" ng-bind="'Телефон куратора'|localize"></span>: <span ng-bind="universitiesTable.selectedItems[0].curator.phone"></span></p>
+				<p><span class="spnTitle" ng-bind="'Email куратора'|localize"></span>: <span ng-bind="universitiesTable.selectedItems[0].curator.email"></span></p>
 			</div>
 		</tab>
 	</tabset>
