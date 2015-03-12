@@ -18,8 +18,22 @@ Private request processor for administrator</Description>
 <!-- Check access, authorization call, if needed -->
 <Route Method="GET" Url="/checkAdmin/:isLogin" Call="Sti.Web.JsonAdmin:CheckAdmin"/>
 
-<!-- City get -->
-<Route Method="GET" Url="/json/city/:startsWith" Call="Sti.Web.JsonAdmin:GetCities"/>
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!-- Получить все заявки -->
+<Route Url="/order" Method="GET" Call="Sti.Web.JsonAdmin:GetOrders"/> 
+
+<!-- Получить заявку по ИД -->
+<Route Url="/order/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetOrder"/> 
+
+<!-- Удалить заявку -->
+<Route Url="/order/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteOrder"/> 
+
+<!-- GET ALL [GRID], Order -->
+<Route Method="POST" Url="/order/grid" Call="Sti.Web.JsonAdmin:GetOrdersForGrid"/>
+
+<!-- Создать стажера по заявке -->
+<Route Url="/createintern" Method="POST" Call="Sti.Web.JsonAdmin:CreateIntern"/> 
+
 
 <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 <!-- Получить всех стажеров -->
@@ -39,8 +53,7 @@ Private request processor for administrator</Description>
 
 
 <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
-<!-- Все университеты -->
-<Route Url="/university" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversitys"/> 
+
 
 <!-- Все стажеры университета -->
 <Route Url="/university/:id/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversityInterns"/> 
@@ -81,8 +94,7 @@ Private request processor for administrator</Description>
 
 
 <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
-<!-- Получить все стажировки -->
-<Route Url="/internship" Method="GET" Call="Sti.Web.JsonAdmin:GetInternships"/> 
+
 
 <!-- Получить стажировку по ИД -->
 <Route Url="/internship/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetInternship"/> 
@@ -98,14 +110,8 @@ Private request processor for administrator</Description>
 
 
 <!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
-<!-- Получить все оценки english -->
-<Route Url="/eng" Method="GET" Call="Sti.Web.JsonAdmin:GetEngMarks"/> 
-
 <!-- Получить все оценки tet -->
 <Route Url="/tet" Method="GET" Call="Sti.Web.JsonAdmin:GetTetMarks"/>
-
-<!-- Получить все оценки pet -->
-<Route Url="/pet" Method="GET" Call="Sti.Web.JsonAdmin:GetPetMarks"/>
 
 
 </Routes>

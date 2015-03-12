@@ -10,19 +10,19 @@ servicesModule.factory('UniversitySrvc', function(RESTSrvc) {
     return {
         /* Сохранить / создать универ */
         save: function(university){
-            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/university', data: university});
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/university', data: university});
         },
         /* Удалить универ по ИД */
         remove: function(id){
-            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.appName + '/university/' + id});
+            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.admin + '/university/' + id});
         },
         /* Получить универ по ИД */
         get: function(id){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university/' + id});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/university/' + id});
         },
         /* Получить все универы */
         getAll: function(){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university'});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.user + '/university'});
         },
          getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
@@ -34,11 +34,11 @@ servicesModule.factory('UniversitySrvc', function(RESTSrvc) {
                        searchText: searchText,
                        other: other};
             
-            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/university/grid', data: obj});
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/university/grid', data: obj});
         },
         /* Получить всех стажеров универа */
         getInterns: function(id){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/university/' + id + '/intern'});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/university/' + id + '/intern'});
         }
     }
 });

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<CSP name="sti/js/services/MarksSrvc.js" application="/csp/sti/" default="1"><![CDATA[
+'use strict';
+/*===========================================================================================
+Стажер
+===========================================================================================*/
+
+servicesModule.factory('MarksSrvc', function(RESTSrvc) {    
+    return {
+        getEngAll: function(){
+            return RESTSrvc.getPromise({method: 'GET', url:StiSetting.user+'/eng'});
+        },
+         getPetAll: function(){
+            return RESTSrvc.getPromise({method: 'GET', url:StiSetting.user+'/pet'});
+        }
+    }
+});
+]]></CSP>
+</Export>

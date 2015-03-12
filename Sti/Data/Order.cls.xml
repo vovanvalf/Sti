@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Order">
+<Super>%Persistent,%XML.Adaptor,%Populate</Super>
+<TimeCreated>63623,72347.012511</TimeCreated>
+
+<Property name="Internship">
+<Description>
+Стажировка</Description>
+<Type>Sti.Data.Internship</Type>
+<Cardinality>one</Cardinality>
+<Inverse>ordInterns</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Property name="FirstName">
+<Description>
+Имя стажера</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="LastName">
+<Description>
+Фамилия</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="MiddleName">
+<Description>
+Отчество</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Required>1</Required>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="Email">
+<Description>
+Электронный адрес</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="BirthDay">
+<Description>
+Дата рождения стажера</Description>
+<Type>%Date</Type>
+<Required>1</Required>
+<Parameter name="FORMAT" value="3"/>
+</Property>
+
+<Property name="University">
+<Description>
+Университет</Description>
+<Type>Sti.Data.University</Type>
+<Cardinality>one</Cardinality>
+<Inverse>unInterns</Inverse>
+<Relationship>1</Relationship>
+<Parameter name="XMLPROJECTION" value="XELEMENT"/>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="Phone">
+<Description>
+Телефон. переделать в числовой</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Skype">
+<Description>
+Скайп</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="engMark">
+<Description>
+Владение английским</Description>
+<Type>ENGMark</Type>
+</Property>
+
+<Property name="City">
+<Description>
+Город, в котором живёт стажер</Description>
+<Type>Region</Type>
+</Property>
+
+<Property name="Resume">
+<Description>
+Резюме. Тип файл или ссылка(можно добавить доп. переменную) </Description>
+<Type>%Text</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="10000"/>
+</Property>
+
+<Property name="MailAgree">
+<Description>
+Согласие на получение рассылки. СДЕЛАТЬ boolean, а на клиенте - checkbox</Description>
+<Type>%Boolean</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="CacheScience">
+<Description>
+Опыт Cache</Description>
+<Type>%Text</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="5000"/>
+</Property>
+
+<Property name="EnsembleScience">
+<Description>
+Опыт Ensemble</Description>
+<Type>%Text</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="5000"/>
+</Property>
+
+<Property name="DeepSeeScience">
+<Description>
+Опыт DeepSee</Description>
+<Type>%Text</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="5000"/>
+</Property>
+
+<Index name="UniversityIndex">
+<Properties>University</Properties>
+</Index>
+
+<Index name="InternshipIndex">
+<Properties>Internship</Properties>
+</Index>
+
+<Method name="ConvertToProxyObject">
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	set proxy.birthDate = $ZDATE(..BirthDay, 3)
+	set proxy.firstName = ..FirstName.Value
+	set proxy.lastName = ..LastName.Value
+	set proxy.middleName = ..MiddleName.Value
+	set proxy.phone = ..Phone
+	set proxy.email = ..Email
+	set proxy.skype = ..Skype
+	set proxy.agree = ..MailAgree
+	set proxy.cache = ..CacheScience
+	set proxy.ensemble = ..EnsembleScience
+	set proxy.deepsee = ..DeepSeeScience
+ 	set proxy.eng = ..engMark.ConvertToProxyObject()
+	set proxy.resume = ..Resume
+	set proxy.city = ..City.ConvertToProxyObject()
+   	set proxy.university = ..University.ConvertToProxyObject()
+   	set proxy.internship=..Internship.ConvertToProxyObject()
+   	quit proxy
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.OrderD</DataLocation>
+<DefaultData>OrderDefaultData</DefaultData>
+<IdLocation>^Sti.Data.OrderD</IdLocation>
+<IndexLocation>^Sti.Data.OrderI</IndexLocation>
+<StreamLocation>^Sti.Data.OrderS</StreamLocation>
+<Data name="OrderDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Internship</Value>
+</Value>
+<Value name="3">
+<Value>FirstName</Value>
+</Value>
+<Value name="4">
+<Value>LastName</Value>
+</Value>
+<Value name="5">
+<Value>MiddleName</Value>
+</Value>
+<Value name="6">
+<Value>Email</Value>
+</Value>
+<Value name="7">
+<Value>BirthDay</Value>
+</Value>
+<Value name="8">
+<Value>IsInUse</Value>
+</Value>
+<Value name="9">
+<Value>University</Value>
+</Value>
+<Value name="10">
+<Value>Phone</Value>
+</Value>
+<Value name="11">
+<Value>Skype</Value>
+</Value>
+<Value name="12">
+<Value>engMark</Value>
+</Value>
+<Value name="13">
+<Value>City</Value>
+</Value>
+<Value name="14">
+<Value>Resume</Value>
+</Value>
+<Value name="15">
+<Value>MailAgree</Value>
+</Value>
+<Value name="16">
+<Value>CacheScience</Value>
+</Value>
+<Value name="17">
+<Value>EnsembleScience</Value>
+</Value>
+<Value name="18">
+<Value>DeepSeeScience</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

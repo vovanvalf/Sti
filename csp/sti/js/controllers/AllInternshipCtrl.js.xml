@@ -7,7 +7,7 @@
 ===========================================================================================*/
 
 controllersModule.controller('AllInternshipCtrl', function($scope, $location, $filter, InternshipSrvc, UtilsSrvc){
-
+$scope.menu.selectMenu($scope.menu.pages.internships);
 $scope.internshipsTable = {state: {}};
 
 $scope.init = function(){

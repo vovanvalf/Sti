@@ -10,15 +10,15 @@ servicesModule.factory('InternshipSrvc', function(RESTSrvc) {
     return {
         /* Сохранить / создать стажировку */
         save: function(internship){
-            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/internship', data: internship});
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/internship', data: internship});
         },
         /* Удалить стажировку по ИД */
         remove: function(id){
-            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.appName + '/internship/' + id});
+            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.admin + '/internship/' + id});
         },
         /* Получить стажировку по ИД */
         get: function(id){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/internship/' + id});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/internship/' + id});
         },
         getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
@@ -30,11 +30,11 @@ servicesModule.factory('InternshipSrvc', function(RESTSrvc) {
                        searchText: searchText,
                        other: other};
             
-            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/internship/grid', data: obj});
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/internship/grid', data: obj});
         },
         /* Получить все стажеровки */
         getAll: function(){
-            return RESTSrvc.getPromise({method: 'GET', url:StiSetting.appName+'/internship'});
+            return RESTSrvc.getPromise({method: 'GET', url:StiSetting.user+'/internship'});
         }
     }
 });

@@ -96,6 +96,13 @@ Room</Description>
 <Relationship>1</Relationship>
 </Property>
 
+<Property name="ordInterns">
+<Type>Sti.Data.Order</Type>
+<Cardinality>many</Cardinality>
+<Inverse>Internship</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
 <Method name="ConvertToProxyObject">
 <Description>
 Latitude

@@ -35,6 +35,11 @@ mainModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/university/:id',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
     $routeProvider.when('/university',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
       
+    $routeProvider.when('/orders',    {templateUrl: 'partials/orders.csp', controller: 'AllOrderCtrl'});
+    $routeProvider.when('/order/:id', {templateUrl: 'partials/order.csp',  controller: 'OrderCtrl'});
+    $routeProvider.when('/orderaccept/:id', {templateUrl: 'partials/orderaccept.csp',  controller: 'OrderAcceptCtrl'});
+    $routeProvider.when('/order', {templateUrl: 'partials/order.csp',  controller: 'OrderCtrl'});
+    
     $routeProvider.when('/interns',    {templateUrl: 'partials/interns.csp', controller: 'AllInternCtrl'});
     $routeProvider.when('/intern/:id', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
     $routeProvider.when('/intern', {templateUrl: 'partials/intern.csp',  controller: 'InternCtrl'});
@@ -47,7 +52,7 @@ mainModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/company/:id',   {templateUrl: 'partials/company.csp',    controller: 'CompanyCtrl'});
     $routeProvider.when('/company',   {templateUrl: 'partials/company.csp',    controller: 'CompanyCtrl'});
     
-    //$routeProvider.otherwise({redirectTo: '/interns'});
+    $routeProvider.otherwise({redirectTo: '/order'});
   }]);
 ]]></CSP>
 </Export>

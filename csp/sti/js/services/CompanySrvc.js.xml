@@ -10,19 +10,19 @@ servicesModule.factory('CompanySrvc', function(RESTSrvc) {
     return {
         /* Сохранить / создать универ */
         save: function(company){
-            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/company', data: company});
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/company', data: company});
         },
         /* Удалить универ по ИД */
         remove: function(id){
-            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.appName + '/company/' + id});
+            return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.admin + '/company/' + id});
         },
         /* Получить универ по ИД */
         get: function(id){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/company/' + id});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/company/' + id});
         },
         /* Получить все универы */
         getAll: function(){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/company'});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/company'});
         },
          getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
@@ -34,11 +34,11 @@ servicesModule.factory('CompanySrvc', function(RESTSrvc) {
                        searchText: searchText,
                        other: other};
             
-            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.appName + '/company/grid', data: obj});
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/company/grid', data: obj});
         },
         /* Получить всех стажеров универа */
         getInterns: function(id){
-            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.appName + '/company/' + id + '/internship'});
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/company/' + id + '/internship'});
         }
     }
 });]]></CSP>

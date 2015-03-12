@@ -13,7 +13,7 @@ servicesModule.factory('RegionSrvc', function(RESTSrvc) {
 		
 	    /* Все города по начальным буквам */
         getAllCitiesStartsWith: function(startsWith){
-           var config ={method: 'GET',url:StiSetting.appName + '/json/city/' + startsWith};
+           var config ={method: 'GET',url:StiSetting.user + '/json/city/' + startsWith};
             return RESTSrvc.getPromise(config);
         }
     }

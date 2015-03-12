@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/controllers/AllInternCtrl.js" application="/csp/sti/" default="1"><![CDATA[
+<CSP name="sti/js/controllers/AllOrderCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 /*===========================================================================================
-Все стажеры
+Все заявки
 ===========================================================================================*/
 
-controllersModule.controller('AllInternCtrl', function($scope, $location, $filter, InternSrvc, UtilsSrvc){
-$scope.menu.selectMenu($scope.menu.pages.interns);
-$scope.internsTable = {state: {}};
+controllersModule.controller('AllOrderCtrl', function($scope, $location, $filter, OrderSrvc, UtilsSrvc){
+$scope.menu.selectMenu($scope.menu.pages.orders);
+$scope.ordersTable = {state: {}};
 
 $scope.init = function(){
  
-        $scope.internsTable.columns = [
+        $scope.ordersTable.columns = [
                           {name: 'Фамилия', sqlName: 'LastName->Value', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
                           {name: 'Имя', sqlName: 'FirstName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Отчество', sqlName: 'MiddleName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
@@ -20,7 +20,7 @@ $scope.init = function(){
                           {name: 'Университет', sqlName: 'University->FullName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Город', sqlName: 'City->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
         				  {name: 'Стажировка', sqlName: 'Internship->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
-        $scope.internsTable.properties = [
+        $scope.ordersTable.properties = [
         				  	{
 	        				  	name: 'lastName',
 	        				  	cellStyle: {textAlign: 'left'},
@@ -79,23 +79,23 @@ $scope.init = function(){
 	        				}	        				
 	        				]; 
 
-        $scope.internsTable.pageSize = 7;
-        $scope.internsTable.pageCurr = 1;
-        $scope.internsTable.itemsTotal = 0;
-        $scope.internsTable.selectedItems = [];
-        $scope.internsTable.multiSelectMode = false;
-        $scope.internsTable.forciblyUpdate = 0;
-        $scope.internsTable.refresh();
+        $scope.ordersTable.pageSize = 7;
+        $scope.ordersTable.pageCurr = 1;
+        $scope.ordersTable.itemsTotal = 0;
+        $scope.ordersTable.selectedItems = [];
+        $scope.ordersTable.multiSelectMode = false;
+        $scope.ordersTable.forciblyUpdate = 0;
+        $scope.ordersTable.refresh();
     };
 
     // 
-    $scope.internsTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
-        InternSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {}).then(
+    $scope.ordersTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
+        OrderSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {}).then(
             function(data){
 	            data = data.children;
-                $scope.internsTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
-                $scope.internsTable.itemsTotal = data.itemsTotal;
-                $scope.internsTable.items = data.items;
+                $scope.ordersTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
+                $scope.ordersTable.itemsTotal = data.itemsTotal;
+                $scope.ordersTable.items = data.items;
                 
                 
             },
@@ -104,23 +104,23 @@ $scope.init = function(){
             });
     };
 
-	$scope.internsTable.refresh = function(){ 
-        $scope.internsTable.forciblyUpdate++; 
+	$scope.ordersTable.refresh = function(){ 
+        $scope.ordersTable.forciblyUpdate++; 
     };
     
-    $scope.internsTable.add = function(){
-        $location.path('/intern/'); 
+    $scope.ordersTable.add = function(){
+        $location.path('/order/'); 
     };
 
-    $scope.internsTable.edit = function(item){
-        $location.path('/intern/' + item.id);
+    $scope.ordersTable.edit = function(item){
+        $location.path('/orderaccept/' + item.id);
     };
 
-    $scope.internsTable.remove = function(item){           
-            InternSrvc.remove(item.id).then(
+    $scope.ordersTable.remove = function(item){           
+            OrderSrvc.remove(item.id).then(
                 function(data){
-                    $scope.internsTable.selectedItems = [];
-                    $scope.internsTable.refresh();
+                    $scope.ordersTable.selectedItems = [];
+                    $scope.ordersTable.refresh();
                     $scope.alert = UtilsSrvc.getAlert('Готово!', 'Стажер удален.', 'success', true);
                 },
                 function(data, status, headers, config){
@@ -129,11 +129,11 @@ $scope.init = function(){
             
     };
     
-    $scope.internsTable.onSelect = function(item){
+    $scope.ordersTable.onSelect = function(item){
         console.log('Selected row ',item);       
     };
 
-    $scope.internsTable.onSelectCell = function(item, property){
+    $scope.ordersTable.onSelectCell = function(item, property){
         if (!item) return;
         property.onClickCell(item);
     };

@@ -67,6 +67,15 @@ Cтажёры</Description>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
+<Property name="unInterns">
+<Type>Sti.Data.Order</Type>
+<Cardinality>many</Cardinality>
+<Inverse>University</Inverse>
+<Relationship>1</Relationship>
+<Parameter name="XMLPROJECTION" value="XELEMENT"/>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
 <Method name="ConvertToProxyObject">
 <Description>
 Convert to proxyObject (for JSON)</Description>

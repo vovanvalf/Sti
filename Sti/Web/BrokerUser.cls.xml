@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Web.BrokerUser">
+<Description>
+Private request processor for administrator</Description>
+<Super>Sti.Web.BrokerBase</Super>
+<TimeCreated>63619,52703.290149</TimeCreated>
+
+<Parameter name="UseSession">
+<Type>Integer</Type>
+<Default>1</Default>
+</Parameter>
+
+<XData name="UrlMap">
+<Data><![CDATA[
+<Routes>
+
+<!-- ========================================================================================================= -->
+<!-- Other                                                                                               Other -->
+<!-- ========================================================================================================= -->
+
+<!-- GET ALL, Language -->
+<Route Method="GET" Url="/language" Call="Sti.Web.JsonUser:GetLanguages"/>
+
+
+<!-- Сохранить / создать заявку -->
+<Route Url="/order" Method="POST" Call="Sti.Web.JsonUser:SaveOrder"/> 
+
+<!-- City get -->
+<Route Method="GET" Url="/json/city/:startsWith" Call="Sti.Web.JsonUser:GetCities"/>
+
+<!-- Получить все оценки english -->
+<Route Url="/eng" Method="GET" Call="Sti.Web.JsonUser:GetEngMarks"/> 
+
+<!-- Получить все оценки pet -->
+<Route Url="/pet" Method="GET" Call="Sti.Web.JsonUser:GetPetMarks"/>
+
+<!-- Все университеты -->
+<Route Url="/university" Method="GET" Call="Sti.Web.JsonUser:GetUniversitys"/> 
+
+<!-- Получить все стажировки -->
+<Route Url="/internship" Method="GET" Call="Sti.Web.JsonUser:GetInternships"/> 
+
+</Routes>
+]]></Data>
+</XData>
+</Class>
+</Export>

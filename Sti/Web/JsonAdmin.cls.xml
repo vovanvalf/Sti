@@ -14,12 +14,18 @@ Check access, authorization call, if needed</Description>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
 	if (isLogin = 1){
+		set data = ##class(%ZEN.proxyObject).%New()
+		set data.user = $USERNAME
+	
 		if (##class(Sti.Data.Internship).CheckDeletePrivilege() = $$$OK){
-			w "{""privileges"":""all""}"
+			set data.privileges = "all"
 		}
 		else{
-			w "{""privileges"":""read""}"
+			set data.privileges = "read"
 		}
+		
+		do data.%ToJSON()
+		
 		q $$$OK
 	}
 
@@ -34,122 +40,101 @@ Check access, authorization call, if needed</Description>
             
     Set %session.EndSession=1
 
-	
+	do %session.Logout()	
  	quit $$$OK
 ]]></Implementation>
 </Method>
 
-<Method name="GetEngMarks">
-<ClassMethod>1</ClassMethod>
-<ReturnType>%Status</ReturnType>
-<Implementation><![CDATA[
-	set st = $$$OK
-	
-	try{
-		set proxy = ##class(%ZEN.proxyObject).%New()
-		set proxy.children = ##class(%ListOfObjects).%New() 
-		
-		&sql(DECLARE EngCur CURSOR FOR 
-		 	 SELECT ID
-		 	 FROM Sti_Data.ENGMark)	
-		
-		&sql(OPEN EngCur)
-		for  
-		{	
-			&sql(FETCH EngCur INTO :id) 
-			quit:(SQLCODE '= 0)
-			
-			do proxy.children.Insert(##class(Sti.Data.ENGMark).%OpenId(id).ConvertToProxyObject())
-		}
-		
-		&sql(CLOSE EngCur)
-		
-		do proxy.%ToJSON()
-	}
-	catch (ex){
-		set st = ex.AsStatus()
-	}
-	
-	quit st
-]]></Implementation>
-</Method>
-
-<Method name="GetPetMarks">
-<ClassMethod>1</ClassMethod>
-<ReturnType>%Status</ReturnType>
-<Implementation><![CDATA[
-	set st = $$$OK
-	
-	try{
-		set proxy = ##class(%ZEN.proxyObject).%New()
-		set proxy.children = ##class(%ListOfObjects).%New() 
-		
-		&sql(DECLARE PetCur CURSOR FOR 
-		 	 SELECT ID
-		 	 FROM Sti_Data.PETMark)	
-		
-		&sql(OPEN PetCur)
-		for  
-		{	
-			&sql(FETCH PetCur INTO :id) 
-			quit:(SQLCODE '= 0)
-			
-			do proxy.children.Insert(##class(Sti.Data.PETMark).%OpenId(id).ConvertToProxyObject())
-		}
-		
-		&sql(CLOSE PetCur)
-		
-		do proxy.%ToJSON()
-	}
-	catch (ex){
-		set st = ex.AsStatus()
-	}
-	
-	quit st
-]]></Implementation>
-</Method>
-
-<Method name="GetCities">
+<Method name="GetOrder">
 <Description>
-Method="GET" Url="/json/city/:startsWith"</Description>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Получить заявку по ИД</Description>
 <ClassMethod>1</ClassMethod>
-<FormalSpec>word:%String</FormalSpec>
+<FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	if $L(word) < 2 quit $$$OK
+	set st = $$$OK
 	
-	set proxyItems = ##class(%ListOfObjects).%New()	
-	set lang = $$$SessionLanguage
-	set word = word_"%"
-	
-	&sql(DECLARE RegionCurr CURSOR FOR 
-		 	 SELECT TOP 500 reg.ID As id, ltV.Value As name, reg.ParentRegion->Name->Value as parentName, reg.ParentRegion->ParentRegion->Name->Value
-		 	 FROM Sti_Data_Localization.LTextValue as ltV
-		 	 INNER JOIN 
-		 	 Sti_Data.Region as reg ON reg.Name = ltV.LText
-			 WHERE reg.HLevel = 2 AND ltV.Lang = :lang AND ltV.Value LIKE :word
-			 ORDER BY name, parentName)	
-		
-	&sql(OPEN RegionCurr)
-	for  
-	{	
-		&sql(FETCH RegionCurr INTO :id, :name, :parent, :greatParent) 
-		quit:(SQLCODE '= 0)
-		set proxyItem = ##class(%ZEN.proxyObject).%New()
-		set proxyItem.id = id
-		set proxyItem.name = name
-		set proxyItem.parentName = parent
-		set proxyItem.greatParentName = greatParent
-		do proxyItems.Insert(proxyItem)
+	try{
+		do ##class(Sti.Data.Order).%OpenId(id).ConvertToProxyObject().%ToJSON()
 	}
-		
-	&sql(CLOSE RegionCurr)
+	catch(ex){
+		set st = ex.AsStatus()
+	}
 	
-	set proxyResult = ##class(%ZEN.proxyObject).%New()
-	set proxyResult.children = proxyItems
-	do proxyResult.%ToJSON()
-	    
-	q $$$OK
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="DeleteOrder">
+<Description>
+Удалить заявку по ИД</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	quit ##class(Sti.Data.Order).%DeleteId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetOrders">
+<Description>
+Все заявки</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE OrCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.Order)	
+		
+		&sql(OPEN OrCur)
+		for  
+		{	
+			&sql(FETCH OrCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.Order).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE OrCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetOrdersForGrid">
+<Description>
+Get all orders for grid</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.params, 1))
+      	
+      	set whereCondition = ""
+      	
+      	do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.Order", "Sti.Data.Order", params, whereCondition).%ToJSON()
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
 ]]></Implementation>
 </Method>
 
@@ -213,6 +198,63 @@ Method="GET" Url="/json/city/:startsWith"</Description>
 	if $$$ISERR(st) set pet = ##class(Sti.Data.PETMark).%New()
     set pet = ##class(Sti.Data.PETMark).%New()
 	set pet = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,3,.Status)
+	set intern.petMark=pet
+	
+	set intern.engMark = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,,.st)
+	if $$$ISERR(st) set eng = ##class(Sti.Data.ENGMark).%New()
+    set eng = ##class(Sti.Data.ENGMark).%New()
+	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,3,.Status)
+	set intern.engMark=eng
+		     	
+      	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
+		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
+		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
+		set intern.City=city
+		
+      	set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
+        set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		
+		$$$THROWONERROR(st, intern.%Save())
+	}
+	catch ex {
+		set st = ex.AsStatus()
+	}
+
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="CreateIntern">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	
+	try{
+		// Преобразовали входную строку JSON в объект proxyObject
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+      	
+        set intern = ##class(Sti.Data.Intern).%New()
+        
+      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.Email = $ZCONVERT(data.email, "I", "UTF8")
+      	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
+      	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
+      	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
+      	set intern.MailAgree = data.agree = $$$YES
+      	set intern.CacheScience = $ZCONVERT(data.cache, "I", "UTF8")
+      	set intern.EnsembleScience = $ZCONVERT(data.ensemble, "I", "UTF8")
+      	set intern.DeepSeeScience = $ZCONVERT(data.deepsee, "I", "UTF8")
+      	set intern.TET = data.tet
+      	set intern.BirthDay=$ZDATEH(data.birthDate, 15)
+    	
+	set intern.petMark = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,,.st)
+	if $$$ISERR(st) set pet = ##class(Sti.Data.PETMark).%New()
+    set pet = ##class(Sti.Data.PETMark).%New()
+	set pet = ##class(Sti.Data.PETMark).%OpenId("1",3,.Status)
 	set intern.petMark=pet
 	
 	set intern.engMark = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,,.st)
@@ -309,48 +351,11 @@ Get all interns for grid</Description>
 ]]></Implementation>
 </Method>
 
-<Method name="GetUniversitys">
-<Description>
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Все университеты</Description>
-<ClassMethod>1</ClassMethod>
-<ReturnType>%Status</ReturnType>
-<Implementation><![CDATA[
-	set st = $$$OK
-	
-	try{
-		set proxy = ##class(%ZEN.proxyObject).%New()
-		set proxy.children = ##class(%ListOfObjects).%New() 
-		
-		&sql(DECLARE UnCur CURSOR FOR 
-		 	 SELECT ID
-		 	 FROM Sti_Data."University")	
-		
-		&sql(OPEN UnCur)
-		for  
-		{	
-			&sql(FETCH UnCur INTO :id) 
-			quit:(SQLCODE '= 0)
-			
-			do proxy.children.Insert(##class(Sti.Data.University).%OpenId(id).ConvertToProxyObject())
-		}
-		
-		&sql(CLOSE UnCur)
-		
-		do proxy.%ToJSON()
-	}
-	catch (ex){
-		set st = ex.AsStatus()
-	}
-	
-	quit st
-]]></Implementation>
-</Method>
-
 <Method name="DeleteUniversity">
 <Description>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Удалить университет по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
@@ -721,43 +726,6 @@ Get all company for grid</Description>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[	quit ##class(Sti.Data.Internship).%DeleteId(id)
-]]></Implementation>
-</Method>
-
-<Method name="GetInternships">
-<Description>
-Все стажировка</Description>
-<ClassMethod>1</ClassMethod>
-<ReturnType>%Status</ReturnType>
-<Implementation><![CDATA[
-	set st = $$$OK
-	
-	try{
-		set proxy = ##class(%ZEN.proxyObject).%New()
-		set proxy.children = ##class(%ListOfObjects).%New() 
-		
-		&sql(DECLARE IntsCur CURSOR FOR 
-		 	 SELECT ID
-		 	 FROM Sti_Data.Internship)	
-		
-		&sql(OPEN IntsCur)
-		for  
-		{	
-			&sql(FETCH IntsCur INTO :id) 
-			quit:(SQLCODE '= 0)
-			
-			do proxy.children.Insert(##class(Sti.Data.Internship).%OpenId(id).ConvertToProxyObject())
-		}
-		
-		&sql(CLOSE IntsCur)
-		
-		do proxy.%ToJSON()
-	}
-	catch (ex){
-		set st = ex.AsStatus()
-	}
-	
-	quit st
 ]]></Implementation>
 </Method>
 
