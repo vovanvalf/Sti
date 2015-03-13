@@ -15,21 +15,16 @@ Private request processor for administrator</Description>
 <Data><![CDATA[
 <Routes>
 
-<!-- ========================================================================================================= -->
-<!-- Other                                                                                               Other -->
-<!-- ========================================================================================================= -->
-
-<!-- GET ALL, Language -->
+<!-- Получить доступные локализации -->
 <Route Method="GET" Url="/language" Call="Sti.Web.JsonUser:GetLanguages"/>
-
 
 <!-- Сохранить / создать заявку -->
 <Route Url="/order" Method="POST" Call="Sti.Web.JsonUser:SaveOrder"/> 
 
-<!-- City get -->
+<!-- Получить все города -->
 <Route Method="GET" Url="/json/city/:startsWith" Call="Sti.Web.JsonUser:GetCities"/>
 
-<!-- Получить все оценки english -->
+<!-- Получить все уровни английского -->
 <Route Url="/eng" Method="GET" Call="Sti.Web.JsonUser:GetEngMarks"/> 
 
 <!-- Получить все оценки pet -->

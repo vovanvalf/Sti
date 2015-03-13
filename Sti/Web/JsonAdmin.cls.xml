@@ -8,7 +8,7 @@ Handling of BrokerAdmin</Description>
 
 <Method name="CheckAdmin">
 <Description>
-Check access, authorization call, if needed</Description>
+Проверить права доступа, авторизация</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>isLogin:%Boolean</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -48,7 +48,7 @@ Check access, authorization call, if needed</Description>
 <Method name="GetOrder">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                   ЗАЯВКИ        //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Получить заявку по ИД</Description>
 <ClassMethod>1</ClassMethod>
@@ -117,7 +117,7 @@ Check access, authorization call, if needed</Description>
 
 <Method name="GetOrdersForGrid">
 <Description>
-Get all orders for grid</Description>
+Получить все заявки для таблицы[GRID]</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -141,9 +141,9 @@ Get all orders for grid</Description>
 <Method name="GetIntern">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                   СТАЖЁРЫ       //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Получить стажёра по ИД</Description>
+Получить стажера по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -187,24 +187,26 @@ Get all orders for grid</Description>
       	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
       	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
       	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set intern.MailAgree = data.agree = $$$YES
-      	set intern.CacheScience = $ZCONVERT(data.cache, "I", "UTF8")
-      	set intern.EnsembleScience = $ZCONVERT(data.ensemble, "I", "UTF8")
-      	set intern.DeepSeeScience = $ZCONVERT(data.deepsee, "I", "UTF8")
-      	set intern.TET = $ZCONVERT(data.tet, "I", "UTF8")
-      	set intern.BirthDay=$ZDATEH(data.birthDate, 15)
+      	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
+      	set intern.CacheExperience = $ZCONVERT(data.cacheExperience, "I", "UTF8")
+      	set intern.EnsembleExperience = $ZCONVERT(data.ensembleExperience, "I", "UTF8")
+      	set intern.DeepseeExperience = $ZCONVERT(data.deepseeExperience, "I", "UTF8")
+      	set intern.TetMark = $ZCONVERT(data.tetMark, "I", "UTF8")
+      	set intern.Chair = $ZCONVERT(data.chair, "I", "UTF8")
+      	set intern.Faculty = $ZCONVERT(data.faculty, "I", "UTF8")
+      	set intern.BirthDate=$ZDATEH(data.birthDate, 15)
     	
-	set intern.petMark = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,,.st)
-	if $$$ISERR(st) set pet = ##class(Sti.Data.PETMark).%New()
+	set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,,.st)
+	if $$$ISERR(st) {set pet = ##class(Sti.Data.PETMark).%New() set data.petMark.id=1}
     set pet = ##class(Sti.Data.PETMark).%New()
-	set pet = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,3,.Status)
-	set intern.petMark=pet
+	set pet = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,3,.Status)
+	set intern.PetMark=pet
 	
-	set intern.engMark = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,,.st)
-	if $$$ISERR(st) set eng = ##class(Sti.Data.ENGMark).%New()
+	set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
+	if $$$ISERR(st) {set eng = ##class(Sti.Data.ENGMark).%New() set data.engMark.id=1}
     set eng = ##class(Sti.Data.ENGMark).%New()
-	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,3,.Status)
-	set intern.engMark=eng
+	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
+	set intern.EngMark=eng
 		     	
       	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
 		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
@@ -225,6 +227,8 @@ Get all orders for grid</Description>
 </Method>
 
 <Method name="CreateIntern">
+<Description>
+Создать стажера из заявки</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -244,24 +248,26 @@ Get all orders for grid</Description>
       	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
       	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
       	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set intern.MailAgree = data.agree = $$$YES
-      	set intern.CacheScience = $ZCONVERT(data.cache, "I", "UTF8")
-      	set intern.EnsembleScience = $ZCONVERT(data.ensemble, "I", "UTF8")
-      	set intern.DeepSeeScience = $ZCONVERT(data.deepsee, "I", "UTF8")
-      	set intern.TET = data.tet
-      	set intern.BirthDay=$ZDATEH(data.birthDate, 15)
+      	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
+      	set intern.CacheExperience = $ZCONVERT(data.cacheExperience, "I", "UTF8")
+      	set intern.EnsembleExperience = $ZCONVERT(data.ensembleExperience, "I", "UTF8")
+      	set intern.DeepseeExperience = $ZCONVERT(data.deepseeExperience, "I", "UTF8")
+      	set intern.TetMark = $ZCONVERT(data.tetMark, "I", "UTF8")
+      	set intern.BirthDate=$ZDATEH(data.birthDate, 15)
+      	set intern.Chair = $ZCONVERT(data.chair, "I", "UTF8")
+      	set intern.Faculty = $ZCONVERT(data.faculty, "I", "UTF8")
     	
-	set intern.petMark = ##class(Sti.Data.PETMark).%OpenId(data.pet.id,,.st)
-	if $$$ISERR(st) set pet = ##class(Sti.Data.PETMark).%New()
+	set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,,.st)
+	if $$$ISERR(st) {set pet = ##class(Sti.Data.PETMark).%New() set data.petMark.id=1}
     set pet = ##class(Sti.Data.PETMark).%New()
-	set pet = ##class(Sti.Data.PETMark).%OpenId("1",3,.Status)
-	set intern.petMark=pet
+	set pet = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,3,.Status)
+	set intern.PetMark=pet
 	
-	set intern.engMark = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,,.st)
-	if $$$ISERR(st) set eng = ##class(Sti.Data.ENGMark).%New()
+	set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
+	if $$$ISERR(st) {set eng = ##class(Sti.Data.ENGMark).%New() set data.engMark.id=1}
     set eng = ##class(Sti.Data.ENGMark).%New()
-	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,3,.Status)
-	set intern.engMark=eng
+	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
+	set intern.EngMark=eng
 		     	
       	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
 		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
@@ -330,7 +336,7 @@ Get all orders for grid</Description>
 
 <Method name="GetInternsForGrid">
 <Description>
-Get all interns for grid</Description>
+Получить всех стажеров для таблицы[GRID]</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -354,7 +360,7 @@ Get all interns for grid</Description>
 <Method name="DeleteUniversity">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                УНИВЕРСИТЕТЫ        ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Удалить университет по ИД</Description>
 <ClassMethod>1</ClassMethod>
@@ -375,7 +381,6 @@ Get all interns for grid</Description>
 	
 	try{
 		set proxy = ##class(%ZEN.proxyObject).%New()
-		// Открываем универ, конвертируем в proxy(полностью) и возвращаем стажеров
 		set proxy.children = ##class(Sti.Data.University).%OpenId(unId).ConvertToProxyObject(1).Interns
 		do proxy.%ToJSON()
 	}
@@ -389,7 +394,7 @@ Get all interns for grid</Description>
 
 <Method name="GetUniversity">
 <Description>
-Получить универ по ИД</Description>
+Получить университет по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -409,7 +414,7 @@ Get all interns for grid</Description>
 
 <Method name="GetUniversitiesForGrid">
 <Description>
-Get all interns for grid</Description>
+Получить все университеты для таблицы[GRID]</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -432,7 +437,7 @@ Get all interns for grid</Description>
 
 <Method name="SaveUniversity">
 <Description>
-Создать / сохранить универ</Description>
+Создать / сохранить университет</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -481,9 +486,9 @@ Get all interns for grid</Description>
 <Method name="GetCompanies">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                   КОМПАНИИ        ////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Все компания</Description>
+Все компании</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -520,7 +525,7 @@ Get all interns for grid</Description>
 
 <Method name="DeleteCompany">
 <Description>
-Удалить компания по ИД</Description>
+Удалить компанию по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -530,7 +535,7 @@ Get all interns for grid</Description>
 
 <Method name="GetCompanyInternship">
 <Description>
-Все стажировки компания</Description>
+Все стажировки компании</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>coId:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -553,7 +558,7 @@ Get all interns for grid</Description>
 
 <Method name="GetCompany">
 <Description>
-Получить компания по ИД</Description>
+Получить компанию по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -573,7 +578,7 @@ Get all interns for grid</Description>
 
 <Method name="GetCompaniesForGrid">
 <Description>
-Get all company for grid</Description>
+Получить все компании для таблицы[GRID]</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -596,7 +601,7 @@ Get all company for grid</Description>
 
 <Method name="SaveCompany">
 <Description>
-Создать / сохранить компания</Description>
+Создать / сохранить компанию</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -642,9 +647,9 @@ Get all company for grid</Description>
 <Method name="GetInternship">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////                  СТАЖИРОВКИ        ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Получить стажировка по ИД</Description>
+Получить стажировку по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -664,7 +669,7 @@ Get all company for grid</Description>
 
 <Method name="SaveInternship">
 <Description>
-Создать / сохранить стажировка</Description>
+Создать / сохранить стажировку</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -721,7 +726,7 @@ Get all company for grid</Description>
 
 <Method name="DeleteInternship">
 <Description>
-Удалить стажировка по ИД</Description>
+Удалить стажировку по ИД</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>id:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -731,7 +736,7 @@ Get all company for grid</Description>
 
 <Method name="GetInternshipsForGrid">
 <Description>
-Get all internship for grid</Description>
+Получить все стажировки для таблицы[GRID]</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[

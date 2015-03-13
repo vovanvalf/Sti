@@ -2,19 +2,19 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/OrderCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcdddd
 
 /*===========================================================================================
 Заявка. Изменение/Добавление
 ===========================================================================================*/
 
 controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionSrvc, OrderSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc){
-   $scope.page = {order:{}};
+    $scope.menu.selectMenu($scope.menu.pages.order);
+    $scope.page = {order:{}};
 	$scope.cities = [];
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Редактирование стажера";
+          $scope.page.formCaption = "Редактирование заявки";
           $scope.page.formBtnSubmitName = "Сохранить";
           $scope.page.loadOrder($routeParams.id);        
       }
@@ -33,7 +33,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
           }
       }
       
-      // Загрузить универы
+      // Загрузить университеты
       $scope.page.loadUniversity();
       $scope.page.loadInternship();
       $scope.page.loadEngMarks();
@@ -45,7 +45,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
       OrderSrvc.get(id).then(
           function(data){
               $scope.page.order = data;
-              $scope.page.order.agree=$scope.page.order.agree == 1;
+              $scope.page.order.isInNewsletter=$scope.page.order.isInNewsletter == 1;
              
           },
           function(data, status, headers, config){
@@ -53,7 +53,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
           });       
    };
 
-   // Загрузить все универы
+   // Загрузить все университеты
   $scope.page.loadUniversity = function(id){
       UniversitySrvc.getAll().then(
           function(data){
@@ -63,6 +63,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
+   
    // Загрузить все стажировки
   $scope.page.loadInternship = function(id){
       InternshipSrvc.getAll().then(
@@ -74,7 +75,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
           });      
    };
 	
-  // Загрузить все eng
+  // Загрузить все уровни английского
   $scope.page.loadEngMarks = function(id){
       MarksSrvc.getEngAll().then(
           function(data){
@@ -84,7 +85,8 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
-  // Загрузить все pet
+   
+  // Загрузить все оценки pet
   $scope.page.loadPetMarks = function(id){
       MarksSrvc.getPetAll().then(
           function(data){
@@ -94,6 +96,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
+   
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
       OrderSrvc.save($scope.page.order).then(
@@ -101,7 +104,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               var msg = 'Изменения сохранены.';
 
               if (!$routeParams.id){
-                  msg = 'Стажер добавлен.';
+                  msg = 'Заявка добавлена.';
                   $scope.page.order = {};                        
               }
 
@@ -113,6 +116,8 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
+   
+   // Загрузить города
     $scope.loadCities = function(startsWith){       
         if(!startsWith || startsWith.length == 0)
             $scope.cities = [];
@@ -128,6 +133,8 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
+    
    $scope.page.init(); 
 });
 

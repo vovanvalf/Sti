@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.Employee">
+<Description>
+Сотрудники</Description>
 <Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63527,76710.695998</TimeCreated>
 
@@ -43,8 +45,6 @@
 </Property>
 
 <Method name="ConvertToProxyObject">
-<Description>
-Convert to proxyObject (for JSON)</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()

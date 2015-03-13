@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.PETMark">
+<Description>
+Preliminary English Test(PET)</Description>
 <Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63585,81052.906738</TimeCreated>
 
 <Property name="Value">
+<Description>
+Значение оценки</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
@@ -18,5 +22,22 @@
 	quit proxy
 ]]></Implementation>
 </Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.PETMarkD</DataLocation>
+<DefaultData>PETMarkDefaultData</DefaultData>
+<IdLocation>^Sti.Data.PETMarkD</IdLocation>
+<IndexLocation>^Sti.Data.PETMarkI</IndexLocation>
+<StreamLocation>^Sti.Data.PETMarkS</StreamLocation>
+<Data name="PETMarkDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Value</Value>
+</Value>
+</Data>
+</Storage>
 </Class>
 </Export>

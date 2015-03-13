@@ -9,18 +9,17 @@ do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
-	do ..KillThemAll()
+    do ..KillThemAll()
 
-	//do ##class(Sti.Utils.Msg).Init()
  	do ##class(Sti.Data.Localization.Translation).Init()
  	do ##class(Sti.Utils.Init.LTextLanguage).Import()
  	do ##class(Sti.Utils.Init.EngMarkInit).Import()
  	do ##class(Sti.Utils.Init.PetMarkInit).Import()
  	do ##class(Sti.Utils.Init.Region).Import()
- 	do ##class(Sti.Utils.Init.Employee).Import()
  	do ##class(Sti.Utils.Init.University).Import()
  	do ##class(Sti.Utils.Init.Company).Import()
  	do ##class(Sti.Utils.Init.Internship).Import()
+ 	do ##class(Sti.Utils.Init.OrderInit).Import()
  	do ##class(Sti.Utils.Init.Intern).Import()
  	
  	
@@ -38,6 +37,7 @@ do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
 	do $CLASSMETHOD("Sti.Data.Internship", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Company", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Intern", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Order", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.ENGMark", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.PETMark", "%KillExtent")
 	do $CLASSMETHOD("Sti.Data.Region", "%KillExtent")

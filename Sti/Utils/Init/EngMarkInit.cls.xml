@@ -14,20 +14,32 @@
 <Implementation><![CDATA[
 	w !,"=== "_..#PClassName_" ==="
 	set mark = ##class(Sti.Data.ENGMark).%New()
-	set mark.Value="Pre-Intermediate"
-	set mark.Code=1
-	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
-	
-	w !,"=== "_..#PClassName_" ==="
-	set mark = ##class(Sti.Data.ENGMark).%New()
-	set mark.Value="Upper-Elementary"
-	set mark.Code=1
+	set mark.Value="Unspecified"
 	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
 	
 	w !,"=== "_..#PClassName_" ==="
 	set mark = ##class(Sti.Data.ENGMark).%New()
 	set mark.Value="Elementary"
-	set mark.Code=1
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="Preintermediate"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+		w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="InterMediate"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="UpperIntermediate"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="Fluent"
 	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
 ]]></Implementation>
 </Method>

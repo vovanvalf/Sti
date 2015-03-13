@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/internship.csp" application="/csp/sti/" default="1"><![CDATA[
+<!-- Страница редактирования/добавления стажировок-->
 <div class="row-fluid">
 	<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
 	    <div class="span10">

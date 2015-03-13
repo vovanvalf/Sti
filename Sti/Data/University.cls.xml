@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.University">
-<Super>%Persistent,%XML.Adaptor,%Populate</Super>
+<Description>
+Университеты</Description>
+<Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63527,76710.907034</TimeCreated>
 
 <Property name="FullName">
 <Description>
-Нужно добавить кафедру и факультет. Создать классы для кафедры и факультета и сделать зависимость "один ко многим" соответственно
-
 Полное наименование университета</Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
@@ -77,36 +77,23 @@ Cтажёры</Description>
 </Property>
 
 <Method name="ConvertToProxyObject">
-<Description>
-Convert to proxyObject (for JSON)</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
 	set proxy.address = ..Address.Value
 	set proxy.city = ..City.ConvertToProxyObject()
-	
 	set proxy.curator = ..Curator.ConvertToProxyObject()
 	set proxy.fullName = ..FullName.Value
 	set proxy.shortName = ..ShortName.Value
-	set proxy.web = ..Web
-	
-	//вывод стажеров университета
-	//set proxy.interns = ##class(%ListOfObjects).%New()
-	
-	/*set key = ""
-	for i=1:1:..Interns.Count(){
-		set key = ..Interns.Next(key)
-		do proxy.interns.Insert(..Interns.GetAt(key).ConvertToProxyObject())
-	}*/
-	
+	set proxy.web = ..Web	
 	set proxy.employees = ##class(%ListOfObjects).%New()
-	set key = ""
+	/*set key = ""
 	for i=1:1:..Contacts.Count()
 	{
 		set key = ..Contacts.Next(key)
 		do proxy.employees.Insert(..Contacts.GetAt(key).ConvertToProxyObject())
-	}
+	}*/
 
     quit proxy
 ]]></Implementation>

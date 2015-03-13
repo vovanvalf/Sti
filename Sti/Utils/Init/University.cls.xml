@@ -14,19 +14,18 @@
 	w !,"=== "_..#PClassName_" ==="
 	
 	set university = ##class(Sti.Data.University).%New()
-	set university.FullName = ##class(Sti.Data.Localization.LText).Create("Институт Имени Сорокина")
-	set university.ShortName = ##class(Sti.Data.Localization.LText).Create("ИИС")
-	set university.Address = ##class(Sti.Data.Localization.LText).Create("Город М.")
-	set university.Web = "www.ya.ru"
-	
-	w !, $CASE($$$ISERR(university.%Save()), 1: "Ошибка! Универ не создан!",:"Универ создан")
+	set university.FullName = ##class(Sti.Data.Localization.LText).Create("Институт Информационных технологий")
+	set university.ShortName = ##class(Sti.Data.Localization.LText).Create("ИИТ")
+	set university.Address = ##class(Sti.Data.Localization.LText).Create("Ленина, 9")
+	set university.Web = "www.iit.ru"
 	
 	set curator = ##class(Sti.Data.Employee).%New()
-	set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Петров", "Sti.Data.Localization.Translation;PersonLTextValue")
-	set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Казаков", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Валерий", "Sti.Data.Localization.Translation;PersonLTextValue")
 	set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
-	set curator.Email = "petorv@mainuniversity.com"
-	set curator.Phone = "000"
+	set curator.Email = "kazakv@mainuniversity.com"
+	set curator.Phone = "20-300-200"
+	set university.Curator = curator
 	
 	set city = ##class(Sti.Data.Region).%New()
 	set city = ##class(Sti.Data.Region).%OpenId("00077B9A-5B0C-49A0-9132-8C2D0D0112AF",3,.Status)
@@ -34,13 +33,10 @@
 	
 	set employees = ##class(%ArrayOfObjects).%New() 
 	set employee = ##class(Sti.Data.Employee).%OpenId("1",3,.Status) 
-	
 	do employees.SetAt(employee,"BEABA77F-25FE-40B1-AF38-99A21742796B")
 	set university.Contacts=employees
 	
-	
-	set university.Curator = curator
-	w !, $CASE($$$ISERR(curator.%Save()) || $$$ISERR(university.%Save()), 1: "Ошибка! Контакт  не создан!",:"Контакт создан")
+	w !, $CASE($$$ISERR(curator.%Save()) || $$$ISERR(university.%Save()), 1: "Ошибка! Университет  не создан!",:"Университет создан")
 	
 	quit $$$OK
 ]]></Implementation>

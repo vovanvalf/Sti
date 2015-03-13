@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/InternshipCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcdddd
+
 
 /*===========================================================================================
 Стажировка. Изменение/Добавление
@@ -76,6 +76,8 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
+   
+    // Загрузить города
 	$scope.loadCities = function(startsWith){       
         if(!startsWith || startsWith.length == 0)
             $scope.cities = [];
@@ -91,6 +93,7 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
    $scope.page.init(); 
 });
 

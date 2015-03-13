@@ -8,22 +8,23 @@
 
 servicesModule.factory('UniversitySrvc', function(RESTSrvc) {    
     return {
-        /* Сохранить / создать универ */
+        /* Сохранить / создать университет */
         save: function(university){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/university', data: university});
         },
-        /* Удалить универ по ИД */
+        /* Удалить университет по ИД */
         remove: function(id){
             return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.admin + '/university/' + id});
         },
-        /* Получить универ по ИД */
+        /* Получить университет по ИД */
         get: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/university/' + id});
         },
-        /* Получить все универы */
+        /* Получить все университеты */
         getAll: function(){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.user + '/university'});
         },
+        /* Получить все университеты для grid */
          getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 
@@ -36,7 +37,7 @@ servicesModule.factory('UniversitySrvc', function(RESTSrvc) {
             
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/university/grid', data: obj});
         },
-        /* Получить всех стажеров универа */
+        /* Получить всех стажеров университета */
         getInterns: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/university/' + id + '/intern'});
         }

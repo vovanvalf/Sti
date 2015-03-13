@@ -2,7 +2,6 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/InternCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcdddd
 
 /*===========================================================================================
 Стажер. Изменение/Добавление
@@ -11,6 +10,7 @@
 controllersModule.controller('InternCtrl', function($scope, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc){
    $scope.page = {intern:{}};
 	$scope.cities = [];
+	
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
@@ -33,7 +33,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
           }
       }
       
-      // Загрузить универы
+      // Загрузить университеты
       $scope.page.loadUniversity();
       $scope.page.loadInternship();
       $scope.page.loadEngMarks();
@@ -45,7 +45,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
       InternSrvc.get(id).then(
           function(data){
               $scope.page.intern = data;
-              $scope.page.intern.agree=$scope.page.intern.agree == 1;
+              $scope.page.intern.isInNewsletter=$scope.page.intern.isInNewsletter == 1;
              
           },
           function(data, status, headers, config){
@@ -74,7 +74,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
           });      
    };
 	
-  // Загрузить все eng
+  // Загрузить все уровни английского
   $scope.page.loadEngMarks = function(id){
       MarksSrvc.getEngAll().then(
           function(data){
@@ -84,7 +84,8 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
-  // Загрузить все pet
+   
+  // Загрузить все оценки pet
   $scope.page.loadPetMarks = function(id){
       MarksSrvc.getPetAll().then(
           function(data){
@@ -94,6 +95,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
+   
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
       InternSrvc.save($scope.page.intern).then(
@@ -113,6 +115,8 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
+    
+    // Загрузить города
     $scope.loadCities = function(startsWith){       
         if(!startsWith || startsWith.length == 0)
             $scope.cities = [];
@@ -128,6 +132,8 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, Region
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
+    
    $scope.page.init(); 
 });
 

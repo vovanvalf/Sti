@@ -2,7 +2,6 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/services/RegionSrvc.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//dddв
 
 /*===========================================================================================
 Регионы, города

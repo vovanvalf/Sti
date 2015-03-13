@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/internships.csp" application="/csp/sti/" default="1"><![CDATA[
+<!-- Страница стажировок -->
 <div class="row-fluid">
 	<div class="span1">
 	</div>

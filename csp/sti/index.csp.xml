@@ -50,7 +50,7 @@
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">  
-              <a class="brand" ng-href="{{menu.pages.internships.url}}" ng-bind="'Система стажёров'|localize"></a>
+              <a class="brand" ng-href="{{menu.pages.order.url}}" ng-bind="'Система стажёров'|localize"></a>
     
               <div class="nav-responsive-collapse">
                 <ul class="nav">

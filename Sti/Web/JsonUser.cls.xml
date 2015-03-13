@@ -6,7 +6,7 @@
 
 <Method name="GetCities">
 <Description>
-Method="GET" Url="/json/city/:startsWith"</Description>
+Получить все города</Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>word:%String</FormalSpec>
 <ReturnType>%Status</ReturnType>
@@ -50,7 +50,7 @@ Method="GET" Url="/json/city/:startsWith"</Description>
 
 <Method name="GetLanguages">
 <Description>
-All System languages for combobox</Description>
+Получить доступные локализации</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -117,17 +117,19 @@ All System languages for combobox</Description>
       	set order.Phone = $ZCONVERT(data.phone, "I", "UTF8")
       	set order.Skype = $ZCONVERT(data.skype, "I", "UTF8")
       	set order.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set order.MailAgree = data.agree = $$$YES
-      	set order.CacheScience = $ZCONVERT(data.cache, "I", "UTF8")
-      	set order.EnsembleScience = $ZCONVERT(data.ensemble, "I", "UTF8")
-      	set order.DeepSeeScience = $ZCONVERT(data.deepsee, "I", "UTF8")
-      	set order.BirthDay=$ZDATEH(data.birthDate, 15)
+      	set order.IsInNewsletter = data.isInNewsletter = $$$YES
+      	set order.CacheExperience = $ZCONVERT(data.cacheExperience, "I", "UTF8")
+      	set order.EnsembleExperience = $ZCONVERT(data.ensembleExperience, "I", "UTF8")
+      	set order.DeepseeExperience = $ZCONVERT(data.deepseeExperience, "I", "UTF8")
+      	set order.BirthDate=$ZDATEH(data.birthDate, 15)
+      	set order.Chair = $ZCONVERT(data.chair, "I", "UTF8")
+      	set order.Faculty = $ZCONVERT(data.faculty, "I", "UTF8")
     		
-	set order.engMark = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,,.st)
-	if $$$ISERR(st) set eng = ##class(Sti.Data.ENGMark).%New()
+	set order.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
+	if $$$ISERR(st) {set eng = ##class(Sti.Data.ENGMark).%New() set data.engMark.id=1}
     set eng = ##class(Sti.Data.ENGMark).%New()
-	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.eng.id,3,.Status)
-	set order.engMark=eng
+	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
+	set order.EngMark=eng
 		     	
       	set order.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
 		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
@@ -148,6 +150,8 @@ All System languages for combobox</Description>
 </Method>
 
 <Method name="GetEngMarks">
+<Description>
+Получить все уровни английского</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -183,6 +187,8 @@ All System languages for combobox</Description>
 </Method>
 
 <Method name="GetPetMarks">
+<Description>
+Получить все оценки pet</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
@@ -256,7 +262,7 @@ All System languages for combobox</Description>
 
 <Method name="GetInternships">
 <Description>
-Все стажировка</Description>
+Все стажировки</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.OrderInit">
+<Super>BaseInit</Super>
+<TimeCreated>63624,5734.463775</TimeCreated>
+
+<Parameter name="PClassName">
+<Default>Order</Default>
+</Parameter>
+
+<Method name="Import">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	w !,"=== "_..#PClassName_" ==="
+	
+	set order = ##class(Sti.Data.Order).%New()
+	set order.LastName = ##class(Sti.Data.Localization.LText).Create("Сагалаков", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set order.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set order.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set order.Email = "ivanpetro@mainuniversity.com"
+	set order.Phone = "22-00-90"
+	set order.BirthDate = $ZDATEH("1992-01-21", 15)
+	set order.Skype = "superman"
+	set order.Resume = "www.resumehub.com/id2000/resume1.pdf"
+	set order.IsInNewsletter = 1
+	set order.CacheExperience = "Нет"
+	set order.DeepseeExperience="Небольшой"
+	set order.EnsembleExperience ="2 года разработки"
+	set order.Chair="Физики"
+	set order.Faculty="Физический"
+	
+	set ENG = ##class(Sti.Data.ENGMark).%New()
+	set ENG = ##class(Sti.Data.ENGMark).%OpenId("1",3,.Status)
+	set order.EngMark=ENG
+	
+	set city = ##class(Sti.Data.Region).%New()
+	set city = ##class(Sti.Data.Region).%OpenId("000437E3-2814-46EF-814D-190C63E54B6F",3,.Status)
+	set order.City=city
+	
+	
+	set univer = ##class(Sti.Data.University).%New()
+	set univer= ##class(Sti.Data.University).%OpenId("1",3,.Stats)
+	set order.University= univer
+	
+	set internship = ##class(Sti.Data.Internship).%New()
+	set internship= ##class(Sti.Data.Internship).%OpenId("1",3,.Stats)
+	set order.Internship= internship
+	
+	w !, $CASE($$$ISERR(order.%Save()), 1: "Ошибка! Стажёр не создан!",:"Стажёр создан")
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+</Class>
+</Export>

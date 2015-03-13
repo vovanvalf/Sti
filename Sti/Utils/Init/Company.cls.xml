@@ -15,29 +15,21 @@
 	w !,"=== "_..#PClassName_" ==="
 	
 	set company = ##class(Sti.Data.Company).%New()
-	set company.FullName = ##class(Sti.Data.Localization.LText).Create("Газпром")
-	set company.ShortName = ##class(Sti.Data.Localization.LText).Create("ГазПром")
-	set company.LegalAddress = ##class(Sti.Data.Localization.LText).Create("Улица Пушкина")
-	set company.MailAddress = "forpartner@gazprom.ru"
-	set company.WebSite="www.gazprom.ru"
-	
-	
+	set company.FullName = ##class(Sti.Data.Localization.LText).Create("Google")
+	set company.ShortName = ##class(Sti.Data.Localization.LText).Create("Google")
+	set company.LegalAddress = ##class(Sti.Data.Localization.LText).Create("Мира, 6")
+	set company.MailAddress = "forpartner@google.ru"
+	set company.WebSite="www.google.ru"
 	
 	set curator = ##class(Sti.Data.Employee).%New()
 	set curator.LastName = ##class(Sti.Data.Localization.LText).Create("Иванов", "Sti.Data.Localization.Translation;PersonLTextValue")
-	set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
+	set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Олег", "Sti.Data.Localization.Translation;PersonLTextValue")
 	set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Андреевич", "Sti.Data.Localization.Translation;PersonLTextValue")
-	set curator.Email = "ivanivan@maincompany.com"
+	set curator.Email = "ivanandr@google.com"
 	set curator.Phone = "23-23-24"
 	set company.Contact = curator
 	
-	/*set employees = ##class(%ArrayOfObjects).%New() 
-	set employee = ##class(Sti.Data.Employee).%OpenId("1",3,.Status) 
-	do employees.SetAt(employee,"BEABA77F-25FE-40B1-AF38-99A21742796B")
-	w !, $CASE($$$ISERR(curator.%Save()) || $$$ISERR(company.%Save()), 1: "Ошибка! Контакт  не создан!",:"Контакт создан")
-	
-	set company.Employees=employees*/
-	w !, $CASE($$$ISERR(company.%Save()), 1: "Ошибка! Компания не создан!",:"Компания создан")
+	w !, $CASE($$$ISERR(company.%Save()), 1: "Ошибка! Компания не создана!",:"Компания создана")
 	
 	quit $$$OK
 ]]></Implementation>

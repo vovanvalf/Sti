@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.Internship">
-<Super>%Persistent</Super>
+<Description>
+Стажировка</Description>
+<Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63606,78099.288893</TimeCreated>
 
 <Property name="Name">
 <Description>
-Name</Description>
+Название стажировки </Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
@@ -14,7 +16,7 @@ Name</Description>
 
 <Property name="DateBegin">
 <Description>
-Date of begin</Description>
+Дата начала</Description>
 <Type>%Date</Type>
 <Required>1</Required>
 <Parameter name="FORMAT" value="3"/>
@@ -22,7 +24,7 @@ Date of begin</Description>
 
 <Property name="DateEnd">
 <Description>
-Date of end </Description>
+Дата окончания</Description>
 <Type>%Date</Type>
 <Required>1</Required>
 <Parameter name="FORMAT" value="3"/>
@@ -30,41 +32,41 @@ Date of end </Description>
 
 <Property name="MaxPeople">
 <Description>
-MaxPeople</Description>
+Количество участников</Description>
 <Type>%Integer</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="IsInUse">
 <Description>
-Активная</Description>
+Активность</Description>
 <Type>%Boolean</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="Curator">
 <Description>
-Curator</Description>
+Куратор</Description>
 <Type>Employee</Type>
 </Property>
 
 <Property name="City">
 <Description>
-City of Intership</Description>
+Город, в котором стажировка проходит</Description>
 <Type>Region</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="Street">
 <Description>
-Address</Description>
+Улица</Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="NumberOfStudent">
 <Description>
-Количество свободных мест</Description>
+Количество студентов в данный момент</Description>
 <Type>%Integer</Type>
 <Calculated>1</Calculated>
 <SqlComputeCode>set {NumberOfStudent} = ##class({%%CLASSNAME}).GetNumberOfStudent({%%ID})</SqlComputeCode>
@@ -73,7 +75,7 @@ Address</Description>
 
 <Property name="Room">
 <Description>
-Room</Description>
+Аудитория</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
@@ -84,10 +86,6 @@ Room</Description>
 <Inverse>Interships</Inverse>
 <Relationship>1</Relationship>
 </Property>
-
-<Index name="CompanyIndex">
-<Properties>Company</Properties>
-</Index>
 
 <Property name="shpInterns">
 <Type>Sti.Data.Intern</Type>
@@ -103,12 +101,11 @@ Room</Description>
 <Relationship>1</Relationship>
 </Property>
 
+<Index name="CompanyIndex">
+<Properties>Company</Properties>
+</Index>
+
 <Method name="ConvertToProxyObject">
-<Description>
-Latitude
-Property Latitude As %Float [ Required ];
-Longitude
-Property Longitude As %Float [ Required ];</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
@@ -124,8 +121,6 @@ Property Longitude As %Float [ Required ];</Description>
 	set proxy.street=..Street.Value
 	set proxy.room=..Room
 	set proxy.freeSeats=..MaxPeople-..NumberOfStudent
-	//set proxy.latitude=..Latitude
-	//set proxy.longitude=..Longitude
 	set proxy.company=..Company.ConvertToProxyObject()
 	quit proxy
 ]]></Implementation>
@@ -139,16 +134,11 @@ Free seats in the internship</Description>
 <ReturnType>%Integer</ReturnType>
 <Implementation><![CDATA[
 	set count = 0
-	
-	/*&sql(SELECT COUNT(ID) As TotalCount INTO :count
-	 	 FROM Sti_Data.Participant 
-		 WHERE Competition = :internshipId AND IsActive = 1)*/
-		 
+	 
 	&sql(SELECT COUNT(ID) As TotalCount INTO :count
 		 FROM Sti_Data.Intern
 		WHERE Internship = :internshipId)	 
 		 
-	
 	quit count
 ]]></Implementation>
 </Method>

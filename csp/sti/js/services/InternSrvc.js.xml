@@ -12,6 +12,7 @@ servicesModule.factory('InternSrvc', function(RESTSrvc) {
         save: function(intern){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/intern', data: intern});
         },
+        /* Создать стажера из заявки */
         create: function(intern){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/createintern', data: intern});
         },
@@ -23,6 +24,7 @@ servicesModule.factory('InternSrvc', function(RESTSrvc) {
         get: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/intern/' + id});
         },
+        /* Получить всех стажеров для grid */
         getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 

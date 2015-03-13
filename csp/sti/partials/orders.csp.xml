@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/orders.csp" application="/csp/sti/" default="1"><![CDATA[
+<!-- Страница заявок-->
 <div class="row-fluid">
 	<div class="span1">
 	</div>
@@ -60,15 +61,15 @@
 				<p><span class="spnTitle" ng-bind="'Телефон'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].phone"></span></p>
 				<p><span class="spnTitle" ng-bind="'Skype'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].skype"></span></p>
 				<p><span class="spnTitle" ng-bind="'Резюме'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].resume"></span></p>
-				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
-				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:</p> <!--Это свойство нужно реализовать на сервере, в классе university!-->
-				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].agree"></span></p><!--Нужно ли оно здесь?--> 
+				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:<span ng-bind="ordersTable.selectedItems[0].chair"></span></p>
+				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:<span ng-bind="ordersTable.selectedItems[0].faculty"></span></p>
+				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].isInNewsletter"></span></p><!--Нужно ли оно здесь?--> 
             </div>
 			<div class="span6">
-				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].eng.value"></span></p>
-				<p><span class="spnTitle" ng-bind="'Опыт Cache'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].cache"></span></p> 
-                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].ensemble"></span></p> 
-				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].deepsee"></span></p>
+				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].engMark.value"></span></p>
+				<p><span class="spnTitle" ng-bind="'Опыт Cache'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].cacheExperience"></span></p> 
+                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].ensembleExperience"></span></p> 
+				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].deepseeExperience"></span></p>
 			</div>
 		</tab>
 	</tabset>

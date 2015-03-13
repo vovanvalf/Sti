@@ -15,10 +15,12 @@ Private request processor for administrator</Description>
 <Data><![CDATA[
 <Routes>
 
-<!-- Check access, authorization call, if needed -->
+<!-- Проверить права доступа, авторизация -->
 <Route Method="GET" Url="/checkAdmin/:isLogin" Call="Sti.Web.JsonAdmin:CheckAdmin"/>
 
-<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+
+
 <!-- Получить все заявки -->
 <Route Url="/order" Method="GET" Call="Sti.Web.JsonAdmin:GetOrders"/> 
 
@@ -28,14 +30,14 @@ Private request processor for administrator</Description>
 <!-- Удалить заявку -->
 <Route Url="/order/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteOrder"/> 
 
-<!-- GET ALL [GRID], Order -->
+<!-- Получить все заявки для таблицы[GRID] -->
 <Route Method="POST" Url="/order/grid" Call="Sti.Web.JsonAdmin:GetOrdersForGrid"/>
 
 <!-- Создать стажера по заявке -->
 <Route Url="/createintern" Method="POST" Call="Sti.Web.JsonAdmin:CreateIntern"/> 
 
 
-<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
 <!-- Получить всех стажеров -->
 <Route Url="/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetInterns"/> 
 
@@ -48,11 +50,10 @@ Private request processor for administrator</Description>
 <!-- Удалить стажера -->
 <Route Url="/intern/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteIntern"/> 
 
-<!-- GET ALL [GRID], Intern -->
+<!-- Получить всех стажеров для таблицы[GRID] -->
 <Route Method="POST" Url="/intern/grid" Call="Sti.Web.JsonAdmin:GetInternsForGrid"/>
 
 
-<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
 <!-- Все стажеры университета -->
@@ -67,16 +68,16 @@ Private request processor for administrator</Description>
 <!-- Удалить университет -->
 <Route Url="/university/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteUniversity"/> 
 
-<!-- GET ALL [GRID], Intern -->
+<!-- Получить все университеты для таблицы[GRID] -->
 <Route Method="POST" Url="/university/grid" Call="Sti.Web.JsonAdmin:GetUniversitiesForGrid"/>
 
 
 
-<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
 <!-- Все компании -->
 <Route Url="/company" Method="GET" Call="Sti.Web.JsonAdmin:GetCompanies"/> 
 
-<!-- Все стажеровки компании -->
+<!-- Все стажировки компании -->
 <Route Url="/company/:id/internship" Method="GET" Call="Sti.Web.JsonAdmin:GetCompanyInternship"/> 
 
 <!-- Получить компанию по ИД -->
@@ -88,12 +89,11 @@ Private request processor for administrator</Description>
 <!-- Удалить компанию -->
 <Route Url="/company/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteCompany"/> 
 
-<!-- GET ALL [GRID], Companies -->
+<!-- Получить все компании для таблицы[GRID] -->
 <Route Method="POST" Url="/company/grid" Call="Sti.Web.JsonAdmin:GetCompaniesForGrid"/>
 
 
 
-<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 
 <!-- Получить стажировку по ИД -->
@@ -105,14 +105,8 @@ Private request processor for administrator</Description>
 <!-- Удалить стажировку -->
 <Route Url="/internship/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteInternship"/> 
 
-<!-- GET ALL [GRID], Internship -->
+<!-- Получить все стажировки для таблицы[GRID] -->
 <Route Method="POST" Url="/internship/grid" Call="Sti.Web.JsonAdmin:GetInternshipsForGrid"/>
-
-
-<!--///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
-<!-- Получить все оценки tet -->
-<Route Url="/tet" Method="GET" Call="Sti.Web.JsonAdmin:GetTetMarks"/>
-
 
 </Routes>
 ]]></Data>

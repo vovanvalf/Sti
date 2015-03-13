@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/CompanyCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcdddd
+
 
 /*===========================================================================================
 Компания. Изменение/Добавление
@@ -14,12 +14,12 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, Compa
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Редактирование университета";
+          $scope.page.formCaption = "Редактирование компании";
           $scope.page.formBtnSubmitName = "Сохранить";
           $scope.page.loadCompany($routeParams.id);        
       }
       else{
-          $scope.page.formCaption = "Добавление университета";
+          $scope.page.formCaption = "Добавление компании";
           $scope.page.formBtnSubmitName = "Добавить";
 
 

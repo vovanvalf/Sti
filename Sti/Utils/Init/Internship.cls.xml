@@ -15,10 +15,10 @@
 	w !,"=== "_..#PClassName_" ==="
 	
 	set internship = ##class(Sti.Data.Internship).%New()
-	set internship.Name = ##class(Sti.Data.Localization.LText).Create("Обработка газа")
+	set internship.Name = ##class(Sti.Data.Localization.LText).Create("Алгоритмы поиска информации")
 	set internship.DateBegin=$ZDATEH("2014-05-16", 15)
 	set internship.DateEnd=$ZDATEH("2014-07-29", 15)
-	set internship.MaxPeople=3
+	set internship.MaxPeople=50
 	set internship.IsInUse=1
 	
 	set curator = ##class(Sti.Data.Employee).%New()
@@ -26,7 +26,7 @@
 	set curator.FirstName = ##class(Sti.Data.Localization.LText).Create("Иван", "Sti.Data.Localization.Translation;PersonLTextValue")
 	set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create("Петрович", "Sti.Data.Localization.Translation;PersonLTextValue")
 	set curator.Email = "master@maininternship.com"
-	set curator.Phone = "202020"
+	set curator.Phone = "20-20-20"
 	set internship.Curator = curator
 	
 	set city = ##class(Sti.Data.Region).%New()
@@ -40,7 +40,7 @@
 	set company= ##class(Sti.Data.Company).%OpenId("1",3,.Stats)
 	set internship.Company=company
 	
-	w !, $CASE($$$ISERR(internship.%Save()), 1: "Ошибка! Стажировка не создан!",:"Стажировка создан")
+	w !, $CASE($$$ISERR(internship.%Save()), 1: "Ошибка! Стажировка не создана!",:"Стажировка создана")
 	
 	
 	quit $$$OK

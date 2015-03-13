@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.Company">
+<Description>
+Компании</Description>
 <Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63606,78505.184001</TimeCreated>
 
 <Property name="Interships">
 <Description>
-Interships</Description>
+Стажеры</Description>
 <Type>Sti.Data.Internship</Type>
 <Cardinality>many</Cardinality>
 <Inverse>Company</Inverse>
@@ -15,55 +17,46 @@ Interships</Description>
 
 <Property name="FullName">
 <Description>
-Full name of organization</Description>
+Полное название организации</Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="ShortName">
 <Description>
-Short name of organization</Description>
+Сокращенное название</Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="LegalAddress">
 <Description>
-Legal address</Description>
+Адрес компании</Description>
 <Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
 </Property>
 
 <Property name="MailAddress">
 <Description>
-Mail address</Description>
+Электронная почта</Description>
 <Type>%String</Type>
 <Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="Contact">
 <Description>
-Contact person</Description>
+Контактное лицо</Description>
 <Type>Employee</Type>
 </Property>
 
 <Property name="WebSite">
 <Description>
-Web-site</Description>
+Web-сайт</Description>
 <Type>%String</Type>
 <Parameter name="MAXLEN" value="500"/>
 </Property>
 
-<UDLText name="T">
-<Content><![CDATA[
-// Relationship Employees As Sti.Data.Employee[ Cardinality = many, Inverse = Company ];
-
-]]></Content>
-</UDLText>
-
 <Method name="ConvertToProxyObject">
-<Description>
-All employees</Description>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()

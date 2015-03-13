@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.Intern">
-<Super>%Persistent,%XML.Adaptor,%Populate</Super>
+<Description>
+Стажер</Description>
+<Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63527,76710.81259</TimeCreated>
 
 <Property name="Internship">
@@ -44,7 +46,7 @@
 <Required>1</Required>
 </Property>
 
-<Property name="BirthDay">
+<Property name="BirthDate">
 <Description>
 Дата рождения стажера</Description>
 <Type>%Date</Type>
@@ -54,9 +56,6 @@
 
 <Property name="University">
 <Description>
-$ZDATE(intern.EndDate,15) сервер
-$ZDATEH(аналогично)клиент
-input type date
 Университет</Description>
 <Type>Sti.Data.University</Type>
 <Cardinality>one</Cardinality>
@@ -68,7 +67,7 @@ input type date
 
 <Property name="Phone">
 <Description>
-Телефон. переделать в числовой</Description>
+Телефон</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>
@@ -80,9 +79,9 @@ input type date
 <Required>1</Required>
 </Property>
 
-<Property name="engMark">
+<Property name="EngMark">
 <Description>
-Владение английским</Description>
+Уровень английского языка</Description>
 <Type>ENGMark</Type>
 </Property>
 
@@ -94,20 +93,20 @@ input type date
 
 <Property name="Resume">
 <Description>
-Резюме. Тип файл или ссылка(можно добавить доп. переменную) </Description>
+Резюме</Description>
 <Type>%Text</Type>
 <Required>1</Required>
 <Parameter name="MAXLEN" value="10000"/>
 </Property>
 
-<Property name="MailAgree">
+<Property name="IsInNewsletter">
 <Description>
-Согласие на получение рассылки. СДЕЛАТЬ boolean, а на клиенте - checkbox</Description>
+Согласие на получение рассылки.</Description>
 <Type>%Boolean</Type>
 <Required>1</Required>
 </Property>
 
-<Property name="CacheScience">
+<Property name="CacheExperience">
 <Description>
 Опыт Cache</Description>
 <Type>%Text</Type>
@@ -115,7 +114,7 @@ input type date
 <Parameter name="MAXLEN" value="5000"/>
 </Property>
 
-<Property name="EnsembleScience">
+<Property name="EnsembleExperience">
 <Description>
 Опыт Ensemble</Description>
 <Type>%Text</Type>
@@ -123,7 +122,7 @@ input type date
 <Parameter name="MAXLEN" value="5000"/>
 </Property>
 
-<Property name="DeepSeeScience">
+<Property name="DeepseeExperience">
 <Description>
 Опыт DeepSee</Description>
 <Type>%Text</Type>
@@ -131,20 +130,38 @@ input type date
 <Parameter name="MAXLEN" value="5000"/>
 </Property>
 
-<Property name="TET">
+<Property name="TetMark">
 <Description>
-Оценка TET Сделать как Pet!</Description>
+Оценка TET </Description>
 <Type>%String</Type>
 </Property>
 
-<Property name="petMark">
+<Property name="PetMark">
 <Description>
 Оценка PET</Description>
 <Type>PETMark</Type>
 </Property>
 
+<Property name="Chair">
+<Description>
+Кафедра </Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Faculty">
+<Description>
+Факультет</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
 <Index name="UniversityIndex">
 <Properties>University</Properties>
+</Index>
+
+<Index name="InternshipIndex">
+<Properties>Internship</Properties>
 </Index>
 
 <Method name="ConvertToProxyObject">
@@ -152,20 +169,22 @@ input type date
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
-	set proxy.birthDate = $ZDATE(..BirthDay, 3)
+	set proxy.faculty=..Faculty
+	set proxy.chair=..Chair
+	set proxy.birthDate = $ZDATE(..BirthDate, 3)
 	set proxy.firstName = ..FirstName.Value
 	set proxy.lastName = ..LastName.Value
 	set proxy.middleName = ..MiddleName.Value
 	set proxy.phone = ..Phone
 	set proxy.email = ..Email
 	set proxy.skype = ..Skype
-	set proxy.agree = ..MailAgree
-	set proxy.cache = ..CacheScience
-	set proxy.ensemble = ..EnsembleScience
-	set proxy.deepsee = ..DeepSeeScience
-	set proxy.tet = ..TET
- 	set proxy.eng = ..engMark.ConvertToProxyObject()
-	set proxy.pet = ..petMark.ConvertToProxyObject()
+	set proxy.isInNewsletter = ..IsInNewsletter
+	set proxy.cacheExperience = ..CacheExperience
+	set proxy.ensembleExperience = ..EnsembleExperience
+	set proxy.deepseeExperience = ..DeepseeExperience
+	set proxy.tetMark = ..TetMark
+ 	set proxy.engMark = ..EngMark.ConvertToProxyObject()
+	set proxy.petMark = ..PetMark.ConvertToProxyObject()
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
    	set proxy.university = ..University.ConvertToProxyObject()
@@ -173,10 +192,6 @@ input type date
    	quit proxy
 ]]></Implementation>
 </Method>
-
-<Index name="InternshipIndex">
-<Properties>Internship</Properties>
-</Index>
 
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
@@ -255,6 +270,42 @@ input type date
 </Value>
 <Value name="23">
 <Value>Internship</Value>
+</Value>
+<Value name="24">
+<Value>EngMark</Value>
+</Value>
+<Value name="25">
+<Value>PetMark</Value>
+</Value>
+<Value name="26">
+<Value>Сhair</Value>
+</Value>
+<Value name="27">
+<Value>Faculty</Value>
+</Value>
+<Value name="28">
+<Value>Chair</Value>
+</Value>
+<Value name="29">
+<Value>IsInNewsletter</Value>
+</Value>
+<Value name="30">
+<Value>BirthDate</Value>
+</Value>
+<Value name="31">
+<Value>CacheExperience</Value>
+</Value>
+<Value name="32">
+<Value>EnsembleExperience</Value>
+</Value>
+<Value name="33">
+<Value>DeepSeeExperience</Value>
+</Value>
+<Value name="34">
+<Value>DeepseeExperience</Value>
+</Value>
+<Value name="35">
+<Value>TetMark</Value>
 </Value>
 </Data>
 <Property name="%%CLASSNAME">

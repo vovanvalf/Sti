@@ -2,16 +2,17 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/OrderAcceptCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcdddd
+
 
 /*===========================================================================================
-Стажер. Изменение/Добавление
+Создание стажера из заявки. Изменение/Добавление
 ===========================================================================================*/
 
 controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc){
    $scope.page = {intern:{}};
 	$scope.cities = [];
 	$scope.idorder='';
+	
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
@@ -34,20 +35,19 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
           }
       }
       
-      // Загрузить универы
       $scope.page.loadUniversity();
       $scope.page.loadInternship();
       $scope.page.loadEngMarks();
       $scope.page.loadPetMarks();
    };
 
-   // Загрузить стажера по ИД
+   // Загрузить заявку по ИД
   $scope.page.loadOrder = function(id){
       OrderSrvc.get(id).then(
          
           function(data){
               $scope.page.intern = data;
-              $scope.page.intern.agree=$scope.page.intern.agree == 1;
+              $scope.page.intern.isInNewsletter=$scope.page.intern.isInNewsletter == 1;
               $scope.idorder=id;
           },
           function(data, status, headers, config){
@@ -65,6 +65,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
+   
    // Загрузить все стажировки
   $scope.page.loadInternship = function(id){
       InternshipSrvc.getAll().then(
@@ -76,7 +77,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
           });      
    };
 	
-  // Загрузить все eng
+  // Загрузить все уровни английского
   $scope.page.loadEngMarks = function(id){
       MarksSrvc.getEngAll().then(
           function(data){
@@ -86,7 +87,8 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
-  // Загрузить все pet
+   
+  // Загрузить все оценки pet
   $scope.page.loadPetMarks = function(id){
       MarksSrvc.getPetAll().then(
           function(data){
@@ -96,6 +98,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });      
    };
+   
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
       InternSrvc.create($scope.page.intern).then(
@@ -112,6 +115,8 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });
    };
+   
+    // Загрузить города
     $scope.loadCities = function(startsWith){       
         if(!startsWith || startsWith.length == 0)
             $scope.cities = [];
@@ -127,6 +132,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
    $scope.page.init(); 
 });
 

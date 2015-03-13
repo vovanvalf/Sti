@@ -20,6 +20,7 @@ servicesModule.factory('InternshipSrvc', function(RESTSrvc) {
         get: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/internship/' + id});
         },
+        /* Получить все стажировки для grid */
         getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 

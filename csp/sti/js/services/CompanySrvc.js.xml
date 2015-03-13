@@ -3,27 +3,29 @@
 <CSP name="sti/js/services/CompanySrvc.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 /*===========================================================================================
-Университет
+Компания
 ===========================================================================================*/
 
 servicesModule.factory('CompanySrvc', function(RESTSrvc) {    
     return {
-        /* Сохранить / создать универ */
+	    
+        /* Сохранить / создать компанию */
         save: function(company){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/company', data: company});
         },
-        /* Удалить универ по ИД */
+        /* Удалить компанию по ИД */
         remove: function(id){
             return RESTSrvc.getPromise({method: 'DELETE', url: StiSetting.admin + '/company/' + id});
         },
-        /* Получить универ по ИД */
+        /* Получить компанию по ИД */
         get: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/company/' + id});
         },
-        /* Получить все универы */
+        /* Получить все компании */
         getAll: function(){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/company'});
         },
+        /* Получить все компании для grid*/
          getAllForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, other){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 
@@ -36,7 +38,7 @@ servicesModule.factory('CompanySrvc', function(RESTSrvc) {
             
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/company/grid', data: obj});
         },
-        /* Получить всех стажеров универа */
+        /* Получить все стажировки компании */
         getInterns: function(id){
             return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/company/' + id + '/internship'});
         }

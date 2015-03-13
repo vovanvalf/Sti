@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/companies.csp" application="/csp/sti/" default="1"><![CDATA[
-<!-- Компания -->
+<!-- Страница компаний -->
 <div class="row-fluid">
 	<div class="span1">
 	</div>
@@ -45,17 +45,7 @@
 	</div>
 </div>
 <br>
-<div class="row-fluid" ng-show="page.cogrid.selected!=null">
-	<div class="span1">
-	</div>
-			<div class="span10">
-				
-				
-			</div>
-			
-	<div class="span1">
-	</div>
-</div>
+
 <!-- Если компания не выбрана(т.е. selected == udefined), то показывать сообщение -->
 <div class="row-fluid" ng-hide="companiesTable.selectedItems[0]" style="text-align: center;">
 	<i>Выберите компанию для отображения полной информации.</i>

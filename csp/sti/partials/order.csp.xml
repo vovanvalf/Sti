@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <CSP name="sti/partials/order.csp" application="/csp/sti/" default="1"><![CDATA[
-
+<!-- Страница добавления заявки-->
 <div class="row-fluid">
 <form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
 	<div class="span10">
@@ -16,10 +16,10 @@
 					<div class="accordion-inner">
 						 <div class="row-fluid">
 							<div class="span4">
-								<label class="control-label" ng-bind="'Имя'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.firstName" required></input>
 								<label class="control-label" ng-bind="'Фамилия'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.lastName" required></input>
+								<label class="control-label" ng-bind="'Имя'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.firstName" required></input>
 								<label class="control-label" ng-bind="'Отчество'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.middleName" required></input>
 								<label class="control-label" ng-bind="'Дата рождения'|localize">:</label>
@@ -36,33 +36,38 @@
 					                	  >
 					            </input>
 					            <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
-								<label class="control-label" ng-bind="'Университет'|localize">:</label>
-								<select class="span12" ng-model="page.order.university.id" ng-options="university.id as university.fullName for university in page.universities" required></select>
-					    		<label class="control-label" ng-bind="'Стажировка'|localize">:</label>
-								<select class="span12" ng-model="page.order.internship.id" ng-options="internship.id as internship.name for internship in page.internships" required></select>
-					    	</div>
-							<div class="span4">
-								<label class="control-label" ng-bind="'Email'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.email" required></input>
 								<label class="control-label" ng-bind="'Телефон'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.phone" required></input>
-							    <label class="control-label" ng-bind="'Skype'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.skype" required></input>
+					    		
+					    	</div>
+							<div class="span4">
+								<label class="control-label" ng-bind="'Университет'|localize">:</label>
+								<select class="span12" ng-model="page.order.university.id" ng-options="university.id as university.fullName for university in page.universities" required></select>
+					    	    <label class="control-label" ng-bind="'Кафедра'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.chair" required></input>
+								<label class="control-label" ng-bind="'Факультет'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.faculty" required></input>
 								<label class="control-label" ng-bind="'Резюме'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.resume" required></input>
-  								<label class="control-label" ng-bind="'Уровень английского'|localize">:</label>
-								<select class="span12" ng-model="page.order.eng.id" ng-options="eng.id as eng.value for eng in page.engmarks" required></select>
-								<label class="control-label" ng-bind="'Опыт Cache'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.cache" required></input>    
-							</div>
+								<label class="control-label" ng-bind="'Email'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.email" required></input>
+							    <label class="control-label" ng-bind="'Skype'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.skype" required></input>
+
+  								</div>
 							<div class="span4">
-							
+							    <label class="control-label" ng-bind="'Уровень английского'|localize">:</label>
+								<select class="span12" ng-model="page.order.engMark.id" ng-options="eng.id as eng.value for eng in page.engmarks" required></select>
+								<label class="control-label" ng-bind="'Опыт Cache'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.cacheExperience" required></input> 
 						        <label class="control-label" ng-bind="'Опыт DeepSee'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.deepsee" required></input>	
+								<input class="span12"  type="text" ng-model="page.order.deepseeExperience" required></input>	
 								<label class="control-label" ng-bind="'Опыт Ensemble'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.ensemble" required></input>
+								<input class="span12"  type="text" ng-model="page.order.ensembleExperience" required></input>
+							    <label class="control-label" ng-bind="'Стажировка'|localize">:</label>
+								<select class="span12" ng-model="page.order.internship.id" ng-options="internship.id as internship.name for internship in page.internships" required></select>
 								<label class="checkbox"  >
-			    					 <input type="checkbox" ng-model="page.order.agree">{{'Согласие на рассылку'|localize}}
+			    					 <input type="checkbox" ng-model="page.order.isInNewsletter">{{'Согласие на рассылку'|localize}}
 			    				</label>							 
 						   </div>
 						</div>

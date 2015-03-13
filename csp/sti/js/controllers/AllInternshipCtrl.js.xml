@@ -131,16 +131,7 @@ $scope.init = function(){
             
     };
     
-    $scope.internshipsTable.onSelect = function(item){
-        console.log('Selected row ',item);       
-    };
-
-    $scope.internshipsTable.onSelectCell = function(item, property){
-        if (!item) return;
-        property.onClickCell(item);
-    };
-
-
+    
 	$scope.init();
 });
 

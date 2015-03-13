@@ -3,7 +3,7 @@
 <CSP name="sti/js/services/MarksSrvc.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 /*===========================================================================================
-Стажер
+Оценки Pet,Eng
 ===========================================================================================*/
 
 servicesModule.factory('MarksSrvc', function(RESTSrvc) {    

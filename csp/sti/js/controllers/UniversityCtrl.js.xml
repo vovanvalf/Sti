@@ -2,7 +2,6 @@
 <Export generator="Cache" version="25">
 <CSP name="sti/js/controllers/UniversityCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
-//ddcdddd
 
 /*===========================================================================================
 Университет. Изменение/Добавление
@@ -11,6 +10,7 @@
 controllersModule.controller('UniversityCtrl', function($scope, $routeParams, RegionSrvc, UniversitySrvc ){
    $scope.page = {university:{}};
    $scope.cities = [];
+   
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
@@ -36,6 +36,7 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
               $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
           });       
    };
+   
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
       UniversitySrvc.save($scope.page.university).then(
@@ -56,6 +57,7 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
           });
    };
    
+   // Загрузить города
    $scope.loadCities = function(startsWith){       
         if(!startsWith || startsWith.length == 0)
             $scope.cities = [];

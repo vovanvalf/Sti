@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.ENGMark">
+<Description>
+Уровень английского</Description>
 <Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63585,85434.06941</TimeCreated>
 
 <Property name="Value">
+<Description>
+Значение оценки</Description>
 <Type>%String</Type>
 <Required>1</Required>
 </Property>

@@ -16,10 +16,10 @@ $scope.init = function(){
                           {name: 'Фамилия', sqlName: 'LastName->Value', isSorted: true, isSortable: true, isDown: true, isSearched: true, isSearchable: true},
                           {name: 'Имя', sqlName: 'FirstName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Отчество', sqlName: 'MiddleName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Дата рождения', sqlName: 'BirthDay', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
-                          {name: 'Университет', sqlName: 'University->FullName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Дата рождения', sqlName: 'BirthDate', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
+                          {name: 'Университет', sqlName: 'University->FullName->Value', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Город', sqlName: 'City->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-        				  {name: 'Стажировка', sqlName: 'Internship->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
+        				  {name: 'Стажировка', sqlName: 'Internship->Name->Value', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true}];
         $scope.internsTable.properties = [
         				  	{
 	        				  	name: 'lastName',
@@ -88,7 +88,7 @@ $scope.init = function(){
         $scope.internsTable.refresh();
     };
 
-    // 
+ 
     $scope.internsTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
         InternSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {}).then(
             function(data){
@@ -129,10 +129,6 @@ $scope.init = function(){
             
     };
     
-    $scope.internsTable.onSelect = function(item){
-        console.log('Selected row ',item);       
-    };
-
     $scope.internsTable.onSelectCell = function(item, property){
         if (!item) return;
         property.onClickCell(item);
