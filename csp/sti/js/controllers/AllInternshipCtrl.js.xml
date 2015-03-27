@@ -19,7 +19,7 @@ $scope.init = function(){
                           {name: 'Дата начала', sqlName: 'DateBegin', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
                           {name: 'Дата окончания', sqlName: 'DateEnd', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
                           {name: 'Количество стажёров', sqlName: 'NumberOfStudent', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
-                          {name: 'Состояние', sqlName: 'IsInUse', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
+                          {name: 'Количество свободных мест', sqlName: 'FreeSeats', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true}];
         
         $scope.internshipsTable.properties = [
         				  	{
@@ -71,7 +71,8 @@ $scope.init = function(){
                                 }
 	        				},
 	        				{
-	        				  	name: 'isInUse',
+		    
+	        				  	name: 'freeSeats',
 	        				  	cellStyle: {textAlign: 'left'},
 	        				  	cellSelectable: false,
 	        				  	getCssClass: function(item){ 
@@ -123,16 +124,19 @@ $scope.init = function(){
                 function(data){
                     $scope.internshipsTable.selectedItems = [];
                     $scope.internshipsTable.refresh();
-                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Стажировка удалена.', 'success', true);
+                    $scope.intalert = UtilsSrvc.getAlert('Готово!', 'Стажировка удалена.', 'success', true);
                 },
                 function(data, status, headers, config){
-                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                    $scope.intalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
             
     };
     
     
 	$scope.init();
+	  if (!$scope.menu.admin){
+    	$scope.menu.login();
+	};
 });
 
 ]]></CSP>

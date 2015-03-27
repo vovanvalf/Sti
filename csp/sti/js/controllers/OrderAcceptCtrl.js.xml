@@ -8,7 +8,7 @@
 Создание стажера из заявки. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc){
+controllersModule.controller('OrderAcceptCtrl', function($scope, $window, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc, $filter, UtilsSrvc){
    $scope.page = {intern:{}};
 	$scope.cities = [];
 	$scope.idorder='';
@@ -16,13 +16,13 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Добавление стажера";
-          $scope.page.formBtnSubmitName = "Добавить стажёра в таблицу";
+          $scope.page.formCaption = $filter('localize')("Добавление стажера");
+          $scope.page.formBtnSubmitName = $filter('localize')("Принять стажера");
           $scope.page.loadOrder($routeParams.id);        
       }
       else{
-          $scope.page.formCaption = "Добавление стажера";
-          $scope.page.formBtnSubmitName = "Добавить";
+          $scope.page.formCaption = $filter('localize')("Добавление стажера");
+          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
 
           // Добавление стажера в определённый университет
           if ($routeParams.unId && $routeParams.fcId){
@@ -51,7 +51,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.idorder=id;
           },
           function(data, status, headers, config){
-              $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });       
    };
 
@@ -62,7 +62,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.universities = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert =UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });      
    };
    
@@ -73,7 +73,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.internships = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert =UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
           });      
    };
 	
@@ -84,7 +84,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.engmarks = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });      
    };
    
@@ -95,7 +95,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
               $scope.page.petmarks = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });      
    };
    
@@ -107,12 +107,12 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
                   $scope.page.intern = {};                        
                   OrderSrvc.remove($scope.idorder);
 
-              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
               // Сделать форму "чистой" (блокируется кнопка)
               $scope.pageForm.$setPristine();
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });
    };
    
@@ -132,6 +132,12 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $routeParams, R
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
+    /// Отмена - возврат на предыдущую страницу
+    $scope.page.cancel = function(){
+        $window.history.back();
+    };
+    
     
    $scope.page.init(); 
 });

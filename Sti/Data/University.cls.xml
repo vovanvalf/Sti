@@ -18,7 +18,6 @@
 <Description>
 Краткое наименование университета</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -34,13 +33,13 @@
 <Description>
 Web страница</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="City">
 <Description>
 Город, в котором расположен университет</Description>
 <Type>Region</Type>
+<Required>1</Required>
 </Property>
 
 <Property name="Curator">
@@ -87,8 +86,8 @@ Cтажёры</Description>
 	set proxy.fullName = ..FullName.Value
 	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web	
-	set proxy.employees = ##class(%ListOfObjects).%New()
-	/*set key = ""
+	/*set proxy.employees = ##class(%ListOfObjects).%New()
+	set key = ""
 	for i=1:1:..Contacts.Count()
 	{
 		set key = ..Contacts.Next(key)

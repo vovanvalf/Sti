@@ -35,7 +35,6 @@
 <Description>
 Отчество</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -69,14 +68,12 @@
 <Description>
 Телефон</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="Skype">
 <Description>
 Скайп</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="EngMark">
@@ -89,13 +86,13 @@
 <Description>
 Город, в котором живёт стажер</Description>
 <Type>Region</Type>
+<Required>1</Required>
 </Property>
 
 <Property name="Resume">
 <Description>
 Резюме</Description>
 <Type>%Text</Type>
-<Required>1</Required>
 <Parameter name="MAXLEN" value="10000"/>
 </Property>
 
@@ -110,7 +107,6 @@
 <Description>
 Опыт Cache</Description>
 <Type>%Text</Type>
-<Required>1</Required>
 <Parameter name="MAXLEN" value="5000"/>
 </Property>
 
@@ -118,7 +114,6 @@
 <Description>
 Опыт Ensemble</Description>
 <Type>%Text</Type>
-<Required>1</Required>
 <Parameter name="MAXLEN" value="5000"/>
 </Property>
 
@@ -126,7 +121,6 @@
 <Description>
 Опыт DeepSee</Description>
 <Type>%Text</Type>
-<Required>1</Required>
 <Parameter name="MAXLEN" value="5000"/>
 </Property>
 
@@ -146,14 +140,12 @@
 <Description>
 Кафедра </Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="Faculty">
 <Description>
 Факультет</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Index name="UniversityIndex">
@@ -183,8 +175,10 @@
 	set proxy.ensembleExperience = ..EnsembleExperience
 	set proxy.deepseeExperience = ..DeepseeExperience
 	set proxy.tetMark = ..TetMark
- 	set proxy.engMark = ..EngMark.ConvertToProxyObject()
-	set proxy.petMark = ..PetMark.ConvertToProxyObject()
+	if (..EngMark){
+ 		set proxy.engMark = ..EngMark.ConvertToProxyObject()}
+	if (..PetMark){
+	   	set proxy.petMark = ..PetMark.ConvertToProxyObject()}
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
    	set proxy.university = ..University.ConvertToProxyObject()

@@ -7,20 +7,20 @@
 Университет. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('UniversityCtrl', function($scope, $routeParams, RegionSrvc, UniversitySrvc ){
+controllersModule.controller('UniversityCtrl', function($scope, $routeParams, RegionSrvc, UniversitySrvc, $window,  $filter, UtilsSrvc ){
    $scope.page = {university:{}};
    $scope.cities = [];
    
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Редактирование университета";
-          $scope.page.formBtnSubmitName = "Сохранить";
+          $scope.page.formCaption = $filter('localize')("Редактирование университета");
+          $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadUniversity($routeParams.id);        
       }
       else{
-          $scope.page.formCaption = "Добавление университета";
-          $scope.page.formBtnSubmitName = "Добавить";
+          $scope.page.formCaption = $filter('localize')("Добавление университета");
+          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
 
 
       }
@@ -33,7 +33,7 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
          
           },
           function(data, status, headers, config){
-              $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
           });       
    };
    
@@ -48,12 +48,12 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
                   $scope.page.university = {};                        
               }
 
-              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
               // Сделать форму "чистой" (блокируется кнопка)
               $scope.pageForm.$setPristine();
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
           });
    };
    
@@ -73,6 +73,11 @@ controllersModule.controller('UniversityCtrl', function($scope, $routeParams, Re
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    /// Отмена - возврат на предыдущую страницу
+    $scope.page.cancel = function(){
+        $window.history.back();
+    };
+    
     
    $scope.page.init(); 
 });

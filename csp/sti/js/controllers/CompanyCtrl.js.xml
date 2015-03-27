@@ -8,19 +8,19 @@
 Компания. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('CompanyCtrl', function($scope, $routeParams, CompanySrvc){
+controllersModule.controller('CompanyCtrl', function($scope, $routeParams, CompanySrvc, $window, $filter, UtilsSrvc){
    $scope.page = {company:{}};
 
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Редактирование компании";
-          $scope.page.formBtnSubmitName = "Сохранить";
+          $scope.page.formCaption = $filter('localize')("Редактирование компании");
+          $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadCompany($routeParams.id);        
       }
       else{
-          $scope.page.formCaption = "Добавление компании";
-          $scope.page.formBtnSubmitName = "Добавить";
+          $scope.page.formCaption = $filter('localize')("Добавление компании");
+          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
 
 
       }
@@ -33,7 +33,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, Compa
          
           },
           function(data, status, headers, config){
-              $scope.page.coalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.coalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
           });       
    };
    // Сохранить/создать (отправка формы). Передаем объект на сервер
@@ -47,15 +47,21 @@ controllersModule.controller('CompanyCtrl', function($scope, $routeParams, Compa
                   $scope.page.company = {};                        
               }
 
-              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
               // Сделать форму "чистой" (блокируется кнопка)
               $scope.pageForm.$setPristine();
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
           });
    };
-
+	
+	 /// Отмена - возврат на предыдущую страницу
+    $scope.page.cancel = function(){
+        $window.history.back();
+    };
+    
+    
    $scope.page.init(); 
 });
 

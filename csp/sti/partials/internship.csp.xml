@@ -3,8 +3,8 @@
 <CSP name="sti/partials/internship.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница редактирования/добавления стажировок-->
 <div class="row-fluid">
-	<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
-	    <div class="span10">
+	<form name="pageForm" ng-submit="page.submit()" body style="padding-top:50px;" >
+	    <div class="span15">
 			<div class="accordion">
 			    <div class="accordion-group">
 				  <tabset>
@@ -16,36 +16,34 @@
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
 									<div class="span4">
-										<label class="control-label" ng-bind="'Название стажировки'|localize">:</label>
+										<label class="control-label" ng-bind="('Название стажировки'|localize)+'*'">:</label>
 										<input class="span12"  type="text" ng-model="page.internship.name" required></input>
-										<label class="control-label" ng-bind="'Компания'|localize">:</label>
-										<select class="span12" ng-model="page.internship.company.id" ng-options="company.id as company.fullName for company in page.companies" required></select>
-										<label class="control-label" ng-bind="'Дата начала'|localize">:</label>
+										<label class="control-label" ng-bind="('Компания'|localize)+'*'">:</label>
+										<select class="span12" ng-model="page.internship.company.id" ng-options="company.id as company.fullName for company in page.companies" required><option value="">--{{'Выберите компанию'|localize}}--</option></select>
+										<label class="control-label" ng-bind="('Дата начала'|localize)+'*'">:</label>
 										<input class="span12"  type="date" ng-model="page.internship.dateBegin" required></input>
-										<label class="control-label" ng-bind="'Дата окончания'|localize">:</label>
+										<label class="control-label" ng-bind="('Дата окончания'|localize)+'*'">:</label>
 										<input class="span12"  type="date" ng-model="page.internship.dateEnd" required></input>
 					               		<div class="controls">
-					               				<label class="control-label" ng-bind="'Город'|localize">:</label>
+					               				<label class="control-label" ng-bind="('Город'|localize)+'*'">:</label>
 					               				<input class="span12" 
-					                			   style="margin-bottom: 0;"
 					                			   type="text" 
 					                			   title="{{'Город, Регион, Страна'|localize}}" 
 					                			   ng-model="page.internship.city" 
 					                	 		   ng-change="loadCities(page.internship.city)" 
 					                	 		   placeholder="{{'Поиск'|localize}}" 
 					                	   		   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
-					                	  		>
+					                	  		required>
 					               				</input>
-					                			<i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиdск города по названию'|localize"></i>
-					            		</div>
+					                	</div>
 					    			</div>
 					    			<div class="span4">
-										<label class="control-label" ng-bind="'Максимальное количество учеников'|localize">:</label>
+										<label class="control-label" ng-bind="('Максимальное количество учеников'|localize)+'*'">:</label>
 										<input class="span12"  type="text" ng-model="page.internship.maxPeople" required></input>
-										<label class="control-label" ng-bind="'Адрес'|localize">:</label>
+										<label class="control-label" ng-bind="('Адрес'|localize)+'*'">:</label>
 										<input class="span12"  type="text" ng-model="page.internship.street" required></input>
 										<label class="control-label" ng-bind="'Аудитория'|localize">:</label>
-										<input class="span12"  type="text" ng-model="page.internship.room" required></input>
+										<input class="span12"  type="text" ng-model="page.internship.room"></input>
 										<label class="checkbox"  >
 			    					   		<input type="checkbox" ng-model="page.internship.isInUse">{{'Активна'|localize}}
 			    				        </label>
@@ -62,15 +60,15 @@
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
 									<div class="span4">
-										<label class="control-label" ng-bind="'Фамилия'|localize">:</label>
+										<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.internship.curator.lastName" required></input>
-						    			<label class="control-label" ng-bind="'Имя'|localize">:</label>
+						    			<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.internship.curator.firstName" required></input>
 										<label class="control-label" ng-bind="'Отчество'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.internship.curator.middleName" required></input>
+										<input class="span12" type="text" ng-model="page.internship.curator.middleName"></input>
 										<label class="control-label" ng-bind="'Телефон'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.internship.curator.phone" required></input>
-										<label class="control-label" ng-bind="'Электронный адрес'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.internship.curator.phone"></input>
+										<label class="control-label" ng-bind="('Электронный адрес'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.internship.curator.email" required></input>
 									</div>
 								</div>
@@ -83,6 +81,7 @@
 			<div class="control-group">
 			 	<div class="controls">
 				   	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+			 		<button type="button" class="btn btn-small" ng-click="page.cancel()" ng-bind="'Отмена'|localize"></button>
 			 	</div>
 			</div>				
         </div>

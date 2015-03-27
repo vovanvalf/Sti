@@ -26,7 +26,6 @@
 <Description>
 Сокращенное название</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="LegalAddress">
@@ -40,6 +39,7 @@
 <Description>
 Электронная почта</Description>
 <Type>%String</Type>
+<Required>1</Required>
 <Parameter name="MAXLEN" value="500"/>
 </Property>
 

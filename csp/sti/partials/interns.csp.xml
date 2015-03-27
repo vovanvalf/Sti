@@ -28,15 +28,15 @@
 
  			action-column-visible="true"
 		    action-column-icon="'fa fa-plus-circle'"
-		    action-column-title="'Добавить'"
+		    action-column-title="'Добавить'|localize"
 		    action-column-method="internsTable.add()"
 
 		    first-row-action-icon="'fa fa-pencil'"
-		    first-row-action-title="'Изменить'"
+		    first-row-action-title="'Изменить'|localize"
 		    first-row-action-method="internsTable.edit(item)"
 	    	
 	    	second-row-action-icon="'fa fa-times'"
-		    second-row-action-title="'Удалить'"
+		    second-row-action-title="'Удалить'|localize"
 		    second-row-action-method="internsTable.remove(item)"
 	    	
  			forcibly-update="internsTable.forciblyUpdate"
@@ -50,7 +50,7 @@
 
 <!-- Если стажер не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internsTable.selectedItems}}-->
 <div class="row-fluid" ng-hide="internsTable.selectedItems[0]" style="text-align: center;">
-	<i>Выберите стажёра для отображения полной информации.</i>
+	<i ng-bind="'Выберите стажёра для отображения полной информации.'|localize"></i>
 </div>
 
 <div class="row-fluid" ng-show="internsTable.selectedItems[0]!=null">
@@ -63,7 +63,7 @@
 				<p><span class="spnTitle" ng-bind="'Резюме'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
 				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].chair"></span></p>
 				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].faculty"></span></p>
-				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].isInNewsletter"></span></p>
+				<p><span class="spnTitle" ng-bind="'Рассылка'|localize"></span>: <span ng-hide="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Не оформлена'"></span><span ng-show="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Оформлена'"></span></p>
             </div>
 			<div class="span6">
 				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].engMark.value"></span></p>

@@ -3,8 +3,8 @@
 <CSP name="sti/partials/university.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница добавления/редактирования университета-->
 <div class="row-fluid">
-	<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
-	    <div class="span10">
+	<form name="pageForm" ng-submit="page.submit()" body style="padding-top:50px;" >
+	    <div class="span15">
 			<div class="accordion">
 			    <div class="accordion-group">
 				  <tabset>
@@ -16,28 +16,26 @@
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
 									<div class="span4">
-										<label class="control-label" ng-bind="'Полное название'|localize">:</label>
+										<label class="control-label" ng-bind="('Полное название'|localize) + '*' ">:</label>
 								 		<input class="span12" type="text" ng-model="page.university.fullName" required></input>
 										<label class="control-label" ng-bind="'Аббревиатура'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.university.shortName" required></input>
-					               <div class="controls">
-					               <label class="control-label" ng-bind="'Город'|localize">:</label>
-					               <input class="span12" 
-					                	   style="margin-bottom: 0;"
-					                	   type="text" 
-					                	   title="{{'Город, Регион, Страна'|localize}}" 
-					                	   ng-model="page.university.city" 
-					                	   ng-change="loadCities(page.university.city)" 
-					                	   placeholder="{{'Поиск'|localize}}" 
-					                	   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
-					                	  >
-					               </input>
-					                <i style="font-size: 0.8em; padding-left: 7px;" ng-bind="'поиск города по названию'|localize"></i>
-					            </div>
-										<label class="control-label" ng-bind="'Адрес университета'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.shortName"></input>
+					               		<div class="controls">
+					               			<label class="control-label" ng-bind="('Город'|localize)+ '*'">:</label>
+					               			<input class="span12" 
+					                	   		type="text" 
+					                	   		title="{{'Город, Регион, Страна'|localize}}" 
+					                	   		ng-model="page.university.city" 
+					                	   		ng-change="loadCities(page.university.city)" 
+					                	   		placeholder="{{'Поиск'|localize}}" 
+					                	   		typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
+					                	  	>
+					               			</input>
+					          	   		</div>
+										<label class="control-label" ng-bind="('Адрес университета'|localize)+ '*'">:</label>
 										<input class="span12" type="text" ng-model="page.university.address" required></input>
 										<label class="control-label" ng-bind="'Web-страница'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.university.web" required></input>
+										<input class="span12" type="text" ng-model="page.university.web"></input>
 					    			</div>
 								</div>
 							</div>
@@ -51,15 +49,15 @@
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
 									<div class="span4">
-										<label class="control-label" ng-bind="'Фамилия'|localize">:</label>
+										<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.university.curator.lastName" required></input>
-						    			<label class="control-label" ng-bind="'Имя'|localize">:</label>
+						    			<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.university.curator.firstName" required></input>
 										<label class="control-label" ng-bind="'Отчество'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.university.curator.middleName" required></input>
+										<input class="span12" type="text" ng-model="page.university.curator.middleName"></input>
 										<label class="control-label" ng-bind="'Телефон'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.university.curator.phone" required></input>
-										<label class="control-label" ng-bind="'Электронный адрес'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.university.curator.phone"></input>
+										<label class="control-label" ng-bind="('Электронный адрес'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.university.curator.email" required></input>
 									</div>
 								</div>
@@ -118,6 +116,7 @@
 			<div class="control-group">
 			 	<div class="controls">
 				   	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+				   	<button type="button" class="btn btn-small" ng-click="page.cancel()" ng-bind="'Отмена'|localize"></button>
 			 	</div>
 			</div>				
         </div>

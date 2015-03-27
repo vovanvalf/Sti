@@ -7,20 +7,20 @@
 Заявка. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionSrvc, OrderSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc){
+controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionSrvc, OrderSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc, $filter, UtilsSrvc){
     $scope.menu.selectMenu($scope.menu.pages.order);
     $scope.page = {order:{}};
 	$scope.cities = [];
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Редактирование заявки";
-          $scope.page.formBtnSubmitName = "Сохранить";
+          $scope.page.formCaption = $filter('localize')("Редактирование заявки");
+          $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadOrder($routeParams.id);        
       }
       else{
-          $scope.page.formCaption = "Создание заявки";
-          $scope.page.formBtnSubmitName = "Создать заявку";
+          $scope.page.formCaption = $filter('localize')("Создание заявки");
+          $scope.page.formBtnSubmitName = $filter('localize')("Создать заявку");
 
           // Добавление в определённый университет
           if ($routeParams.unId && $routeParams.fcId){
@@ -49,7 +49,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
              
           },
           function(data, status, headers, config){
-              $scope.page.unalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
           });       
    };
 
@@ -60,10 +60,15 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.universities = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
           });      
    };
    
+   //Очистить форму
+   $scope.page.clear = function(){
+        $scope.pageForm.$setPristine();
+        $scope.page.order = {};
+   };
    // Загрузить все стажировки
   $scope.page.loadInternship = function(id){
       InternshipSrvc.getAll().then(
@@ -71,7 +76,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.internships = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });      
    };
 	
@@ -82,7 +87,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.engmarks = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });      
    };
    
@@ -93,7 +98,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               $scope.page.petmarks = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });      
    };
    
@@ -104,16 +109,16 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
               var msg = 'Изменения сохранены.';
 
               if (!$routeParams.id){
-                  msg = 'Заявка добавлена.';
+                  msg = 'Заявка принята';
                   $scope.page.order = {};                        
               }
 
-              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
               // Сделать форму "чистой" (блокируется кнопка)
               $scope.pageForm.$setPristine();
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });
    };
    

@@ -29,6 +29,12 @@ servicesModule.factory('UtilsSrvc', function( $filter) {
 	        	
 	        return $filter('date')(date, 'yyyy-MM-dd');
 	    },
+	    getAlert: function(title, msg, eventType, visible){
+        	return {title: $filter('localize')(title),
+                    msg: $filter('localize')(msg),
+                    cssClass: 'alert alert-' + eventType,
+                    visible: visible};
+    	},
         getPropertyValue: function (item, propertyStr, defaultValue){
             var value;
             defaultValue = defaultValue ? defaultValue : '';

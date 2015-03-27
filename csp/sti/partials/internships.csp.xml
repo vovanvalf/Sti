@@ -28,15 +28,15 @@
 
  			action-column-visible="true"
 		    action-column-icon="'fa fa-plus-circle'"
-		    action-column-title="'Добавить'"
+		    action-column-title="'Добавить'|localize"
 		    action-column-method="internshipsTable.add()"
 
 		    first-row-action-icon="'fa fa-pencil'"
-		    first-row-action-title="'Изменить'"
+		    first-row-action-title="'Изменить'|localize"
 		    first-row-action-method="internshipsTable.edit(item)"
 	    	
 	    	second-row-action-icon="'fa fa-times'"
-		    second-row-action-title="'Удалить'"
+		    second-row-action-title="'Удалить'|localize"
 		    second-row-action-method="internshipsTable.remove(item)"
 	    	
  			forcibly-update="internshipsTable.forciblyUpdate"
@@ -50,7 +50,7 @@
 
 <!-- Если стажер не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internshipsTable.selectedItems}}-->
 <div class="row-fluid" ng-hide="internshipsTable.selectedItems[0]" style="text-align: center;">
-	<i>Выберите стажировку для отображения полной информации.</i>
+	<i ng-bind="'Выберите стажировку для отображения полной информации.'|localize"></i>
 </div>
 
 <div class="row-fluid" ng-show="internshipsTable.selectedItems[0]!=null">
@@ -60,7 +60,7 @@
 				<p><span class="spnTitle" ng-bind="'Место обучения'|localize"></span>: <span ng-bind="(internshipsTable.selectedItems[0].city.name)+', '+(internshipsTable.selectedItems[0].city.parentName)"></span></p>
 				<p><span class="spnTitle" ng-bind="'Адрес'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].street"></span></p>
 				<p><span class="spnTitle" ng-bind="'Аудитория'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].room"></span></p>
-				<p><span class="spnTitle" ng-bind="'Количество свободных мест'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].freeSeats"></span></p>
+				<p><span class="spnTitle" ng-bind="'Статус'|localize"></span>: <span ng-hide="internshipsTable.selectedItems[0].isInUse==1" ng-bind="'Не активна'"></span><span ng-show="internshipsTable.selectedItems[0].isInUse==1" ng-bind="'Активна'"></span></p>
 			</div>
 		</tab>
 		<tab heading="{{'Куратор'|localize}}">
@@ -75,5 +75,5 @@
 </div>
 <br>
 <!-- Инфо-сообщения -->
-<stialert data="inalert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>
+<stialert data="intalert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>
 </Export>

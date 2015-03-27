@@ -77,7 +77,6 @@
 <Description>
 Аудитория</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="Company">

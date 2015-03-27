@@ -28,15 +28,15 @@
 
  			action-column-visible="true"
 		    action-column-icon="'fa fa-plus-circle'"
-		    action-column-title="'Добавить'"
+		    action-column-title="'Добавить'|localize"
 		    action-column-method="ordersTable.add()"
 
 		    first-row-action-icon="'fa fa-check'"
-		    first-row-action-title="'Принять заявку'"
+		    first-row-action-title="'Принять заявку'|localize"
 		    first-row-action-method="ordersTable.edit(item)"
 	    	
 	    	second-row-action-icon="'fa fa-times'"
-		    second-row-action-title="'Удалить'"
+		    second-row-action-title="'Удалить'|localize"
 		    second-row-action-method="ordersTable.remove(item)"
 	    	
  			forcibly-update="ordersTable.forciblyUpdate"
@@ -50,7 +50,7 @@
 
 <!-- Если заявка не выбрана(т.е. selectedItems == udefined), то показывать сообщение {{ordersTable.selectedItems}}-->
 <div class="row-fluid" ng-hide="ordersTable.selectedItems[0]" style="text-align: center;">
-	<i>Выберите заявку для отображения полной информации</i>
+	<i ng-bind="'Выберите заявку для отображения полной информации'|localize"></i>
 </div>
 
 <div class="row-fluid" ng-show="ordersTable.selectedItems[0]!=null">
@@ -76,5 +76,5 @@
 </div>
 <br>
 <!-- Инфо-сообщения -->
-<stialert data="inalert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>
+<stialert data="oralert" span-right="1" span-middle="10" span-left="1"/>]]></CSP>
 </Export>

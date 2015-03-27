@@ -121,15 +121,18 @@ $scope.init = function(){
                 function(data){
                     $scope.ordersTable.selectedItems = [];
                     $scope.ordersTable.refresh();
-                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Заявка удалена.', 'success', true);
+                    $scope.oralert = UtilsSrvc.getAlert('Готово!', 'Заявка удалена.', 'success', true);
                 },
                 function(data, status, headers, config){
-                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                    $scope.oralert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
             
     };
     
 	$scope.init();
+	  if (!$scope.menu.admin){
+    	$scope.menu.login();
+	};
 });
 
 ]]></CSP>

@@ -20,23 +20,23 @@
         <tr>
             <td colspan="{{getCountOfVisibleColumns(columns) + 1}}">
                 <div ng-show="navigatorVisible"><!-- Навигатор -->
-                    <button class="btn btn-mini" ng-init="firstPageDisabled=true" ng-disabled="firstPageDisabled" title="{{'Первая страница'}}"     ng-click="setPage(-pageCurr + 1)">&nbsp;&nbsp;&nbsp;<i class="fa fa-step-backward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
-                    <button class="btn btn-mini" ng-init="prevPageDisabled=true"  ng-disabled="prevPageDisabled"  title="{{'Предыдущая страница'}}" ng-click="setPage(-1)">&nbsp;&nbsp;&nbsp;<i class="fa fa-backward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>&nbsp;&nbsp;
-                    <span ng-bind="('Страница') + ' ' + pageCurr + ' ' + ('из') + ' ' + pageTotal"></span>&nbsp;&nbsp; 
-                    <button class="btn btn-mini" ng-disabled="nextPageDisabled" title="{{'Следующая страника'}}" ng-click="setPage(1)">&nbsp;&nbsp;&nbsp;<i class="fa fa-forward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
-                    <button class="btn btn-mini" ng-disabled="lastPageDisabled" title="{{'Последняя страница'}}" ng-click="setPage(pageTotal-pageCurr)">&nbsp;&nbsp;&nbsp;<i class="fa fa-step-forward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
+                    <button class="btn btn-mini" ng-init="firstPageDisabled=true" ng-disabled="firstPageDisabled" title="{{'Первая страница'|localize}}"     ng-click="setPage(-pageCurr + 1)">&nbsp;&nbsp;&nbsp;<i class="fa fa-step-backward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
+                    <button class="btn btn-mini" ng-init="prevPageDisabled=true"  ng-disabled="prevPageDisabled"  title="{{'Предыдущая страница'|localize}}" ng-click="setPage(-1)">&nbsp;&nbsp;&nbsp;<i class="fa fa-backward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>&nbsp;&nbsp;
+                    <span ng-bind="('Страница'|localize) + ' ' + pageCurr + ' ' + ('из') + ' ' + pageTotal"></span>&nbsp;&nbsp; 
+                    <button class="btn btn-mini" ng-disabled="nextPageDisabled" title="{{'Следующая страница'|localize}}" ng-click="setPage(1)">&nbsp;&nbsp;&nbsp;<i class="fa fa-forward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
+                    <button class="btn btn-mini" ng-disabled="lastPageDisabled" title="{{'Последняя страница'|localize}}" ng-click="setPage(pageTotal-pageCurr)">&nbsp;&nbsp;&nbsp;<i class="fa fa-step-forward fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
                     
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     
                     <form ng-init="inputPageSize=pageSize" ng-submit="setPageSize(inputPageSize)" style="margin: 0px; display: inline;">
-                        <span ng-bind="'Размер страницы'"></span>&nbsp;&nbsp;
+                        <span ng-bind="'Размер страницы'|localize"></span>&nbsp;&nbsp;
                         <input type="text" class="input-mini gridInput" ng-model="inputPageSize" value="{{pageSize}}" style="text-align: center; width: 25px; margin-bottom: 0px;" pattern="[1-9]{1}[0-9]{0,2}" required>&nbsp;
                         <button type="submit" class="btn btn-mini" >&nbsp;&nbsp;&nbsp;<i class="fa fa-floppy-o fa-lg"></i>&nbsp;&nbsp;&nbsp;</button>
                     </form>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <form ng-submit="search()" style="margin: 0px; display: inline;">
                         <div ng-hide="searchHide" class="input-append" style="margin-bottom: 0px;">
-                            <input type="text" class="gridInput" ng-model="searchText" style="width:100px;" placeholder="{{'Поиск'}}" ng-disabled="!searchedColumn.name">
+                            <input type="text" class="gridInput" ng-model="searchText" style="width:100px;" placeholder="{{'Поиск'|localize}}" ng-disabled="!searchedColumn.name">
                             <div class="btn-group dropup" style="cursor: pointer;">
                                 <button type="submit" class="btn btn-mini" ng-disabled="!searchedColumn.name">&nbsp;&nbsp;&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;</button>
                                 <button type="button" class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
@@ -49,8 +49,8 @@
                 </div><!-- / Навигатор -->   
             </td>
             <td class="atableAction" ng-show="actionColumnVisible" ng-click="firstActionMode=!firstActionMode">
-                <i ng-class="firstRowActionIcon"  title="{{('Режим') + ': ' + firstRowActionTitle}}"  ng-show="firstActionMode" ></i>
-                <i ng-class="secondRowActionIcon" title="{{('Режим') + ': ' + secondRowActionTitle}}" ng-hide="firstActionMode"></i>
+                <i ng-class="firstRowActionIcon"  title="{{('Режим'|localize) + ': ' + firstRowActionTitle}}"  ng-show="firstActionMode" ></i>
+                <i ng-class="secondRowActionIcon" title="{{('Режим'|localize) + ': ' + secondRowActionTitle}}" ng-hide="firstActionMode"></i>
             </td>
         </tr>
     </tfoot>

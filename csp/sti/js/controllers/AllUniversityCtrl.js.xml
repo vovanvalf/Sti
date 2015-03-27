@@ -6,7 +6,7 @@
 Все университеты
 ===========================================================================================*/
 
-controllersModule.controller('AllUniversityCtrl', function($scope, $location, UniversitySrvc, InternSrvc){
+controllersModule.controller('AllUniversityCtrl', function($scope, $location, UniversitySrvc, InternSrvc, $filter, UtilsSrvc){
        $scope.menu.selectMenu($scope.menu.pages.universities);
 		$scope.universitiesTable = {state: {}};
 
@@ -83,16 +83,19 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
                 function(data){
                     $scope.universitiesTable.selectedItems = [];
                     $scope.universitiesTable.refresh();
-                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Университет удален.', 'success', true);
+                    $scope.page.unalert = UtilsSrvc.getAlert('Готово!', 'Университет удален.', 'success', true);
                 },
                 function(data, status, headers, config){
-                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                    $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
             
     };
     
 	$scope.init();
 	
+	  if (!$scope.menu.admin){
+    	$scope.menu.login();
+	};
 });
 
 ]]></CSP>

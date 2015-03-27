@@ -3,8 +3,8 @@
 <CSP name="sti/partials/company.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница редактирования/добавления компании-->
 <div class="row-fluid">
-	<form name="pageForm" ng-submit="page.submit()" style="margin: 0 0 10px 0;" >
-	    <div class="span10">
+	<form name="pageForm" ng-submit="page.submit()" body style="padding-top:50px;" >
+	    <div class="span15">
 			<div class="accordion">
 			    <div class="accordion-group">
 				  <tabset>
@@ -16,17 +16,16 @@
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
 									<div class="span4">
-										<label class="control-label" ng-bind="'Полное название'|localize">:</label>
+										<label class="control-label" ng-bind="('Полное название'|localize)+'*'">:</label>
 								 		<input class="span12" type="text" ng-model="page.company.fullName" required></input>
 										<label class="control-label" ng-bind="'Аббревиатура'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.company.shortName" required></input>
-										<label class="control-label" ng-bind="'Адрес компании'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.company.shortName"></input>
+										<label class="control-label" ng-bind="('Адрес компании'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.company.legalAddress" required></input>
-										<label class="control-label" ng-bind="'Email'|localize">:</label>
+										<label class="control-label" ng-bind="('Email')+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.company.mailAddress" required></input>
 										<label class="control-label" ng-bind="'Web-страница'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.company.webSite" required></input>
-										
+										<input class="span12" type="text" ng-model="page.company.webSite"></input>
 					    			</div>
 								</div>
 							</div>
@@ -40,15 +39,15 @@
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
 									<div class="span4">
-										<label class="control-label" ng-bind="'Фамилия'|localize">:</label>
+										<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.company.contact.lastName" required></input>
-						    			<label class="control-label" ng-bind="'Имя'|localize">:</label>
+						    			<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.company.contact.firstName" required></input>
 										<label class="control-label" ng-bind="'Отчество'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.middleName" required></input>
+										<input class="span12" type="text" ng-model="page.company.contact.middleName"></input>
 										<label class="control-label" ng-bind="'Телефон'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.phone" required></input>
-										<label class="control-label" ng-bind="'Электронный адрес'|localize">:</label>
+										<input class="span12" type="text" ng-model="page.company.contact.phone" ></input>
+										<label class="control-label" ng-bind="('Электронный адрес'|localize)+'*'">:</label>
 										<input class="span12" type="text" ng-model="page.company.contact.email" required></input>
 									</div>
 								</div>
@@ -61,6 +60,7 @@
 			<div class="control-group">
 			 	<div class="controls">
 				   	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+					<button type="button" class="btn btn-small" ng-click="page.cancel()" ng-bind="'Отмена'|localize"></button>		 	
 			 	</div>
 			</div>				
         </div>

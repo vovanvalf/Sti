@@ -7,7 +7,7 @@
 Главный контроллер, работа с языком и меню
 ===========================================================================================*/
 
-controllersModule.controller('MainCtrl', function($scope, $cookies, $filter, $window, OtherSrvc, UtilsSrvc){
+controllersModule.controller('MainCtrl', function($scope, $cookies, $filter, $window, $location, OtherSrvc, UtilsSrvc){
     $scope.pageStore = {};
    
     
@@ -76,6 +76,7 @@ controllersModule.controller('MainCtrl', function($scope, $cookies, $filter, $wi
                 $cookies['admin'] = 'true';
             },
             function(response){
+	            $location.path('#/order');
                 $scope.menu.user = "";
                 $scope.menu.admin = false;
                 $cookies['user'] = '';
@@ -84,11 +85,13 @@ controllersModule.controller('MainCtrl', function($scope, $cookies, $filter, $wi
 	            $scope.menu.readOnlyMode = false;
                 $scope.menu.loginCaption = 'Вход';
             });
+            
     };
 
     $scope.menu.loadLanguages();
     //$scope.menu.admin = true;
     //$scope.menu.readOnlyMode = true;
+
 });
 
 ]]></CSP>

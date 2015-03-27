@@ -197,77 +197,18 @@ Handling of BrokerAdmin</Description>
       	set intern.BirthDate=$ZDATEH(data.birthDate, 15)
     	
 	set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,,.st)
-	if $$$ISERR(st) {set pet = ##class(Sti.Data.PETMark).%New() set data.petMark.id=1}
+	if $$$ISOK(st){
     set pet = ##class(Sti.Data.PETMark).%New()
 	set pet = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,3,.Status)
-	set intern.PetMark=pet
+	set intern.PetMark=pet}
+	
 	
 	set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
-	if $$$ISERR(st) {set eng = ##class(Sti.Data.ENGMark).%New() set data.engMark.id=1}
+	if $$$ISOK(st){
     set eng = ##class(Sti.Data.ENGMark).%New()
 	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
-	set intern.EngMark=eng
-		     	
-      	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
-		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
-		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
-		set intern.City=city
-		
-      	set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
-        set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
-		
-		$$$THROWONERROR(st, intern.%Save())
-	}
-	catch ex {
-		set st = ex.AsStatus()
-	}
-
-	quit st
-]]></Implementation>
-</Method>
-
-<Method name="CreateIntern">
-<Description>
-Создать стажера из заявки</Description>
-<ClassMethod>1</ClassMethod>
-<ReturnType>%Status</ReturnType>
-<Implementation><![CDATA[
-	set st = $$$OK
+	set intern.EngMark=eng}
 	
-	
-	try{
-		// Преобразовали входную строку JSON в объект proxyObject
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
-      	
-        set intern = ##class(Sti.Data.Intern).%New()
-        
-      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
-      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set intern.Email = $ZCONVERT(data.email, "I", "UTF8")
-      	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
-      	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
-      	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
-      	set intern.CacheExperience = $ZCONVERT(data.cacheExperience, "I", "UTF8")
-      	set intern.EnsembleExperience = $ZCONVERT(data.ensembleExperience, "I", "UTF8")
-      	set intern.DeepseeExperience = $ZCONVERT(data.deepseeExperience, "I", "UTF8")
-      	set intern.TetMark = $ZCONVERT(data.tetMark, "I", "UTF8")
-      	set intern.BirthDate=$ZDATEH(data.birthDate, 15)
-      	set intern.Chair = $ZCONVERT(data.chair, "I", "UTF8")
-      	set intern.Faculty = $ZCONVERT(data.faculty, "I", "UTF8")
-    	
-	set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,,.st)
-	if $$$ISERR(st) {set pet = ##class(Sti.Data.PETMark).%New() set data.petMark.id=1}
-    set pet = ##class(Sti.Data.PETMark).%New()
-	set pet = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,3,.Status)
-	set intern.PetMark=pet
-	
-	set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
-	if $$$ISERR(st) {set eng = ##class(Sti.Data.ENGMark).%New() set data.engMark.id=1}
-    set eng = ##class(Sti.Data.ENGMark).%New()
-	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
-	set intern.EngMark=eng
 		     	
       	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
 		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()

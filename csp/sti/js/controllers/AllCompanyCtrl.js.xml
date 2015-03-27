@@ -7,7 +7,7 @@
 Все компании
 ===========================================================================================*/
 
-controllersModule.controller('AllCompanyCtrl', function($scope, $location, CompanySrvc, InternshipSrvc){
+controllersModule.controller('AllCompanyCtrl', function($scope, $location, CompanySrvc, InternshipSrvc, $filter, UtilsSrvc){
 	
        $scope.menu.selectMenu($scope.menu.pages.companies);
        $scope.companiesTable = {state: {}};
@@ -85,15 +85,17 @@ controllersModule.controller('AllCompanyCtrl', function($scope, $location, Compa
                 function(data){
                     $scope.companiesTable.selectedItems = [];
                     $scope.companiesTable.refresh();
-                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Университет удален.', 'success', true);
+                    $scope.page.coalert = UtilsSrvc.getAlert('Готово!', 'Компания удалена.', 'success', true);
                 },
                 function(data, status, headers, config){
-                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                    $scope.page.coalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
             
     };
     
 	$scope.init();
-
+	  if (!$scope.menu.admin){
+    	$scope.menu.login();
+	};
 });]]></CSP>
 </Export>

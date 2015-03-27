@@ -26,7 +26,6 @@
 <Description>
 Отчество</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -34,7 +33,6 @@
 <Description>
 Телефон</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="Email">

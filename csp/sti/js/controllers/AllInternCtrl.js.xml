@@ -121,10 +121,10 @@ $scope.init = function(){
                 function(data){
                     $scope.internsTable.selectedItems = [];
                     $scope.internsTable.refresh();
-                    $scope.alert = UtilsSrvc.getAlert('Готово!', 'Стажер удален.', 'success', true);
+                    $scope.inalert = UtilsSrvc.getAlert('Готово!', 'Стажер удален.', 'success', true);
                 },
                 function(data, status, headers, config){
-                    $scope.stalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};
+                    $scope.inalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
             
     };
@@ -134,8 +134,10 @@ $scope.init = function(){
         property.onClickCell(item);
     };
 
-
-	$scope.init();
+ $scope.init();
+	  if (!$scope.menu.admin){
+    	$scope.menu.login();
+	};
 });
 
 ]]></CSP>

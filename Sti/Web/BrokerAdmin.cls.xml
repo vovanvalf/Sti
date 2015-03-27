@@ -34,7 +34,7 @@ Private request processor for administrator</Description>
 <Route Method="POST" Url="/order/grid" Call="Sti.Web.JsonAdmin:GetOrdersForGrid"/>
 
 <!-- Создать стажера по заявке -->
-<Route Url="/createintern" Method="POST" Call="Sti.Web.JsonAdmin:CreateIntern"/> 
+<Route Url="/createintern" Method="POST" Call="Sti.Web.JsonAdmin:SaveIntern"/> 
 
 
 

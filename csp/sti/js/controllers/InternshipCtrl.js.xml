@@ -8,19 +8,19 @@
 Стажировка. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('InternshipCtrl', function($scope, $routeParams, InternshipSrvc, CompanySrvc, RegionSrvc){
+controllersModule.controller('InternshipCtrl', function($scope, $window, $routeParams, InternshipSrvc, CompanySrvc, RegionSrvc, $filter, UtilsSrvc){
    $scope.page = {internship:{}};
 	$scope.cities = [];
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = "Редактирование стажировки";
-          $scope.page.formBtnSubmitName = "Сохранить";
+          $scope.page.formCaption = $filter('localize')("Редактирование стажировки");
+          $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadInternship($routeParams.id);        
       }
       else{
-          $scope.page.formCaption = "Добавление стажировки";
-          $scope.page.formBtnSubmitName = "Добавить";
+          $scope.page.formCaption = $filter('localize')("Добавление стажировки");
+          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
 
           // Добавление стажировки в определённую компанию
           if ($routeParams.coId && $routeParams.fcId){
@@ -42,7 +42,7 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
          
           },
           function(data, status, headers, config){
-              $scope.page.coalert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.coalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
           });       
    };
 
@@ -53,7 +53,7 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
               $scope.page.companies = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });      
    };
 
@@ -68,12 +68,12 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
                   $scope.page.internship = {};                        
               }
 
-              $scope.page.alert = {title: 'Готово!', msg: msg, cssClass: 'alert alert-success', visible: true, closeTimeout: 1500};
+              $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
               // Сделать форму "чистой" (блокируется кнопка)
               $scope.pageForm.$setPristine();
           },
           function(data, status, headers, config){
-              $scope.page.alert = {title: 'Внимание!', msg: data, cssClass: 'alert alert-error', visible: true};  
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });
    };
    
@@ -93,6 +93,12 @@ controllersModule.controller('InternshipCtrl', function($scope, $routeParams, In
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
+    /// Отмена - возврат на предыдущую страницу
+    $scope.page.cancel = function(){
+        $window.history.back();
+    };
+    
     
    $scope.page.init(); 
 });
