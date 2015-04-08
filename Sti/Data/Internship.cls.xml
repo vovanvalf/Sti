@@ -105,11 +105,13 @@
 </Index>
 
 <Method name="ConvertToProxyObject">
+<FormalSpec>shortInfo:%Boolean=0</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
 	set proxy.name=..Name.Value
+	if (shortInfo = 1) quit proxy
 	set proxy.dateBegin=$ZDATE(..DateBegin, 3)
 	set proxy.dateEnd=$ZDATE(..DateEnd, 3)
 	set proxy.maxPeople=..MaxPeople

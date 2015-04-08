@@ -21,7 +21,9 @@
 								<label class="control-label" ng-bind="'Отчество'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.middleName"></input>
 								<label class="control-label" ng-bind="('Дата рождения'|localize)+'*'">:</label>
-								<input class="span12"  type="date" ng-model="page.order.birthDate" required></input>
+								<div class="controls">
+									        <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="page.order.birthDate" show-weeks="false" ng-required="true" />
+							    </div>
 								<label class="control-label" ng-bind="('Город'|localize)+'*'">:</label>
 								<input class="span12" 
 					                	   type="text" 

@@ -6,7 +6,7 @@
 Все заявки
 ===========================================================================================*/
 
-controllersModule.controller('AllOrderCtrl', function($scope, $location, $filter, OrderSrvc, UtilsSrvc){
+controllersModule.controller('AllOrderCtrl', function($scope, $location, $dialog, $filter, OrderSrvc, UtilsSrvc){
 $scope.menu.selectMenu($scope.menu.pages.orders);
 $scope.ordersTable = {state: {}};
 
@@ -117,7 +117,12 @@ $scope.init = function(){
     };
 
     $scope.ordersTable.remove = function(item){           
-            OrderSrvc.remove(item.id).then(
+    	var msg = 'Удалить данную запись?';
+		var btns= [{result: '1', label: $filter('localize')('Удалить'),  cssClass: 'btn-small', func:null},{result: '0', label: $filter('localize')('Отмена'),  cssClass: 'btn-small', func:null}];
+		$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
+		if(result==1)	
+		{
+			OrderSrvc.remove(item.id).then(
                 function(data){
                     $scope.ordersTable.selectedItems = [];
                     $scope.ordersTable.refresh();
@@ -126,7 +131,7 @@ $scope.init = function(){
                 function(data, status, headers, config){
                     $scope.oralert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
-            
+		}});
     };
     
 	$scope.init();

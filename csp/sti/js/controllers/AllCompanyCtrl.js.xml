@@ -7,7 +7,7 @@
 Все компании
 ===========================================================================================*/
 
-controllersModule.controller('AllCompanyCtrl', function($scope, $location, CompanySrvc, InternshipSrvc, $filter, UtilsSrvc){
+controllersModule.controller('AllCompanyCtrl', function($scope, $dialog, $location, CompanySrvc, InternshipSrvc, $filter, UtilsSrvc){
 	
        $scope.menu.selectMenu($scope.menu.pages.companies);
        $scope.companiesTable = {state: {}};
@@ -80,19 +80,23 @@ controllersModule.controller('AllCompanyCtrl', function($scope, $location, Compa
         $location.path('/company/' + item.id);
     };
 
-    $scope.companiesTable.remove = function(item){       
-            CompanySrvc.remove(item.id).then(
-                function(data){
-                    $scope.companiesTable.selectedItems = [];
-                    $scope.companiesTable.refresh();
-                    $scope.page.coalert = UtilsSrvc.getAlert('Готово!', 'Компания удалена.', 'success', true);
-                },
-                function(data, status, headers, config){
-                    $scope.page.coalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
-                });
-            
+    $scope.companiesTable.remove = function(item){
+	    var msg = 'Удалить данную запись?';
+		var btns= [{result: '1', label: $filter('localize')('Удалить'),  cssClass: 'btn-small', func:null},{result: '0', label: $filter('localize')('Отмена'),  cssClass: 'btn-small', func:null}];
+		$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
+		if(result==1)	
+		{
+			 CompanySrvc.remove(item.id).then(
+			 function(data){
+			 $scope.companiesTable.selectedItems = [];
+			 $scope.companiesTable.refresh();
+			 $scope.page.coalert = UtilsSrvc.getAlert('Готово!', 'Компания удалена.', 'success', true);
+			 },
+			 function(data, status, headers, config){
+			         $scope.page.coalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
+			 });
+		}});    
     };
-    
 	$scope.init();
 	  if (!$scope.menu.admin){
     	$scope.menu.login();

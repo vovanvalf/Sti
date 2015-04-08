@@ -12,6 +12,10 @@ servicesModule.factory('InternSrvc', function(RESTSrvc) {
         save: function(intern){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/intern', data: intern});
         },
+        /* Получить стажера по фильтру */
+        findSimmilarIntern: function(lastName,firstName,dob){
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/intern/lastName/'+lastName+'/firstName/'+firstName+'/dob/'+dob});
+        },
         /* Создать стажера из заявки */
         create: function(intern){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/createintern', data: intern});

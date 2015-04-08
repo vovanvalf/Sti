@@ -8,10 +8,11 @@
 Создание стажера из заявки. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('OrderAcceptCtrl', function($scope, $window, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc, $filter, UtilsSrvc){
+controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $window, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc, $filter, UtilsSrvc){
    $scope.page = {intern:{}};
 	$scope.cities = [];
 	$scope.idorder='';
+	$scope.filter=[];
 	
    // Инициализация данных
    $scope.page.init = function(){
@@ -87,7 +88,21 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $window, $route
               $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });      
    };
-   
+    $scope.page.saveIntern= function(msg)
+    {
+	    InternSrvc.save($scope.page.intern).then(
+      	  function(data){
+             
+             $scope.page.intern = {};                        
+             OrderSrvc.remove($scope.idorder);
+			 $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
+             // Сделать форму "чистой" (блокируется кнопка)
+             		$scope.pageForm.$setPristine();
+          	 },
+          	 function(data, status, headers, config){
+              		$scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
+   			});		 
+    };
   // Загрузить все оценки pet
   $scope.page.loadPetMarks = function(id){
       MarksSrvc.getPetAll().then(
@@ -101,20 +116,30 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $window, $route
    
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
-      InternSrvc.create($scope.page.intern).then(
-          function(data){
-                  var msg = 'Стажер добавлен.';
-                  $scope.page.intern = {};                        
-                  OrderSrvc.remove($scope.idorder);
-
-              $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
-              // Сделать форму "чистой" (блокируется кнопка)
-              $scope.pageForm.$setPristine();
-          },
-          function(data, status, headers, config){
-              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
-          });
-   };
+   InternSrvc.findSimmilarIntern($scope.page.intern.lastName,$scope.page.intern.firstName,$scope.page.intern.birthDate).then(
+	  function(data){
+		  if(data.status!=0)
+		  {
+			  		var msg = 'Стажёр с таким именем/фамилией/датой рождения есть! Изменить старую запись или добавить нового стажёра?';
+				    var btns= [{result: '0', label: $filter('localize')('Добавить'),  cssClass: 'btn-small', func:null},{result: '1', label: $filter('localize')('Изменить'),  cssClass: 'btn-small', func:null}];
+	    		 	$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
+		    		 if(result==1)	
+		    		 {
+		    		  	 $scope.page.intern.id = data.result.id; 
+		    		  	 $scope.page.saveIntern('Изменения сохранены.');
+		    		 }
+		    		 else if(result==0)
+		    		 	$scope.page.saveIntern('Стажер добавлен.');
+		    	    })  	    
+		  }
+		  else
+		   $scope.page.saveIntern('Стажер добавлен.');
+		     	    
+	  },
+   	  function(data, status, headers, config){
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!!', data, 'error', true);   
+      });  
+ 	};
    
     // Загрузить города
     $scope.loadCities = function(startsWith){       

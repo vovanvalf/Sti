@@ -240,6 +240,18 @@
 ]]></Implementation>
 </Method>
 
+<Method name="GetStudents">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>LN:%String,FN:%String,MN:%String,DB:%Date</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	
+	&sql( SELECT id
+		  FROM Sti_Data.Intern
+		  WHERE FirstName='FN' AND LastName='LN' AND MiddleName='MN' AND BirthDate='BD')
+]]></Implementation>
+</Method>
+
 <Method name="GetUniversitys">
 <Description>
 Все университеты</Description>
@@ -262,7 +274,7 @@
 			&sql(FETCH UnCur INTO :id) 
 			quit:(SQLCODE '= 0)
 			
-			do proxy.children.Insert(##class(Sti.Data.University).%OpenId(id).ConvertToProxyObject())
+			do proxy.children.Insert(##class(Sti.Data.University).%OpenId(id).ConvertToProxyObject(1))
 		}
 		
 		&sql(CLOSE UnCur)
@@ -299,7 +311,7 @@
 			&sql(FETCH IntsCur INTO :id) 
 			quit:(SQLCODE '= 0)
 			
-			do proxy.children.Insert(##class(Sti.Data.Internship).%OpenId(id).ConvertToProxyObject())
+			do proxy.children.Insert(##class(Sti.Data.Internship).%OpenId(id).ConvertToProxyObject(1))
 		}
 		
 		&sql(CLOSE IntsCur)

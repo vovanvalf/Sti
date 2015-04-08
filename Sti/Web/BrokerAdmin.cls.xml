@@ -44,6 +44,9 @@ Private request processor for administrator</Description>
 <!-- Получить стажера по ИД -->
 <Route Url="/intern/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetIntern"/> 
 
+<!-- найти стажера по фильтру -->
+<Route Url="/intern/lastName/:lastName:/firstName/:firstName/dob/:dob" Method="GET" Call="Sti.Web.JsonAdmin:GetInternByFilter"/> 
+
 <!-- Сохранить / создать стажера -->
 <Route Url="/intern" Method="POST" Call="Sti.Web.JsonAdmin:SaveIntern"/> 
 

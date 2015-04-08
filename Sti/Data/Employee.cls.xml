@@ -43,6 +43,7 @@
 </Property>
 
 <Method name="ConvertToProxyObject">
+<FormalSpec>shortInfo:%Boolean=0</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
@@ -50,6 +51,7 @@
 	set proxy.lastName = ..LastName.Value
 	set proxy.firstName = ..FirstName.Value
 	set proxy.middleName = ..MiddleName.Value
+	if (shortInfo = 1) quit proxy
 	set proxy.email = ..Email
 	set proxy.phone = ..Phone
 	quit proxy

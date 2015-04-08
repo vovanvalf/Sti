@@ -6,6 +6,28 @@ Handling of BrokerAdmin</Description>
 <Super>Json</Super>
 <TimeCreated>63098,81450.05769</TimeCreated>
 
+<Method name="GetInternByFilter">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>lastName:%String,firstName:%String,dob:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set response = ##class(%ZEN.proxyObject).%New()
+		 
+	set intern = ##class(Sti.Data.Intern).GetInternByParameter(lastName, firstName, dob)
+	if ($ISOBJECT(intern)){
+		set response.status = $$$OK
+		set response.result = intern.ConvertToProxyObject()
+	}
+	else{
+		set response.status = 0
+	}
+	 
+	do response.%ToJSON()
+	 
+	quit $$$OK
+]]></Implementation>
+</Method>
+
 <Method name="CheckAdmin">
 <Description>
 Проверить права доступа, авторизация</Description>
@@ -288,7 +310,7 @@ Handling of BrokerAdmin</Description>
       	
       	set whereCondition = ""
       	
-      	do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.Intern", "Sti.Data.Intern", params, whereCondition).%ToJSON()
+      		do ..GetProxyObjectsForGrid("SELECT ID FROM Sti_Data.Intern", "Sti.Data.Intern", params, whereCondition).%ToJSON()
 	}
 	catch ex {
 		set st = ex.AsStatus()

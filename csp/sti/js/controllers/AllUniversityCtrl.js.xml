@@ -6,7 +6,7 @@
 Все университеты
 ===========================================================================================*/
 
-controllersModule.controller('AllUniversityCtrl', function($scope, $location, UniversitySrvc, InternSrvc, $filter, UtilsSrvc){
+controllersModule.controller('AllUniversityCtrl', function($scope, $location,$dialog, UniversitySrvc, InternSrvc, $filter, UtilsSrvc){
        $scope.menu.selectMenu($scope.menu.pages.universities);
 		$scope.universitiesTable = {state: {}};
 
@@ -78,8 +78,13 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
         $location.path('/university/' + item.id);
     };
 
-    $scope.universitiesTable.remove = function(item){       
-            UniversitySrvc.remove(item.id).then(
+    $scope.universitiesTable.remove = function(item){
+	    var msg = 'Удалить данную запись?';
+		var btns= [{result: '1', label: $filter('localize')('Удалить'),  cssClass: 'btn-small', func:null},{result: '0', label: $filter('localize')('Отмена'),  cssClass: 'btn-small', func:null}];
+		$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
+		if(result==1)	
+		{
+			UniversitySrvc.remove(item.id).then(
                 function(data){
                     $scope.universitiesTable.selectedItems = [];
                     $scope.universitiesTable.refresh();
@@ -88,7 +93,7 @@ controllersModule.controller('AllUniversityCtrl', function($scope, $location, Un
                 function(data, status, headers, config){
                     $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
-            
+		}});              
     };
     
 	$scope.init();

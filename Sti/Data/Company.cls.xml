@@ -57,11 +57,14 @@ Web-сайт</Description>
 </Property>
 
 <Method name="ConvertToProxyObject">
+<FormalSpec>shortInfo:%Boolean=0</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
 	set proxy.fullName=..FullName.Value
+	if (shortInfo = 1) quit proxy
+	
 	set proxy.shortName=..ShortName.Value
 	set proxy.legalAddress=..LegalAddress.Value
 	set proxy.mailAddress=..MailAddress

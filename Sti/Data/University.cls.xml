@@ -76,14 +76,16 @@ Cтажёры</Description>
 </Property>
 
 <Method name="ConvertToProxyObject">
+<FormalSpec>shortInfo:%Boolean=0</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
+	set proxy.fullName = ..FullName.Value
+	if (shortInfo = 1) quit proxy
 	set proxy.address = ..Address.Value
 	set proxy.city = ..City.ConvertToProxyObject()
 	set proxy.curator = ..Curator.ConvertToProxyObject()
-	set proxy.fullName = ..FullName.Value
 	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web	
 	/*set proxy.employees = ##class(%ListOfObjects).%New()

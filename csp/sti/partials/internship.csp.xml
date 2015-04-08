@@ -21,9 +21,13 @@
 										<label class="control-label" ng-bind="('Компания'|localize)+'*'">:</label>
 										<select class="span12" ng-model="page.internship.company.id" ng-options="company.id as company.fullName for company in page.companies" required><option value="">--{{'Выберите компанию'|localize}}--</option></select>
 										<label class="control-label" ng-bind="('Дата начала'|localize)+'*'">:</label>
-										<input class="span12"  type="date" ng-model="page.internship.dateBegin" required></input>
+										<div class="controls">
+									        <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="page.internship.dateBegin" show-weeks="false" ng-required="true" />
+							    		</div>
 										<label class="control-label" ng-bind="('Дата окончания'|localize)+'*'">:</label>
-										<input class="span12"  type="date" ng-model="page.internship.dateEnd" required></input>
+										<div class="controls">
+									        <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="page.internship.dateEnd" show-weeks="false" ng-required="true" />
+							    		</div>
 					               		<div class="controls">
 					               				<label class="control-label" ng-bind="('Город'|localize)+'*'">:</label>
 					               				<input class="span12" 

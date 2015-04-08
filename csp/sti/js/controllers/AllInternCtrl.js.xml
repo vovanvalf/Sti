@@ -6,7 +6,7 @@
 Все стажеры
 ===========================================================================================*/
 
-controllersModule.controller('AllInternCtrl', function($scope, $location, $filter, InternSrvc, UtilsSrvc){
+controllersModule.controller('AllInternCtrl', function($scope,$dialog, $location, $filter, InternSrvc, UtilsSrvc){
 $scope.menu.selectMenu($scope.menu.pages.interns);
 $scope.internsTable = {state: {}};
 
@@ -116,8 +116,13 @@ $scope.init = function(){
         $location.path('/intern/' + item.id);
     };
 
-    $scope.internsTable.remove = function(item){           
-            InternSrvc.remove(item.id).then(
+    $scope.internsTable.remove = function(item){    
+		var msg = 'Удалить данную запись?';
+		var btns= [{result: '1', label: $filter('localize')('Удалить'),  cssClass: 'btn-small', func:null},{result: '0', label: $filter('localize')('Отмена'),  cssClass: 'btn-small', func:null}];
+		$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
+		if(result==1)	
+		{
+			InternSrvc.remove(item.id).then(
                 function(data){
                     $scope.internsTable.selectedItems = [];
                     $scope.internsTable.refresh();
@@ -126,7 +131,7 @@ $scope.init = function(){
                 function(data, status, headers, config){
                     $scope.inalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
                 });
-            
+		}});         
     };
     
     $scope.internsTable.onSelectCell = function(item, property){

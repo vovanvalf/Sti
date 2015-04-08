@@ -64,52 +64,6 @@
 							</div>
 						</div>
 				 	</tab>
-				 	<tab heading="{{'Доп. контакты'|localize}}">
-						<div class="accordion-heading">
-							<a class="accordion-toggle" ng-bind="''"></a>
-						</div>
-						<div class="accordion-body">
-							<div class="accordion-inner">
-						 		<div class="row-fluid">
-				 		 		<!--<stigrid style="border-radius: 4px 0 4px 4px;"
-	    							grid="universitiesTable.state"
-		   							table-class="table table-bordered table-hover"
-		    						caption="'Университеты'|localize"
-		    						columns="universitiesTable.columns"
-		    						items="universitiesTable.items"
-		    						properties="universitiesTable.properties"
-		    						update-items="universitiesTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
-
-		    						page-curr="universitiesTable.pageCurr"
-		    						page-total="universitiesTable.pageTotal"
-		    						page-size="universitiesTable.pageSize"
-		    						navigator-visible="true"
-
-		    						selectable="true"
-		    						selected-items="universitiesTable.selectedItems"
-		    						multi-select-mode="universitiesTable.multiSelectMode"
- 									on-select="universitiesTable.onSelect(item)"
- 									on-select-cell="universitiesTable.onSelectCell(item, property)"
-
- 									action-column-visible="true"
-		    						action-column-icon="'fa fa-plus-circle'"
-		    						action-column-title="'Добавить'"
-		    						action-column-method="universitiesTable.add()"
-
-		    						first-row-action-icon="'fa fa-pencil'"
-		    						first-row-action-title="'Изменить'"
-		    						first-row-action-method="universitiesTable.edit(item)"
-	    	
-	    							second-row-action-icon="'fa fa-times'"
-		    						second-row-action-title="'Удалить'"
-		    						second-row-action-method="universitiesTable.remove(item)"
-	    	
- 									forcibly-update="universitiesTable.forciblyUpdate"
-								/>	-->
-				 				</div>
-							</div>
-						</div>
-				 	</tab>
 				   </tabset>
 				</div>
 			</div>
