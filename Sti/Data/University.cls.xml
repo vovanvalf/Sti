@@ -48,13 +48,6 @@ Web страница</Description>
 <Type>Employee</Type>
 </Property>
 
-<Property name="Contacts">
-<Description>
-Доп. контакты</Description>
-<Type>Employee</Type>
-<Collection>array</Collection>
-</Property>
-
 <Property name="Interns">
 <Description>
 Cтажёры</Description>
@@ -90,15 +83,38 @@ Cтажёры</Description>
 	}
 	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web	
-	/*set proxy.employees = ##class(%ListOfObjects).%New()
-	set key = ""
-	for i=1:1:..Contacts.Count()
-	{
-		set key = ..Contacts.Next(key)
-		do proxy.employees.Insert(..Contacts.GetAt(key).ConvertToProxyObject())
-	}*/
 
     quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>University</ReturnType>
+<Implementation><![CDATA[
+	
+	if (data.id = ""){
+		set university = ..%New()
+      	set university.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName)
+		set university.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName)
+		set university.Address = ##class(Sti.Data.Localization.LText).Create(data.address)
+    }
+    else{
+	    
+	    set university = ..%OpenId(data.id)
+		set university.FullName.Value = data.fullName
+		set university.ShortName.Value = data.shortName
+		set university.Address.Value = data.address
+   	}
+		set university.Web = data.web
+        set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id)
+		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
+
+
+    	set st = university.%Save()
+    
+		quit university
 ]]></Implementation>
 </Method>
 

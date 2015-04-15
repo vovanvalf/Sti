@@ -19,31 +19,17 @@ Method="POST" Url="/json/company/contact/change"</Description>
 		// Check privilege for Person table
 		//$$$THROWONERROR(st, ##class(Sti.Data.Person).CheckDeletePrivilege())
 		
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
 		
 		set company = ##class(Sti.Data.Company).%OpenId(data.id,3, .st)
 		if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("openCompany", "| "_st))
-		
-		
 			// Если существует такой контакт, то заменяем им. Иначе - создаем и заменяем
 			set newContact = ##class(Sti.Data.Employee).GetEmployeeByParameter(data.contact.firstName,data.contact.lastName,data.contact.email)
 			if ($ISOBJECT(newContact)){
-				//set response.status = $$$OK
-				//set response.result = intern.ConvertToProxyObject()
 				set company.Contact = newContact
 			}
-			else{ 
-				set curator = ##class(Sti.Data.Employee).%New()
-				set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.lastName, "I", "UTF8"))
-				set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.firstName, "I", "UTF8"))
-				set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.middleName, "I", "UTF8"))
-				set curator.Email = data.contact.email
-				set curator.Phone = data.contact.phone
-				$$$THROWONERROR(st,curator.%Save() )
-				set company.Contact = curator
-			}
 			$$$THROWONERROR(st, company.%Save())
-		
+			
     quit st
 ]]></Implementation>
 </Method>
@@ -252,63 +238,26 @@ Method="GET" Url="/json/person/search/:word"</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	
 	set st = $$$OK
 	
-	
 	try{
-		// Преобразовали входную строку JSON в объект proxyObject
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
-      	
-      	// Открываем студента по ИД
-      	set intern = ##class(Sti.Data.Intern).%OpenId(data.id,,.st)
-      	
-      	// Открыть не удалось - создаем
-      	if $$$ISERR(st) set intern = ##class(Sti.Data.Intern).%New()
-        
-      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
-      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set intern.Email = $ZCONVERT(data.email, "I", "UTF8")
-      	set intern.Phone = $ZCONVERT(data.phone, "I", "UTF8")
-      	set intern.Skype = $ZCONVERT(data.skype, "I", "UTF8")
-      	set intern.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
-      	set intern.CacheExperience = $ZCONVERT(data.cacheExperience, "I", "UTF8")
-      	set intern.EnsembleExperience = $ZCONVERT(data.ensembleExperience, "I", "UTF8")
-      	set intern.DeepseeExperience = $ZCONVERT(data.deepseeExperience, "I", "UTF8")
-      	set intern.TetMark = $ZCONVERT(data.tetMark, "I", "UTF8")
-      	set intern.Chair = $ZCONVERT(data.chair, "I", "UTF8")
-      	set intern.Faculty = $ZCONVERT(data.faculty, "I", "UTF8")
-      	set intern.BirthDate=$ZDATEH(data.birthDate, 15)
-    	
-	set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,,.st)
-	if $$$ISOK(st){
-    set pet = ##class(Sti.Data.PETMark).%New()
-	set pet = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id,3,.Status)
-	set intern.PetMark=pet}
-	
-	
-	set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
-	if $$$ISOK(st){
-    set eng = ##class(Sti.Data.ENGMark).%New()
-	set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
-	set intern.EngMark=eng}
-	
-		     	
-      	set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
-		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
-		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
-		set intern.City=city
+		TSTART
 		
-      	set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
-        set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		//$$$THROWONERROR(st, ##class(Sti.Data.Intern).CheckUpdatePrivilege())
 		
-		$$$THROWONERROR(st, intern.%Save())
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
+      	
+      	do ##class(Sti.Data.Intern).Save(data, .st)
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_InternSave"," | "_st))
+      	
+      	TCOMMIT
 	}
 	catch ex {
+		TROLLBACK
 		set st = ex.AsStatus()
-	}
-
+	}	
+	
 	quit st
 ]]></Implementation>
 </Method>
@@ -454,39 +403,26 @@ Method="GET" Url="/json/person/search/:word"</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	
 	set st = $$$OK
 	
-	
 	try{
-		// Преобразовали входную строку JSON в объект proxyObject
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
-      	
-      	// Открываем по ИД
-      	set employee = ##class(Sti.Data.Employee).%OpenId(data.id,,.st)
-      	
-      	// Открыть не удалось - создаем
-      	if $$$ISERR(st) set employee = ##class(Sti.Data.Employee).%New()
-        
-      	set employee.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
-      	set employee.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set employee.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set employee.Email = $ZCONVERT(data.email, "I", "UTF8")
-      	set employee.Phone = $ZCONVERT(data.phone, "I", "UTF8")
-      	
+		TSTART
 		
-		$$$THROWONERROR(st, employee.%Save())
+		//$$$THROWONERROR(st, ##class(Sti.Data.Employee).CheckUpdatePrivilege())
+		
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
+      	
+      	do ##class(Sti.Data.Employee).Save(data, .st).ConvertToProxyObject(1).%ToJSON()
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_EmployeeSave"," | "_st))
+      	
+      	TCOMMIT
 	}
 	catch ex {
+		TROLLBACK
 		set st = ex.AsStatus()
-	}
+	}	
 	
-	try{
-		do employee.ConvertToProxyObject().%ToJSON()
-	}
-	catch(ex){
-		set st = ex.AsStatus()
-	}
-
 	quit st
 ]]></Implementation>
 </Method>
@@ -667,59 +603,26 @@ Method="GET" Url="/json/person/search/:word"</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	
 	set st = $$$OK
 	
-	
 	try{
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+		TSTART
+		
+		//$$$THROWONERROR(st, ##class(Sti.Data.University).CheckUpdatePrivilege())
+		
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
       	
-      	set university = ##class(Sti.Data.University).%OpenId(data.id,,.st)
+      	do ##class(Sti.Data.University).Save(data, .st).ConvertToProxyObject(1).%ToJSON()
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_UniversitySave"," | "_st))
       	
-      	if $$$ISERR(st) set university = ##class(Sti.Data.University).%New()
-		set university.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I", "UTF8"))
-		set university.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I", "UTF8"))
-		set university.Address = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.address, "I", "UTF8"))
-		set university.Web = $ZCONVERT(data.web, "I", "UTF8")
-	
-		set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
-		if $$$ISERR(st)
-		{
-			set university.Curator = ""	
-		}
-		
-		/*
-		if $$$ISERR(st) set curator = ##class(Sti.Data.Employee).%New()
-		set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
-		set curator.Email = data.curator.email
-		set curator.Phone = data.curator.phone
-		
-		//$$$THROWONERROR(st,curator.%Save() )
-		*/
-				
-		
-		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
-		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
-		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
-		set university.City=city
-	
-		$$$THROWONERROR(st, university.%Save() )
+      	TCOMMIT
 	}
-	
 	catch ex {
+		TROLLBACK
 		set st = ex.AsStatus()
 	}
-
-    try{	
-    
-	do university.ConvertToProxyObject(1).%ToJSON()
-	}
-	catch (ex){
-		set st = ex.AsStatus()
-	}
-	
+			
 	quit st
 ]]></Implementation>
 </Method>
@@ -848,51 +751,22 @@ Method="GET" Url="/json/person/search/:word"</Description>
 <Implementation><![CDATA[
 	set st = $$$OK
 	
-	
 	try{
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+		TSTART
+		
+		//$$$THROWONERROR(st, ##class(Sti.Data.Company).CheckUpdatePrivilege())
+		
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
       	
-      	set company = ##class(Sti.Data.Company).%OpenId(data.id,,.st)
-      	     	
-      	if $$$ISERR(st) set company = ##class(Sti.Data.Company).%New()
-      	set company.FullName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.fullName, "I", "UTF8"))
-		set company.ShortName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.shortName, "I", "UTF8"))
-		set company.LegalAddress = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.legalAddress, "I", "UTF8"))
-		set company.MailAddress = data.mailAddress
-		set company.WebSite=data.webSite
-	
-		set company.Contact = ##class(Sti.Data.Employee).%OpenId(data.contact.id,,.st)
-		if $$$ISERR(st)
-		{
-			set company.Contact = ""	
-		}
-		/*set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.lastName, "I", "UTF8"))
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.firstName, "I", "UTF8"))
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.contact.middleName, "I", "UTF8"))
-		set curator.Email = data.contact.email
-		set curator.Phone = data.contact.phone
-		
-		$$$THROWONERROR(st,curator.%Save() )
-		
-		set company.Contact = curator*/
-		
-	
-		$$$THROWONERROR(st, company.%Save())
+      	do ##class(Sti.Data.Company).Save(data, .st).ConvertToProxyObject(1).%ToJSON()
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_CompanySave"," | "_st))
+      	
+      	TCOMMIT
 	}
-	
-	
 	catch ex {
+		TROLLBACK
 		set st = ex.AsStatus()
-	}
-
-		try{	
-		do company.ConvertToProxyObject().%ToJSON()
-	}
-	catch (ex){
-		set st = ex.AsStatus()
-	}
-
+	}	
 	quit st
 ]]></Implementation>
 </Method>
@@ -926,60 +800,25 @@ Method="GET" Url="/json/person/search/:word"</Description>
 <ClassMethod>1</ClassMethod>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	
 	set st = $$$OK
 	
-	
 	try{
-		// Преобразовали входную строку JSON в объект proxyObject
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+		TSTART
+		
+		//$$$THROWONERROR(st, ##class(Sti.Data.Internship).CheckUpdatePrivilege())
+		
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
       	
-      	// Открываем студента по ИД
-      	set internship = ##class(Sti.Data.Internship).%OpenId(data.id,,.st)
+      	do ##class(Sti.Data.Internship).Save(data, .st)
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_InternshipSave"," | "_st))
       	
-      	// Открыть не удалось - создаем
-      	if $$$ISERR(st) set internship = ##class(Sti.Data.Internship).%New()
-        
-        
-        set internship.Name = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.name, "I", "UTF8"))
-		set internship.DateBegin=$ZDATEH(data.dateBegin, 15)
-		set internship.DateEnd=$ZDATEH(data.dateEnd, 15)
-		set internship.MaxPeople=data.maxPeople
-		set internship.Street= ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.street, "I", "UTF8"))
-		set internship.Room=data.room
-		set internship.IsInUse=data.isInUse=$$$YES
-		
-		set internship.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id,,.st)
-		if $$$ISERR(st) set internship.Curator = ""
-		
-		/*set curator = ##class(Sti.Data.Employee).%New()
-		set curator.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.lastName, "I", "UTF8"))
-		set curator.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.firstName, "I", "UTF8"))
-		set curator.MiddleName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.curator.middleName, "I", "UTF8"))
-		set curator.Email = data.curator.email
-		set curator.Phone = data.curator.phone
-		
-		$$$THROWONERROR(st,curator.%Save() )
-		set internship.Curator = curator*/
-		 	
-		set internship.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
-		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
-		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
-		set internship.City=city
-				
-		set internship.Company = ##class(Sti.Data.Company).%OpenId(data.company.id)
-		
-		$$$THROWONERROR(st, internship.%Save())
+      	TCOMMIT
 	}
 	catch ex {
+		TROLLBACK
 		set st = ex.AsStatus()
-	}
-
-    try{
-		do internship.ConvertToProxyObject().%ToJSON()
-	}
-	catch(ex){
-		set st = ex.AsStatus()
-	}
+	}	
 	
 	quit st
 ]]></Implementation>

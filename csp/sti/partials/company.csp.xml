@@ -77,5 +77,5 @@
 			</div>				
         </div>
 </div>
-<stialert data="page.alert" span-right="4" span-middle="4" span-left="4"/>]]></CSP>
+<stialert data="page.alert"  span-right="1" span-middle="10" span-left="1"/>]]></CSP>
 </Export>

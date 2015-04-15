@@ -98,70 +98,26 @@
 <FormalSpec>isLogin:%Boolean</FormalSpec>
 <ReturnType>%Status</ReturnType>
 <Implementation><![CDATA[
+	
 	set st = $$$OK
 	
-	
 	try{
-		// Преобразовали входную строку JSON в объект proxyObject
-		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
-      	
-      	#dim order As Sti.Data.Order = $$$NULLOREF
-      	
-      	
-      	
-      	if (##class(Sti.Data.Order).%ExistsId(data.id)){
-      		
-      		$$$THROWONERROR(st,##class(Sti.Web.JsonAdmin).CheckAdmin(isLogin) = $$$OK)
-      		/*if (##class(Sti.Web.JsonAdmin).CheckAdmin(isLogin) = $$$OK)
-      		{
-	      		set order = ##class(Sti.Data.Order).%OpenId(data.id)
-      		}
-      		else
-      		{
-	      		st='$$$ERR'
-	      		THROW st
-      		}*/
-      		
-      	}
-      	else{
-	      	set order = ##class(Sti.Data.Order).%New()
-      	}
-      	
-      	set order.LastName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.lastName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue") 
-      	set order.FirstName = ##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.firstName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set order.MiddleName =##class(Sti.Data.Localization.LText).Create($ZCONVERT(data.middleName, "I", "UTF8"), "Sti.Data.Localization.Translation;PersonLTextValue")
-      	set order.Email = $ZCONVERT(data.email, "I", "UTF8")
-      	set order.Phone = $ZCONVERT(data.phone, "I", "UTF8")
-      	set order.Skype = $ZCONVERT(data.skype, "I", "UTF8")
-      	set order.Resume = $ZCONVERT(data.resume, "I", "UTF8")
-      	set order.IsInNewsletter = data.isInNewsletter = $$$YES
-      	set order.CacheExperience = $ZCONVERT(data.cacheExperience, "I", "UTF8")
-      	set order.EnsembleExperience = $ZCONVERT(data.ensembleExperience, "I", "UTF8")
-      	set order.DeepseeExperience = $ZCONVERT(data.deepseeExperience, "I", "UTF8")
-      	set order.BirthDate=$ZDATEH(data.birthDate, 15)
-      	set order.Chair = $ZCONVERT(data.chair, "I", "UTF8")
-      	set order.Faculty = $ZCONVERT(data.faculty, "I", "UTF8")
-    		
-		set order.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,,.st)
-		if $$$ISOK(st){
-    	set eng = ##class(Sti.Data.ENGMark).%New()
-		set eng = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id,3,.Status)
-		set order.EngMark=eng}
-		     	
-      	set order.City = ##class(Sti.Data.Region).%OpenId(data.city.id,,.st)
-		if $$$ISERR(st) set city = ##class(Sti.Data.Region).%New()
-		set city = ##class(Sti.Data.Region).%OpenId(data.city.id,3,.Status)
-		set order.City=city
+		TSTART
 		
-      	set order.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
-        set order.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		//$$$THROWONERROR(st, ##class(Sti.Data.Order).CheckUpdatePrivilege())
 		
-		$$$THROWONERROR(st, order.%Save())
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
+      	
+      	do ##class(Sti.Data.Order).Save(data, .st)
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_OrderSave"," | "_st))
+      	
+      	TCOMMIT
 	}
 	catch ex {
+		TROLLBACK
 		set st = ex.AsStatus()
-	}
-
+	}	
+	
 	quit st
 ]]></Implementation>
 </Method>

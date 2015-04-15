@@ -18,7 +18,7 @@ controllersModule.controller('CompanyCtrl', function($scope, $location, $routePa
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadCompany($routeParams.id);        
       }
-      if (($routeParams.cmpId) &&($routeParams.empId)){
+      else if (($routeParams.cmpId) &&($routeParams.empId)){
 	      $scope.page.loadCompany($routeParams.cmpId);
 	      $scope.page.formCaption = $filter('localize')("Редактирование компании");
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");

@@ -18,7 +18,7 @@ controllersModule.controller('InternshipCtrl', function($scope, $window, $locati
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadInternship($routeParams.id);        
       }
-      if (($routeParams.ishId) &&($routeParams.empId)){
+      else if (($routeParams.ishId) &&($routeParams.empId)){
 	      $scope.page.loadInternship($routeParams.ishId);
 	      $scope.page.formCaption = $filter('localize')("Редактирование университета");
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");

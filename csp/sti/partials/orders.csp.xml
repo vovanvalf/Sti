@@ -3,8 +3,6 @@
 <CSP name="sti/partials/orders.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница заявок-->
 <div class="row-fluid">
-	<div class="span1">
-	</div>
 		<!-- Свой компонент - таблица -->
 		 <stigrid style="border-radius: 4px 0 4px 4px;"
 	    	grid="ordersTable.state"

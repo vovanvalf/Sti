@@ -3,7 +3,7 @@
 <CSP name="sti/js/services/InternSrvc.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 /*===========================================================================================
-Стажер
+Стажёр
 ===========================================================================================*/
 
 servicesModule.factory('InternSrvc', function(RESTSrvc) {    

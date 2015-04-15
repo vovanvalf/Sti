@@ -4,7 +4,7 @@
 'use strict';
 
 /*===========================================================================================
-Стажер. Изменение/Добавление
+Стажёр. Изменение/Добавление
 ===========================================================================================*/
 
 controllersModule.controller('InternCtrl', function($scope, $routeParams, $window,  RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc, $filter, UtilsSrvc){
@@ -14,7 +14,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, $windo
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = $filter('localize')("Редактирование стажера");
+          $scope.page.formCaption = $filter('localize')("Редактирование стажёра");
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadIntern($routeParams.id);        
       }
@@ -103,7 +103,7 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, $windo
               var msg = 'Изменения сохранены.';
 
               if (!$routeParams.id){
-                  msg = 'Стажер добавлен.';
+                  msg = 'Стажёр добавлен.';
                   $scope.page.intern = {};                        
               }
 

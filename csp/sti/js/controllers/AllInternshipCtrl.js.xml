@@ -258,7 +258,7 @@ $scope.init = function(){
                 function(data){
                     $scope.internsTable.selectedItems = [];
                     $scope.internsTable.refresh();
-                    $scope.inalert = UtilsSrvc.getAlert('Готово!', 'Стажер удален.', 'success', true);
+                    $scope.inalert = UtilsSrvc.getAlert('Готово!', 'Стажёр удален.', 'success', true);
                 },
                 function(data, status, headers, config){
                     $scope.inalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);

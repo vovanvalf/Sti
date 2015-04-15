@@ -2,7 +2,7 @@
 <Export generator="Cache" version="25">
 <Class name="Sti.Data.Intern">
 <Description>
-Стажер</Description>
+Стажёр</Description>
 <Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63527,76710.81259</TimeCreated>
 
@@ -84,7 +84,7 @@
 
 <Property name="City">
 <Description>
-Город, в котором живёт стажер</Description>
+Город, в котором живёт стажёр</Description>
 <Type>Region</Type>
 <Required>1</Required>
 </Property>
@@ -212,6 +212,52 @@
 		
 		
 	quit ..%OpenId(id)
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>Intern</ReturnType>
+<Implementation><![CDATA[
+	
+	if (data.id = ""){
+		set intern = ..%New()
+		set intern.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
+      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
+      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+      	
+    }
+    else{
+	    set intern = ..%OpenId(data.id)
+		set intern.LastName.Value = data.lastName
+      	set intern.FirstName.Value = data.firstName
+      	set intern.MiddleName.Value = data.middleName
+   	}
+		set intern.Email = data.email
+      	set intern.Phone = data.phone
+      	set intern.Skype = data.skype
+      	set intern.Resume = data.resume
+      	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
+      	set intern.CacheExperience = data.cacheExperience
+      	set intern.EnsembleExperience = data.ensembleExperience
+      	set intern.DeepseeExperience = data.deepseeExperience
+      	set intern.TetMark = data.tetMark
+      	set intern.Chair = data.chair
+      	set intern.Faculty = data.faculty
+      	set intern.BirthDate= $ZDATEH(data.birthDate, 15)
+		
+		
+		set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id)
+		set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id)
+		set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
+		set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
+        set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		
+		
+    	set st = intern.%Save()
+  
+		quit intern
 ]]></Implementation>
 </Method>
 

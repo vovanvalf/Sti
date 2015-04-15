@@ -82,6 +82,34 @@
 ]]></Implementation>
 </Method>
 
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>Employee</ReturnType>
+<Implementation><![CDATA[
+	
+	if (data.id = ""){
+		set employee = ..%New()
+		set employee.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
+      	set employee.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
+      	set employee.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+    }
+    else{
+	    set employee = ..%OpenId(data.id)
+		set employee.LastName.Value = data.lastName
+      	set employee.FirstName.Value = data.firstName
+      	set employee.MiddleName.Value = data.middleName
+   	}
+		set employee.Email = data.email
+      	set employee.Phone = data.phone
+
+
+    	set st = employee.%Save()
+  
+		quit employee
+]]></Implementation>
+</Method>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
 <DataLocation>^Sti.Data.EmployeeD</DataLocation>

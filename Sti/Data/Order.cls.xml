@@ -84,7 +84,7 @@
 
 <Property name="City">
 <Description>
-Город, в котором живёт стажер</Description>
+Город, в котором живёт стажёр</Description>
 <Type>Region</Type>
 <Required>1</Required>
 </Property>
@@ -169,6 +169,50 @@
    	set proxy.university = ..University.ConvertToProxyObject()
    	set proxy.internship=..Internship.ConvertToProxyObject()
    	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>Order</ReturnType>
+<Implementation><![CDATA[
+   
+   if (data.id = ""){
+		set order = ..%New()
+		set order.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
+      	set order.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
+      	set order.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+      	
+    }
+    else{
+	    set order = ..%OpenId(data.id)
+		set order.LastName.Value = data.lastName
+      	set order.FirstName.Value = data.firstName
+      	set order.MiddleName.Value = data.middleName
+   	}
+		set order.Email = data.email
+      	set order.Phone = data.phone
+      	set order.Skype = data.skype
+      	set order.Resume = data.resume
+      	set order.IsInNewsletter = data.isInNewsletter = $$$YES
+      	set order.CacheExperience = data.cacheExperience
+      	set order.EnsembleExperience = data.ensembleExperience
+      	set order.DeepseeExperience = data.deepseeExperience
+      	set order.Chair = data.chair
+      	set order.Faculty = data.faculty
+      	set order.BirthDate= $ZDATEH(data.birthDate, 15)
+		
+		
+		set order.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id)
+		set order.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
+		set order.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
+        set order.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		
+		
+    	set st = order.%Save()
+  
+		quit order
 ]]></Implementation>
 </Method>
 

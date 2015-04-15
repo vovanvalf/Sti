@@ -90,6 +90,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $windo
    };
     $scope.page.saveIntern= function(msg)
     {
+	    $scope.page.intern.id="";
 	    InternSrvc.save($scope.page.intern).then(
       	  function(data){
              
@@ -129,11 +130,11 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $windo
 		    		  	 $scope.page.saveIntern('Изменения сохранены.');
 		    		 }
 		    		 else if(result==0)
-		    		 	$scope.page.saveIntern('Стажер добавлен.');
+		    		 	$scope.page.saveIntern('Стажёр добавлен.');
 		    	    })  	    
 		  }
 		  else
-		   $scope.page.saveIntern('Стажер добавлен.');
+		   $scope.page.saveIntern('Стажёр добавлен.');
 		     	    
 	  },
    	  function(data, status, headers, config){

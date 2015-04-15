@@ -3,8 +3,6 @@
 <CSP name="sti/partials/universities.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница университетов -->
 <div class="row-fluid">
-	<div class="span1">
-	</div>
 	<stigrid style="border-radius: 4px 0 4px 4px;"
 	    	grid="universitiesTable.state"
 		    table-class="table table-bordered table-hover"

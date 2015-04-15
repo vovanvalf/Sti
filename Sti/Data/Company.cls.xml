@@ -76,6 +76,39 @@ Web-сайт</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>Company</ReturnType>
+<Implementation><![CDATA[
+
+	if (data.id = ""){
+		set company = ..%New()
+      	set company.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName)
+		set company.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName)
+		set company.LegalAddress = ##class(Sti.Data.Localization.LText).Create(data.legalAddress)	
+    }
+    else{
+	    
+	    set company = ..%OpenId(data.id)
+      	set company.FullName.Value = data.fullName
+		set company.ShortName.Value = data.shortName
+		set company.LegalAddress.Value = data.legalAddress
+   	}
+      	set company.MailAddress = data.mailAddress
+		set company.WebSite=data.webSite
+      
+        set company.Contact = ##class(Sti.Data.Employee).%OpenId(data.contact.id,,.st)
+		/*if $$$ISERR(st)
+		{
+			set company.Contact = ""	
+		}*/
+    	set st = company.%Save()
+    
+		quit company
+]]></Implementation>
+</Method>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
 <DataLocation>^Sti.Data.CompanyD</DataLocation>

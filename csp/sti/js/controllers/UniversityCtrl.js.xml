@@ -18,7 +18,7 @@ controllersModule.controller('UniversityCtrl', function($scope, $location, $rout
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadUniversity($routeParams.id);        
       }
-      if (($routeParams.unId) &&($routeParams.empId)){
+      else if (($routeParams.unId) &&($routeParams.empId)){
 	      $scope.page.loadUniversity($routeParams.unId);
 	      $scope.page.formCaption = $filter('localize')("Редактирование университета");
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");

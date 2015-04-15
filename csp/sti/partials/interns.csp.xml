@@ -3,8 +3,6 @@
 <CSP name="sti/partials/interns.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница стажеров -->
 <div class="row-fluid">
-	<div class="span1">
-	</div>
 		<!-- Свой компонент - таблица -->
 		 <stigrid style="border-radius: 4px 0 4px 4px;"
 	    	grid="internsTable.state"
@@ -48,7 +46,7 @@
 
 
 
-<!-- Если стажер не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internsTable.selectedItems}}-->
+<!-- Если стажёр не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internsTable.selectedItems}}-->
 <div class="row-fluid" ng-hide="internsTable.selectedItems[0]" style="text-align: center;">
 	<i ng-bind="'Выберите стажёра для отображения полной информации.'|localize"></i>
 </div>
@@ -63,7 +61,7 @@
 				<p><span class="spnTitle" ng-bind="'Резюме'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
 				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].chair"></span></p>
 				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].faculty"></span></p>
-				<p><span class="spnTitle" ng-bind="'Рассылка'|localize"></span>: <span ng-hide="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Не оформлена'"></span><span ng-show="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Оформлена'"></span></p>
+				<p><span class="spnTitle" ng-bind="'Рассылка'|localize"></span>: <span ng-hide="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Не оформлена'|localize"></span><span ng-show="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Оформлена'|localize"></span></p>
             </div>
 			<div class="span6">
 				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].engMark.value"></span></p>

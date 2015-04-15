@@ -3,8 +3,6 @@
 <CSP name="sti/partials/internships.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница стажировок -->
 <div class="row-fluid">
-	<div class="span1">
-	</div>
 		<!-- Свой компонент - таблица -->
 		 <stigrid style="border-radius: 4px 0 4px 4px;"
 	    	grid="internshipsTable.state"
@@ -47,7 +45,7 @@
 </div>
 
 
-<!-- Если стажер не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internshipsTable.selectedItems}}-->
+<!-- Если стажёр не выбран(т.е. selectedItems == udefined), то показывать сообщение {{internshipsTable.selectedItems}}-->
 <div class="row-fluid" ng-hide="internshipsTable.selectedItems[0]" style="text-align: center;">
 	<i ng-bind="'Выберите стажировку для отображения полной информации.'|localize"></i>
 </div>
@@ -61,7 +59,7 @@
 				<p><span class="spnTitle" ng-bind="'Место обучения'|localize"></span>: <span ng-bind="(internshipsTable.selectedItems[0].city.name)+', '+(internshipsTable.selectedItems[0].city.parentName)"></span></p>
 				<p><span class="spnTitle" ng-bind="'Адрес'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].street"></span></p>
 				<p><span class="spnTitle" ng-bind="'Аудитория'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].room"></span></p>
-				<p><span class="spnTitle" ng-bind="'Статус'|localize"></span>: <span ng-hide="internshipsTable.selectedItems[0].isInUse==1" ng-bind="'Не активна'"></span><span ng-show="internshipsTable.selectedItems[0].isInUse==1" ng-bind="'Активна'"></span></p>
+				<p><span class="spnTitle" ng-bind="'Статус'|localize"></span>: <span ng-hide="internshipsTable.selectedItems[0].isInUse==1" ng-bind="'Не активна'|localize"></span><span ng-show="internshipsTable.selectedItems[0].isInUse==1" ng-bind="'Активна'|localize"></span></p>
 			</div>
 		</tab>
 		<tab heading="{{'Куратор'|localize}}">
@@ -72,7 +70,7 @@
 				<p><span class="spnTitle" ng-bind="'Email куратора'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].curator.email"></span></p>
 			</div>
 		</tab>	
-		<tab heading="{{('Стажеры'|localize)+' '+'('+(internshipsTable.selectedItems[0].numberOfStudent)+')'}}" select="internshipsTable.selectTab()" active="internshipsTable.internsTabActive">
+		<tab heading="{{('Стажёры'|localize)+' '+'('+(internshipsTable.selectedItems[0].numberOfStudent)+')'}}" select="internshipsTable.selectTab()" active="internshipsTable.internsTabActive">
 		<div class="row-fluid">
 		<!-- Свой компонент - таблица -->
 		 <stigrid style="border-radius: 4px 0 4px 4px;"
