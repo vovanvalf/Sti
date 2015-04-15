@@ -69,7 +69,9 @@ Web-сайт</Description>
 	set proxy.legalAddress=..LegalAddress.Value
 	set proxy.mailAddress=..MailAddress
 	set proxy.webSite=..WebSite
-	set proxy.contact=..Contact.ConvertToProxyObject()
+	if (..Contact){
+		set proxy.contact=..Contact.ConvertToProxyObject()
+	}
 	quit proxy
 ]]></Implementation>
 </Method>

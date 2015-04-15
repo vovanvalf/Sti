@@ -20,7 +20,6 @@ Private request processor for administrator</Description>
 
 
 
-
 <!-- Получить все заявки -->
 <Route Url="/order" Method="GET" Call="Sti.Web.JsonAdmin:GetOrders"/> 
 
@@ -58,9 +57,35 @@ Private request processor for administrator</Description>
 
 
 
+<!-- Поиск сотрудника(LiveSearch) -->
+<Route Method="GET" Url="/json/employee/:word" Call="Sti.Web.JsonAdmin:GetEmployeeBySearchParameters"/>
+
+<!-- Получить всех сотрудников -->
+<Route Url="/employee" Method="GET" Call="Sti.Web.JsonAdmin:GetEmployees"/> 
+
+<!-- Получить сотрудника по ИД -->
+<Route Url="/employee/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetEmployee"/> 
+
+<!-- найти сотрудника по фильтру -->
+<Route Url="/employee/lastName/:lastName:/firstName/:firstName/email/:email" Method="GET" Call="Sti.Web.JsonAdmin:GetEmployeeByFilter"/> 
+
+<!-- Сохранить / создать сотрудника -->
+<Route Url="/employee" Method="POST" Call="Sti.Web.JsonAdmin:SaveEmployee"/> 
+
+<!-- Удалить сотрудника -->
+<Route Url="/employee/:id" Method="DELETE" Call="Sti.Web.JsonAdmin:DeleteEmployee"/> 
+
+<!-- Получить всех сотрудников для таблицы[GRID] -->
+<Route Method="POST" Url="/employee/grid" Call="Sti.Web.JsonAdmin:GetEmployeesForGrid"/>
+
+
+
 
 <!-- Все стажеры университета -->
 <Route Url="/university/:id/intern" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversityInterns"/> 
+
+<!-- Get students of trainings -->
+<Route Method="POST" Url="/internship/student/grid" Call="Sti.Web.JsonAdmin:GetInternshipStudentsForGrid"/>
 
 <!-- Получить университет по ИД -->
 <Route Url="/university/:id" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversity"/> 

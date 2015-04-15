@@ -58,8 +58,8 @@
 				  <li ng-show="menu.admin" ng-class="menu.pages.orders.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.orders.url}}" ng-bind="menu.pages.orders.name" ng-click="menu.selectMenu(menu.pages.orders)"></a></li>
                   <li ng-show="menu.admin" ng-class="menu.pages.internships.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.internships.url}}" ng-bind="menu.pages.internships.name" ng-click="menu.selectMenu(menu.pages.internships)"></a></li>
   				  <li ng-show="menu.admin" ng-class="menu.pages.interns.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.interns.url}}" ng-bind="menu.pages.interns.name" ng-click="menu.selectMenu(menu.pages.interns)"></a></li>
-				  <li ng-show="menu.admin" ng-class="menu.pages.companies.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.companies.url}}" ng-bind="menu.pages.companies.name" ng-click="menu.selectMenu(menu.pages.companies)"></a></li>
-				  <li ng-show="menu.admin" ng-class="menu.pages.universities.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.universities.url}}" ng-bind="menu.pages.universities.name" ng-click="menu.selectMenu(menu.pages.universities)"></a></li>
+  				  <li ng-show="menu.admin" ng-class="menu.pages.companies.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.companies.url}}" ng-bind="menu.pages.companies.name" ng-click="menu.selectMenu(menu.pages.companies)"></a></li>
+				  <li ng-show="menu.admin" ng-class="menu.pages.universities.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.universities.url}}" ng-bind="menu.pages.universities.name" ng-click="menu.selectMenu(menu.pages.universities)"></a></li><li ng-show="menu.admin" ng-class="menu.pages.employees.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.employees.url}}" ng-bind="menu.pages.employees.name" ng-click="menu.selectMenu(menu.pages.employees)"></a></li>
                 </ul>
 				
                 <ul class="nav pull-right">
@@ -121,6 +121,8 @@
     <script language="javascript"  src="js/controllers/OrderAcceptCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllInternCtrl.js"></script>
     <script language="javascript"  src="js/controllers/InternCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/AllEmployeeCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/EmployeeCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllUniversityCtrl.js"></script>
     <script language="javascript"  src="js/controllers/UniversityCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllInternshipCtrl.js"></script>
@@ -138,6 +140,7 @@
     <script language="javascript"  src="js/services/UtilsSrvc.js"></script>
     <script language="javascript"  src="js/services/MarksSrvc.js"></script>
     <script language="javascript"  src="js/services/OtherSrvc.js"></script>
+    <script language="javascript"  src="js/services/EmployeeSrvc.js"></script>
     
     <script language="javascript"  src="js/directives/stigrid.js"></script>
     <script language="javascript"  src="js/directives/stialert.js"></script>

@@ -58,6 +58,30 @@
 ]]></Implementation>
 </Method>
 
+<Method name="GetEmployeeByParameter">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>lName:%String,fName:%String,email:%String</FormalSpec>
+<ReturnType>Employee</ReturnType>
+<Implementation><![CDATA[
+	 set id = ""
+	     	
+	  &sql(SELECT EmployeeTab.ID INTO :id
+		 FROM Sti_Data.Employee as EmployeeTab 
+		 	INNER JOIN 
+		 	Sti_Data_Localization.LTextValue as ltvalLN ON ltvalLN.LText = EmployeeTab.LastName 
+		 	INNER JOIN 
+		 	Sti_Data_Localization.LTextValue as ltvalFN ON ltvalFN.LText = EmployeeTab.FirstName
+		 WHERE %UPPER(ltvalLN.Value) = %UPPER(TRIM(BOTH ' ' FROM :lName)) 
+		 	   AND 
+		 	   %UPPER(ltvalFN.Value) = %UPPER(TRIM(BOTH ' ' FROM :fName)) 
+		 	   AND 
+		 	   EmployeeTab.Email = :email)
+		
+		
+	quit ..%OpenId(id)
+]]></Implementation>
+</Method>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
 <DataLocation>^Sti.Data.EmployeeD</DataLocation>

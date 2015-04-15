@@ -41,6 +41,19 @@ servicesModule.factory('InternSrvc', function(RESTSrvc) {
             
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/intern/grid', data: obj});
         },
+        /* Все слушатели обучения для таблицы */
+        getInternshipStudentsForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, trainingId){
+            var first = pageSize * (pageCurr - 1) + 1;
+            var obj = {sqlName: sqlName, 
+                       isDown: isDown, 
+                       first: first, 
+                       last: first + pageSize - 1,
+                       searchSqlName: searchSqlName, 
+                       searchText: searchText,
+                       trainingId: trainingId};
+
+            return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/internship/student/grid', data: obj});
+        },
         /* Получить всех стажеров */
         getAll: function(){
             return RESTSrvc.getPromise({method: 'GET', url:StiSetting.admin+'/intern'});

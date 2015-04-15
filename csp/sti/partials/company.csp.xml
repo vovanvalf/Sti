@@ -3,17 +3,17 @@
 <CSP name="sti/partials/company.csp" application="/csp/sti/" default="1"><![CDATA[
 <!-- Страница редактирования/добавления компании-->
 <div class="row-fluid">
-	<form name="pageForm" ng-submit="page.submit()" body style="padding-top:50px;" >
 	    <div class="span15">
 			<div class="accordion">
 			    <div class="accordion-group">
 				  <tabset>
 	  			 	<tab heading="{{'Основная информация'|localize}}">
-					    <div class="accordion-heading">
+	  			 		<div class="accordion-heading">
 							<a class="accordion-toggle" ng-bind="''"></a>
 						</div>
 						<div class="accordion-body">
 							<div class="accordion-inner">
+								<form name="pageForm" ng-submit="page.submit()">
 						 		<div class="row-fluid">
 									<div class="span4">
 										<label class="control-label" ng-bind="('Полное название'|localize)+'*'">:</label>
@@ -28,43 +28,54 @@
 										<input class="span12" type="text" ng-model="page.company.webSite"></input>
 					    			</div>
 								</div>
+								<div class="control-group">
+			 						<div class="controls">
+				  						 	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
+											<button type="button" class="btn btn-small" ng-click="page.cancel()" ng-bind="'Отмена'|localize"></button>		 	
+			 						</div>
+								</div>	
+					    		</form>
 							</div>
 						</div>
 					</tab>
-					<tab heading="{{'Контактное лицо'|localize}}">
-						<div class="accordion-heading">
+					<tab heading="{{'Контактное лицо'|localize}}" disabled="!page.company.id" >
+					    <div class="accordion-heading">
 							<a class="accordion-toggle" ng-bind="''"></a>
 						</div>
 						<div class="accordion-body">
 							<div class="accordion-inner">
 						 		<div class="row-fluid">
-									<div class="span4">
-										<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.lastName" required></input>
-						    			<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.firstName" required></input>
-										<label class="control-label" ng-bind="'Отчество'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.middleName"></input>
-										<label class="control-label" ng-bind="'Телефон'|localize">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.phone" ></input>
-										<label class="control-label" ng-bind="('Электронный адрес'|localize)+'*'">:</label>
-										<input class="span12" type="text" ng-model="page.company.contact.email" required></input>
-									</div>
+									<div class="span6">			
+											<div class="row-fluid">
+												<div class="span6">
+													<form class="form" ng-submit="">
+														<p><span ng-bind="'ФИО'|localize"    ></span>: <span ng-bind="(page.company.contact.lastName)+'  '+(page.company.contact.firstName)+'  '+(page.company.contact.middleName)"></span></p>
+														<p>
+															<span ng-hide="page.company.contact.phone==''" style="padding-left:12px"><i class="fa fa-phone"></i> {{page.company.contact.phone}}</span>
+															<span ng-hide="page.company.contact.email==''" style="padding-left:12px"><i class="fa fa-envelope"></i> {{page.company.contact.email}}</span>
+														</p>
+														<button class="btn btn-small" type="submit" ng-show="page.company.id" ng-click="page.editContact()" ng-bind="'Редактировать'|localize" style="margin-top: 5px;"></button>
+													</form>
+												</div>
+												<div class="span6">
+													<div class="control-group" ng-show="page.company.id">
+														<label class="control-label" ng-bind="'Фамилия или email'|localize"></label>
+														<div class="controls">
+								                			<input class="span12" type="text" ng-model="searchForm.person" ng-change="searchForm.search(searchForm.person)" placeholder="{{'Фамилия И.О., Email, Организация'|localize}}" typeahead="person as person.text for person in searchForm.persons | filter: {text: $viewValue} | limitTo: 15" required></input>
+										    				<button class="btn btn-small" type="submit" ng-click="page.changeContact()" ng-bind="'Заменить'|localize" ng-disabled="!searchForm.person.id"></button>
+										    			</div>
+													</div>
+												</div>
+											</div>
+										</div>
 								</div>
 							</div>
-						</div>
+						</div>	
 				 	</tab>
 				   </tabset>
 				</div>
-			</div>
-			<div class="control-group">
-			 	<div class="controls">
-				   	<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-disabled="pageForm.$pristine"></button>
-					<button type="button" class="btn btn-small" ng-click="page.cancel()" ng-bind="'Отмена'|localize"></button>		 	
-			 	</div>
 			</div>				
         </div>
-    </form>
 </div>
 <stialert data="page.alert" span-right="4" span-middle="4" span-left="4"/>]]></CSP>
 </Export>

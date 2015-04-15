@@ -77,13 +77,13 @@ Paged output of table, for any class with parameters, sorting and searching</Des
 		
 		set sql = sql_" "_groupCondition_" ORDER BY "_..ParseParameter(params.sqlName)_" "_isDown
 		
-			
+		set ^temp = sql	
 		set statement = ##class(%SQL.Statement).%New()	
 		$$$THROWONERROR(status, statement.%Prepare(sql))		
 		set rs = statement.%Execute()
 
 		set proxyItems = ##class(%ListOfObjects).%New()			
-		set ^temp = sql
+		
 		// Все элементы, попавшие в заданный диапазон конвертируются в proxy и помещаются в результирующий список
 		while (rs.%Next() '= 0){
 			if (rs.%ROWCOUNT >= params.first) && (rs.%ROWCOUNT <= params.last){

@@ -89,6 +89,8 @@ $scope.init = function(){
         $scope.internshipsTable.selectedItems = [];
         $scope.internshipsTable.multiSelectMode = false;
         $scope.internshipsTable.forciblyUpdate = 0;
+        $scope.internshipsTable.internsTabActive=false;
+        $scope.internshipsTable.infoTabActive=true;
         $scope.internshipsTable.refresh();
         
         
@@ -157,7 +159,6 @@ $scope.init = function(){
         $scope.internsTable.selectedItems = [];
         $scope.internsTable.multiSelectMode = false;
         $scope.internsTable.forciblyUpdate = 0;
-        $scope.internsTable.refresh();
     };
 
     // 
@@ -206,9 +207,20 @@ $scope.init = function(){
          }});
     };
     
+    $scope.internshipsTable.onSelect = function(item){ 
+       if(item){
+			$scope.internsTable.internshipId=item.id;
+			$scope.internshipsTable.internsTabActive=false;
+			$scope.internshipsTable.infoTabActive=true;
+       		
+       };
+      $scope.internshipsTable.selectTab = function(){ 
+           $scope.internsTable.refresh();
+      }  
+    };
    /* ----------------------------------------------------------------------------------------------------------------------------------*/
-     $scope.internsTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
-        InternSrvc.getAllForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, {}).then(
+     $scope.internsTable.loadItems = function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, internshipId){
+        InternSrvc.getInternshipStudentsForGrid(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, $scope.internsTable.internshipId).then(
             function(data){
 	            data = data.children;
                 $scope.internsTable.pageTotal = Math.ceil(data.itemsTotal / pageSize);
@@ -225,6 +237,8 @@ $scope.init = function(){
 	$scope.internsTable.refresh = function(){ 
         $scope.internsTable.forciblyUpdate++; 
     };
+    
+
     
     $scope.internsTable.add = function(){
         $location.path('/intern/'); 

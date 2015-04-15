@@ -23,7 +23,8 @@ controllersModule.controller('MainCtrl', function($scope, $cookies, $filter, $wi
 	    				 internships: {id: 'internships', url: '#/internships', name: $filter('localize')('Стажировки')},
                          interns: {id: 'interns', url: '#/interns', name: $filter('localize')('Стажёры')},
                          companies: {id: 'companies', url: '#/companies', name: $filter('localize')('Компании')},
-                         universities: {id: 'universities', url: '#/universities', name: $filter('localize')('Университеты')}
+                         universities: {id: 'universities', url: '#/universities', name: $filter('localize')('Университеты')},
+                         employees: {id: 'employees', url: '#/employees', name: $filter('localize')('Сотрудники')}
                         }; 
   
     $scope.menu.selectMenu = function(menuItem){

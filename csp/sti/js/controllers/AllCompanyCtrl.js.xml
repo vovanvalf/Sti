@@ -77,7 +77,7 @@ controllersModule.controller('AllCompanyCtrl', function($scope, $dialog, $locati
     };
 
     $scope.companiesTable.edit = function(item){
-        $location.path('/company/' + item.id);
+	   $location.path('/company/' + item.id);
     };
 
     $scope.companiesTable.remove = function(item){

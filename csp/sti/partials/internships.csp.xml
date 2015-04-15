@@ -20,6 +20,7 @@
 		    page-size="internshipsTable.pageSize"
 		    navigator-visible="true"
 
+			
 		    selectable="true"
 		    selected-items="internshipsTable.selectedItems"
 		    multi-select-mode="false"
@@ -55,7 +56,7 @@
 
 <div class="row-fluid" ng-show="internshipsTable.selectedItems[0]!=null">
 	 <tabset>
-		<tab heading="{{'Информация'|localize}}">
+		<tab heading="{{'Информация'|localize}}" active="internshipsTable.infoTabActive">
 			<div class="span6">
 				<p><span class="spnTitle" ng-bind="'Место обучения'|localize"></span>: <span ng-bind="(internshipsTable.selectedItems[0].city.name)+', '+(internshipsTable.selectedItems[0].city.parentName)"></span></p>
 				<p><span class="spnTitle" ng-bind="'Адрес'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].street"></span></p>
@@ -71,7 +72,7 @@
 				<p><span class="spnTitle" ng-bind="'Email куратора'|localize"></span>: <span ng-bind="internshipsTable.selectedItems[0].curator.email"></span></p>
 			</div>
 		</tab>	
-		<tab heading="{{'Стажеры'|localize}}">
+		<tab heading="{{('Стажеры'|localize)+' '+'('+(internshipsTable.selectedItems[0].numberOfStudent)+')'}}" select="internshipsTable.selectTab()" active="internshipsTable.internsTabActive">
 		<div class="row-fluid">
 		<!-- Свой компонент - таблица -->
 		 <stigrid style="border-radius: 4px 0 4px 4px;"
@@ -81,7 +82,7 @@
 		    columns="internsTable.columns"
 		    items="internsTable.items"
 		    properties="internsTable.properties"
-		    update-items="internsTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+		    update-items="internsTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText, internshipId)"
 
 		    page-curr="internsTable.pageCurr"
 		    page-total="internsTable.pageTotal"

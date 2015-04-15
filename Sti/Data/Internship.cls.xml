@@ -117,7 +117,9 @@
 	set proxy.maxPeople=..MaxPeople
 	set proxy.numberOfStudent=..NumberOfStudent
 	set proxy.isInUse=..IsInUse
+	if (..Curator){
 	set proxy.curator=..Curator.ConvertToProxyObject()
+	}
 	set proxy.city=..City.ConvertToProxyObject()
 	set proxy.street=..Street.Value
 	set proxy.room=..Room
@@ -136,7 +138,7 @@ Free seats in the internship</Description>
 <Implementation><![CDATA[
 	set count = 0
 	 
-	&sql(SELECT COUNT(ID) As TotalCount INTO :count
+	&sql(SELECT COUNT(FirstName) As TotalCount INTO :count
 		 FROM Sti_Data.Intern
 		WHERE Internship = :internshipId)	 
 		 

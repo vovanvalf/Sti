@@ -85,7 +85,9 @@ Cтажёры</Description>
 	if (shortInfo = 1) quit proxy
 	set proxy.address = ..Address.Value
 	set proxy.city = ..City.ConvertToProxyObject()
+	if (..Curator){
 	set proxy.curator = ..Curator.ConvertToProxyObject()
+	}
 	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web	
 	/*set proxy.employees = ##class(%ListOfObjects).%New()

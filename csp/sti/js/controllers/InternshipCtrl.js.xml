@@ -3,20 +3,25 @@
 <CSP name="sti/js/controllers/InternshipCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 
-
 /*===========================================================================================
 Стажировка. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('InternshipCtrl', function($scope, $window, $routeParams, InternshipSrvc, CompanySrvc, RegionSrvc, $filter, UtilsSrvc){
+controllersModule.controller('InternshipCtrl', function($scope, $window, $location, $routeParams, InternshipSrvc, CompanySrvc, RegionSrvc, $filter, UtilsSrvc, EmployeeSrvc){
    $scope.page = {internship:{}};
 	$scope.cities = [];
+	$scope.searchForm = {visible: true, persons: [], person:''};
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
           $scope.page.formCaption = $filter('localize')("Редактирование стажировки");
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
           $scope.page.loadInternship($routeParams.id);        
+      }
+      if (($routeParams.ishId) &&($routeParams.empId)){
+	      $scope.page.loadInternship($routeParams.ishId);
+	      $scope.page.formCaption = $filter('localize')("Редактирование университета");
+          $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
       }
       else{
           $scope.page.formCaption = $filter('localize')("Добавление стажировки");
@@ -38,7 +43,17 @@ controllersModule.controller('InternshipCtrl', function($scope, $window, $routeP
       InternshipSrvc.get(id).then(
           function(data){
               $scope.page.internship = data;
-               $scope.page.internship.isInUse=$scope.page.internship.isInUse == 1;
+              if(!$scope.page.internship.curator)
+              {
+	            $scope.page.internship.curator={id:''}
+	            if($routeParams.ishId)
+				{
+					$scope.page.internship.curator.id=$routeParams.empId;
+	      			$scope.page.submit();
+	      			$location.path('/internship/' + $routeParams.ishId);
+				}
+              };
+              $scope.page.internship.isInUse=$scope.page.internship.isInUse == 1;
          
           },
           function(data, status, headers, config){
@@ -58,14 +73,18 @@ controllersModule.controller('InternshipCtrl', function($scope, $window, $routeP
    };
 
    // Сохранить/создать (отправка формы). Передаем объект на сервер
-   $scope.page.submit = function(){
+   $scope.page.submit = function(edit){
       InternshipSrvc.save($scope.page.internship).then(
           function(data){
               var msg = 'Изменения сохранены.';
 
               if (!$routeParams.id){
                   msg = 'Стажировка добавлена.';
-                  $scope.page.internship = {};                        
+                  $scope.page.internship = {};   
+                  if(edit!=1)
+                  {
+                    $location.path('/internship/'+data.id);                     
+                  };                        
               }
 
               $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
@@ -99,6 +118,43 @@ controllersModule.controller('InternshipCtrl', function($scope, $window, $routeP
         $window.history.back();
     };
     
+    // Поиск работника
+    $scope.searchForm.search = function(startsWith){
+        if(!startsWith || startsWith.length == 0){
+            $scope.searchForm.persons = [];
+            startsWith = '';
+        }
+        
+        if (startsWith.length != 2)
+            return;  
+        
+        EmployeeSrvc.getBySearchParameters(startsWith).then(
+            function(data){
+                $scope.searchForm.persons = data.children;
+                
+            },
+            function(response){
+                $scope.page.alert= UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+            }); 
+    };
+    
+     $scope.page.changeContact = function()
+	 {
+		 if($scope.searchForm.person.id){
+		 $scope.page.internship.curator.id=$scope.searchForm.person.id
+		 $scope.page.submit()
+		 }
+	 }  
+	 
+	 $scope.page.editContact = function(){
+	    if($scope.page.internship.curator.id){
+		    $location.path('/employee/' + $scope.page.internship.curator.id);}
+	    else
+          {
+	         $scope.page.submit(1); 
+	         $location.path('/employee/'+$scope.page.internship.id+'/internship');
+          }; 
+    };
     
    $scope.page.init(); 
 });
