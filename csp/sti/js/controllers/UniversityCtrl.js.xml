@@ -23,6 +23,13 @@ controllersModule.controller('UniversityCtrl', function($scope, $location, $rout
 	      $scope.page.formCaption = $filter('localize')("Редактирование университета");
           $scope.page.formBtnSubmitName = $filter('localize')("Сохранить");
       }
+      else if(($routeParams.newUniversity)&&($routeParams.orId))
+      {
+	      $scope.page.formCaption = $filter('localize')("Добавление университета");
+          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
+          $scope.page.university.fullName=$routeParams.newUniversity;
+          
+      }
       else{
           $scope.page.formCaption = $filter('localize')("Добавление университета");
           $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
@@ -57,8 +64,11 @@ controllersModule.controller('UniversityCtrl', function($scope, $location, $rout
       UniversitySrvc.save($scope.page.university).then(
           function(data){
               var msg = 'Изменения сохранены.';
-
-              if (!$routeParams.id){
+			  if(($routeParams.newUniversity)&&($routeParams.orId))
+      			{
+	      			 $location.path('/orderaccept/'+$routeParams.orId+'/university/'+data.id);
+      			}
+              else if (!$routeParams.id){
                   msg = 'Университет добавлен.';
                   $scope.page.university = {}; 
                   if(edit!=1)

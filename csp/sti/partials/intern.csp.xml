@@ -67,7 +67,7 @@
 								<label class="control-label" ng-bind="'Оценка PET'|localize">:</label>
 								<select class="span12" ng-model="page.intern.petMark.id" ng-options="pet.id as pet.value for pet in page.petmarks"></select>	
 								<label class="checkbox"  >
-			    					 <input type="checkbox" ng-model="page.intern.isInNewsletter">{{'Согласие на рассылку'|localize}}
+			    					 <input type="checkbox" ng-model="page.intern.isInNewsletter">{{'Согласен получать на email предложения о вакансиях и обучении'|localize}}
 			    				</label>							 
 						   </div>
 						</div>

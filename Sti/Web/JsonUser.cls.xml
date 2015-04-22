@@ -245,6 +245,22 @@
 ]]></Implementation>
 </Method>
 
+<Method name="GetUniversityBySearchParameters">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>word:%String,additionalWhere:%String=""</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set word = ..ParseParameter(word) 
+    set sql = "SELECT ID as id, "_ 
+	"FullName as fullName, "_ 
+	"FullName->Value as text "_ 
+	"FROM Sti_Data.University "_ 
+	"WHERE (FullName->Value LIKE '"_word_"%') "_ 
+	"ORDER BY text"
+    quit ..WriteJsonFromSql(sql)
+]]></Implementation>
+</Method>
+
 <Method name="GetInternships">
 <Description>
 Все стажировки</Description>

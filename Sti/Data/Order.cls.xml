@@ -136,7 +136,22 @@
 <Type>%String</Type>
 </Property>
 
+<Property name="NewUniversity">
+<Description>
+Неизвестный университет</Description>
+<Type>%String</Type>
+</Property>
+
+<UDLText name="T">
+<Content><![CDATA[
+// Property FullNameUniversity As %String;
+
+]]></Content>
+</UDLText>
+
 <Index name="UniversityIndex">
+<Description>
+Полное название университета</Description>
 <Properties>University</Properties>
 </Index>
 
@@ -166,7 +181,16 @@
  		set proxy.engMark = ..EngMark.ConvertToProxyObject()}
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
-   	set proxy.university = ..University.ConvertToProxyObject()
+	if (..University){
+   		set proxy.university = ..University.ConvertToProxyObject()
+   		set proxy.fullNameUniversity = ..University.FullName.Value
+	}
+	else
+	{
+		set proxy.fullNameUniversity = ..NewUniversity
+	}
+	set proxy.newUniversity=..NewUniversity
+
    	set proxy.internship=..Internship.ConvertToProxyObject()
    	quit proxy
 ]]></Implementation>
@@ -202,7 +226,7 @@
       	set order.Chair = data.chair
       	set order.Faculty = data.faculty
       	set order.BirthDate= $ZDATEH(data.birthDate, 15)
-		
+		set order.NewUniversity= data.newUniversity
 		
 		set order.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id)
 		set order.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
@@ -301,6 +325,12 @@
 </Value>
 <Value name="26">
 <Value>DeepseeExperience</Value>
+</Value>
+<Value name="27">
+<Value>NewUniversity</Value>
+</Value>
+<Value name="28">
+<Value>FullNameUniversity</Value>
 </Value>
 </Data>
 </Storage>

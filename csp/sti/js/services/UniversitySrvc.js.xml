@@ -8,6 +8,15 @@
 
 servicesModule.factory('UniversitySrvc', function(RESTSrvc) {    
     return {
+	     /* LiveSearch */ 
+	    getBySearchParameters: function(word){
+            var config ={method: 'GET',url:StiSetting.user + '/json/university/' + word};
+            return RESTSrvc.getPromise(config);
+        },
+        /* Получить университет по фильтру */
+        findSimmilarUniversity: function(fullName){
+            return RESTSrvc.getPromise({method: 'GET', url: StiSetting.admin + '/university/fullName/'+fullName});
+        },
         /* Сохранить / создать университет */
         save: function(university){
             return RESTSrvc.getPromise({method: 'POST', url: StiSetting.admin + '/university', data: university});

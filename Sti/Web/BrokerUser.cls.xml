@@ -36,6 +36,9 @@ Private request processor for administrator</Description>
 <!-- Получить все стажировки -->
 <Route Url="/internship" Method="GET" Call="Sti.Web.JsonUser:GetInternships"/> 
 
+<!-- Поиск университета(LiveSearch) -->
+<Route Method="GET" Url="/json/university/:word" Call="Sti.Web.JsonUser:GetUniversityBySearchParameters"/>
+
 </Routes>
 ]]></Data>
 </XData>

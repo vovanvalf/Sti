@@ -67,7 +67,6 @@ controllersModule.controller('CompanyCtrl', function($scope, $location, $routePa
 		 if($scope.searchForm.person.id){
 		 $scope.page.company.contact.id=$scope.searchForm.person.id
 		 $scope.page.submit()
-		 //console.log($scope.page.company.contact.id);
 		 }
 	 }   
    // Сохранить/создать (отправка формы). Передаем объект на сервер

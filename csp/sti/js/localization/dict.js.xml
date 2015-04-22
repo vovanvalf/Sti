@@ -13,7 +13,7 @@ localizationModule.constant('StiDictionary', {
 		'Университет':'University',
 		'Телефон':'Telephone',
 		'Резюме':'Resume',
-		'Согласие на рассылку':'Agreement to newsletter',
+		'Согласен получать на email предложения о вакансиях и обучении':'I agree to receive offers by email about vacancies and training',
 		'Уровень английского':'English level',
 		'Опыт Cache':'Experience Cache',
 		'Опыт DeepSee':'Experience DeepSee',
@@ -129,6 +129,9 @@ localizationModule.constant('StiDictionary', {
 	 	'Активна' : 'Active',
 	 	'Не оформлена' : 'No',
 	    'Оформлена' : 'Yes',
+	    'Введите полное название университета' : 'Enter the full name of the university',
+	    'Выбрать' : 'Select',
+		'Университета, указанного в заявке, нет в базе данных! Добавить его или выбрать другой университет из списка?' : 'University of the application is not in the database! Add it or select another university from the list?',
 	 	
   },
   toRussian: {

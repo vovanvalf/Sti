@@ -9,8 +9,9 @@
 
 controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionSrvc, OrderSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc, $filter, UtilsSrvc){
     $scope.menu.selectMenu($scope.menu.pages.order);
-    $scope.page = {order:{}};
+    $scope.page = {order:{university:{id:{}}, newUniversity: {}}};
 	$scope.cities = [];
+	$scope.searchForm = {visible: true, persons: [], person:''};
    // Инициализация данных
    $scope.page.init = function(){
       if ($routeParams.id){
@@ -22,15 +23,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
           $scope.page.formCaption = $filter('localize')("Создание заявки");
           $scope.page.formBtnSubmitName = $filter('localize')("Создать заявку");
 
-          // Добавление в определённый университет
-          if ($routeParams.unId && $routeParams.fcId){
-              $scope.page.order = {university: {id: parseInt($routeParams.unId)}};            
-          	  $scope.page.loadUniversity($routeParams.unId);
-          }
-          if ($routeParams.coId && $routeParams.fcId){
-              $scope.page.order = {internship: {id: parseInt($routeParams.coId)}};            
-          	  $scope.page.loadInternship($routeParams.coId);
-          }
+
       }
       
       // Загрузить университеты
@@ -64,6 +57,17 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
           });      
    };
    
+       $scope.page.formatData = function(){
+	    $scope.page.order.birthDate = UtilsSrvc.getValidDate($scope.page.order.birthDate);
+        if ($scope.page.order.birthDate == ""){
+        	$scope.page.order.birthDate = "";}
+
+        if (!$scope.page.order.city.id){
+             $scope.page.order.city = '';
+   
+        }
+    };
+    
    //Очистить форму
    $scope.page.clear = function(){
         $scope.pageForm.$setPristine();
@@ -104,6 +108,15 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
    
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
+	   
+	     if($scope.searchForm.person.id){
+		 	$scope.page.order.university.id=$scope.searchForm.person.id;
+		 	       //page.order.university.id
+		 }
+		 else
+		 	$scope.page.order.newUniversity=$scope.searchForm.person;
+		 	
+
       OrderSrvc.save($scope.page.order).then(
           function(data){
               var msg = 'Изменения сохранены.';
@@ -139,6 +152,24 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
             }); 
     };
     
+    // Поиск университета
+    $scope.searchForm.search = function(startsWith){
+        if(!startsWith || startsWith.length == 0){
+            $scope.searchForm.persons = [];
+            startsWith = '';
+        }
+        
+        if (startsWith.length != 2)
+            return;  
+        
+        UniversitySrvc.getBySearchParameters(startsWith).then(
+            function(data){
+                $scope.searchForm.persons = data.children;
+            },
+            function(response){
+                $scope.page.alert= UtilsSrvc.getAlert('Внимание!', response.data, 'error', true);
+            }); 
+    };
     
    $scope.page.init(); 
 });

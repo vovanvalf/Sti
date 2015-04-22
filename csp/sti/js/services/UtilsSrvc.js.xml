@@ -11,6 +11,13 @@ servicesModule.factory('UtilsSrvc', function( $filter) {
 	
 	return {
 
+        getValidDate: function(str){
+	        var date = new Date(str);
+	        if (isNaN(date))
+	        	return "";
+	        	
+	        return $filter('date')(date, 'dd-MM-y');
+	    },
         getIndexes: function(array, objField, valueField){
             var indexes = [];
             

@@ -35,10 +35,12 @@ mainModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/university/:id',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
     $routeProvider.when('/university/:unId/employee/:empId',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
     $routeProvider.when('/university',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
+    $routeProvider.when('/university/:newUniversity/order/:orId',   {templateUrl: 'partials/university.csp',    controller: 'UniversityCtrl'});
       
     $routeProvider.when('/orders',    {templateUrl: 'partials/orders.csp', controller: 'AllOrderCtrl'});
     $routeProvider.when('/order/:id', {templateUrl: 'partials/order.csp',  controller: 'OrderCtrl'});
     $routeProvider.when('/orderaccept/:id', {templateUrl: 'partials/orderaccept.csp',  controller: 'OrderAcceptCtrl'});
+    $routeProvider.when('/orderaccept/:orId/university/:unId', {templateUrl: 'partials/orderaccept.csp',  controller: 'OrderAcceptCtrl'});
     $routeProvider.when('/order', {templateUrl: 'partials/order.csp',  controller: 'OrderCtrl'});
     
     $routeProvider.when('/interns',    {templateUrl: 'partials/interns.csp', controller: 'AllInternCtrl'});

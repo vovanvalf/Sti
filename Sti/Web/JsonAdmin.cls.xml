@@ -627,6 +627,28 @@ Method="GET" Url="/json/person/search/:word"</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="GetUniversityByFilter">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>fullName:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set response = ##class(%ZEN.proxyObject).%New()
+		 
+	set university = ##class(Sti.Data.University).GetUniversityByParameter(fullName)
+	if ($ISOBJECT(university)){
+		set response.status = $$$OK
+		set response.result = university.ConvertToProxyObject()
+	}
+	else{
+		set response.status = 0
+	}
+	 
+	do response.%ToJSON()
+	 
+	quit $$$OK
+]]></Implementation>
+</Method>
+
 <Method name="GetCompanies">
 <Description>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

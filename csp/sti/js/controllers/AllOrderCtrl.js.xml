@@ -6,7 +6,7 @@
 Все заявки
 ===========================================================================================*/
 
-controllersModule.controller('AllOrderCtrl', function($scope, $location, $dialog, $filter, OrderSrvc, UtilsSrvc){
+controllersModule.controller('AllOrderCtrl', function($scope, $location, $dialog, $filter, OrderSrvc,UniversitySrvc, UtilsSrvc){
 $scope.menu.selectMenu($scope.menu.pages.orders);
 $scope.ordersTable = {state: {}};
 
@@ -17,7 +17,7 @@ $scope.init = function(){
                           {name: 'Имя', sqlName: 'FirstName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Отчество', sqlName: 'MiddleName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Дата рождения', sqlName: 'BirthDate', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
-                          {name: 'Университет', sqlName: 'University->FullName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Университет', sqlName: 'FullNameUniversity', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Город', sqlName: 'City->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
         				  {name: 'Стажировка', sqlName: 'Internship->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true}];
         $scope.ordersTable.properties = [
@@ -54,12 +54,9 @@ $scope.init = function(){
                                 }
 	        				},
 	        				{
-	        				  	name: 'university.fullName',
+	        				  	name: 'fullNameUniversity',
 	        				  	cellStyle: {textAlign: 'left'},
 	        				  	cellSelectable: false,
-	        				  	getCssClass: function(item){ 
-                                    return '';
-                                }
 	        				},
 	        				{
 	        				  	name: 'city.name',
@@ -113,7 +110,44 @@ $scope.init = function(){
     };
 
     $scope.ordersTable.edit = function(item){
-        $location.path('/orderaccept/' + item.id);
+	    if(item.university)
+	    	$location.path('/orderaccept/' + item.id);
+	    else if(item.newUniversity)
+	    {
+		UniversitySrvc.findSimmilarUniversity(item.newUniversity).then(
+	  	function(data){	
+		  if((data.status=='0') )
+		  {
+			        var msg = 'Университета, указанного в заявке, нет в базе данных! Добавить его или выбрать другой университет из списка?';
+				    var btns= [{result: '0', label: $filter('localize')('Добавить'),  cssClass: 'btn-small', func:null},{result: '1', label: $filter('localize')('Выбрать'),  cssClass: 'btn-small', func:null}];
+	    		 	$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
+		    		 if(result==1)	
+		    		 {
+			    		 $location.path('/orderaccept/' + item.id);
+			    		 //$location.path('/orderaccept/'+item.id+'/university/'+data.result.id); 
+		    		  	 //$scope.page.intern.id = data.result.id; 
+		    		  	// $scope.page.saveIntern('Изменения сохранены.');
+		    		 }
+		    		else if(result==0)
+		    			$location.path('/university/' + item.newUniversity+'/order/'+item.id);
+		    		 	//
+		    		 	//$scope.page.saveIntern('Стажёр добавлен.');
+		    	    })  	
+		
+			  		
+		  }
+		  else
+		  	$location.path('/orderaccept/'+item.id+'/university/'+data.result.id);
+		 	
+		  
+		     	    
+	  },
+   	  function(data, status, headers, config){
+              $scope.page.alert = UtilsSrvc.getAlert('Внимание!!', data, 'error', true);   
+      });  
+		    
+	    }
+        
     };
 
     $scope.ordersTable.remove = function(item){           

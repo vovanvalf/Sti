@@ -118,6 +118,23 @@ Cтажёры</Description>
 ]]></Implementation>
 </Method>
 
+<Method name="GetUniversityByParameter">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>fName:%String</FormalSpec>
+<ReturnType>Employee</ReturnType>
+<Implementation><![CDATA[
+	 set id = ""
+	     	
+	  &sql(SELECT UniversityTab.ID INTO :id
+		 FROM Sti_Data.University as UniversityTab 
+		 	INNER JOIN 
+		 	Sti_Data_Localization.LTextValue as ltvalFN ON ltvalFN.LText = UniversityTab.FullName 
+		 WHERE %UPPER(ltvalFN.Value) = %UPPER(TRIM(BOTH ' ' FROM :fName)))
+		
+	quit ..%OpenId(id)
+]]></Implementation>
+</Method>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
 <DataLocation>^Sti.Data.UniversityD</DataLocation>

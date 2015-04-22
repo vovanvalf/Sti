@@ -61,7 +61,7 @@
 				<p><span class="spnTitle" ng-bind="'Резюме'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].resume"></span></p>
 				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:<span ng-bind="ordersTable.selectedItems[0].chair"></span></p>
 				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:<span ng-bind="ordersTable.selectedItems[0].faculty"></span></p>
-				<p><span class="spnTitle" ng-bind="'Согласие на рассылку'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].isInNewsletter"></span></p><!--Нужно ли оно здесь?--> 
+				<p><span class="spnTitle" ng-bind="'Рассылка'|localize"></span>: <span ng-hide="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Не оформлена'|localize"></span><span ng-show="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Оформлена'|localize"></span></p>
             </div>
 			<div class="span6">
 				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="ordersTable.selectedItems[0].engMark.value"></span></p>

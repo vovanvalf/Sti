@@ -99,6 +99,8 @@ Private request processor for administrator</Description>
 <!-- Получить все университеты для таблицы[GRID] -->
 <Route Method="POST" Url="/university/grid" Call="Sti.Web.JsonAdmin:GetUniversitiesForGrid"/>
 
+<!-- найти университет по фильтру -->
+<Route Url="/university/fullName/:fullName" Method="GET" Call="Sti.Web.JsonAdmin:GetUniversityByFilter"/> 
 
 
 

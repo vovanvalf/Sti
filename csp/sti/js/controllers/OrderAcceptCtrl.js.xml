@@ -8,7 +8,7 @@
 Создание стажера из заявки. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $window, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc, $filter, UtilsSrvc){
+controllersModule.controller('OrderAcceptCtrl', function($scope, $location, $dialog, $window, $routeParams, RegionSrvc, InternSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc,OrderSrvc, $filter, UtilsSrvc){
    $scope.page = {intern:{}};
 	$scope.cities = [];
 	$scope.idorder='';
@@ -21,19 +21,19 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $windo
           $scope.page.formBtnSubmitName = $filter('localize')("Принять стажера");
           $scope.page.loadOrder($routeParams.id);        
       }
+       else if(($routeParams.orId)&&($routeParams.unId))
+      {
+	      $scope.page.loadOrder($routeParams.orId);
+	      //$scope.page.loadUniversity();
+	      
+	      
+	      $scope.page.formCaption = $filter('localize')("Добавление стажера");
+          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
+      }
       else{
           $scope.page.formCaption = $filter('localize')("Добавление стажера");
           $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
 
-          // Добавление стажера в определённый университет
-          if ($routeParams.unId && $routeParams.fcId){
-              $scope.page.intern = {university: {id: parseInt($routeParams.unId)}};            
-          	  $scope.page.loadUniversity($routeParams.unId);
-          }
-          if ($routeParams.coId && $routeParams.fcId){
-              $scope.page.intern = {internship: {id: parseInt($routeParams.coId)}};            
-          	  $scope.page.loadInternship($routeParams.coId);
-          }
       }
       
       $scope.page.loadUniversity();
@@ -47,9 +47,23 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $windo
       OrderSrvc.get(id).then(
          
           function(data){
-              $scope.page.intern = data;
-              $scope.page.intern.isInNewsletter=$scope.page.intern.isInNewsletter == 1;
-              $scope.idorder=id;
+	          $scope.page.intern = data;
+	          
+	         if(!$scope.page.intern.university)
+              {
+	            $scope.page.intern.university={id:''} 
+	         	if($routeParams.unId)
+	         	{
+             		$scope.page.intern.university.id=$routeParams.unId;
+             		OrderSrvc.save($scope.page.intern);
+             		$location.path('/orderaccept/' + $routeParams.orId);
+             	    
+	         	}
+              }
+             
+             
+             $scope.page.intern.isInNewsletter=$scope.page.intern.isInNewsletter == 1;
+             $scope.idorder=id;
           },
           function(data, status, headers, config){
               $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
@@ -158,6 +172,14 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $dialog, $windo
                 $scope.alert = UtilsSrvc.getAlert('Ошибка !', response.data, 'error', true);
             }); 
     };
+    
+     /* Проверка данных на корректность */
+    $scope.page.formatData = function(){
+	    $scope.page.intern.birthDate = UtilsSrvc.getValidDate($scope.page.intern.birthDate);
+        if ($scope.page.intern.birthDate == ""){
+        	$scope.page.intern.birthDate = "";}
+    };
+    
     
     /// Отмена - возврат на предыдущую страницу
     $scope.page.cancel = function(){
