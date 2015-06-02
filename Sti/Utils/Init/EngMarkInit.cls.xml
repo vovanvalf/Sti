@@ -14,7 +14,7 @@
 <Implementation><![CDATA[
 	w !,"=== "_..#PClassName_" ==="
 	set mark = ##class(Sti.Data.ENGMark).%New()
-	set mark.Value="Unspecified"
+	set mark.Value="Нет"
 	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
 	
 	w !,"=== "_..#PClassName_" ==="
@@ -35,6 +35,11 @@
 	w !,"=== "_..#PClassName_" ==="
 	set mark = ##class(Sti.Data.ENGMark).%New()
 	set mark.Value="UpperIntermediate"
+	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
+	
+	w !,"=== "_..#PClassName_" ==="
+	set mark = ##class(Sti.Data.ENGMark).%New()
+	set mark.Value="Advanced"
 	w !, $CASE($$$ISERR(mark.%Save()), 1: "Ошибка! Оценка не создана!",:"Оценка создана")
 	
 	w !,"=== "_..#PClassName_" ==="

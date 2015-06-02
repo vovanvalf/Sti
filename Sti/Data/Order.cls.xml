@@ -80,6 +80,7 @@
 <Description>
 Уровень английского языка</Description>
 <Type>ENGMark</Type>
+<Required>1</Required>
 </Property>
 
 <Property name="City">
@@ -103,27 +104,6 @@
 <Required>1</Required>
 </Property>
 
-<Property name="CacheExperience">
-<Description>
-Опыт Cache</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="5000"/>
-</Property>
-
-<Property name="EnsembleExperience">
-<Description>
-Опыт Ensemble</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="5000"/>
-</Property>
-
-<Property name="DeepseeExperience">
-<Description>
-Опыт DeepSee</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="5000"/>
-</Property>
-
 <Property name="Chair">
 <Description>
 Кафедра </Description>
@@ -142,12 +122,13 @@
 <Type>%String</Type>
 </Property>
 
-<UDLText name="T">
-<Content><![CDATA[
-// Property FullNameUniversity As %String;
+<Property name="EngName">
+<Type>%String</Type>
+</Property>
 
-]]></Content>
-</UDLText>
+<Property name="EngLastName">
+<Type>%String</Type>
+</Property>
 
 <Index name="UniversityIndex">
 <Description>
@@ -174,24 +155,27 @@
 	set proxy.email = ..Email
 	set proxy.skype = ..Skype
 	set proxy.isInNewsletter = ..IsInNewsletter
-	set proxy.cacheExperience = ..CacheExperience
-	set proxy.ensembleExperience = ..EnsembleExperience
-	set proxy.deepseeExperience = ..DeepseeExperience
+	
  	if (..EngMark){
  		set proxy.engMark = ..EngMark.ConvertToProxyObject()}
 	set proxy.resume = ..Resume
 	set proxy.city = ..City.ConvertToProxyObject()
 	if (..University){
    		set proxy.university = ..University.ConvertToProxyObject()
-   		set proxy.fullNameUniversity = ..University.FullName.Value
+   		set proxy.fullNameUniversity = ..University.FullName
 	}
 	else
 	{
 		set proxy.fullNameUniversity = ..NewUniversity
 	}
 	set proxy.newUniversity=..NewUniversity
-
-   	set proxy.internship=..Internship.ConvertToProxyObject()
+	if (..Internship){
+   		set proxy.internship=..Internship.ConvertToProxyObject()
+	}
+	
+   	set proxy.engName=..EngName
+   	set proxy.engLastName=..EngLastName
+   	
    	quit proxy
 ]]></Implementation>
 </Method>
@@ -220,9 +204,6 @@
       	set order.Skype = data.skype
       	set order.Resume = data.resume
       	set order.IsInNewsletter = data.isInNewsletter = $$$YES
-      	set order.CacheExperience = data.cacheExperience
-      	set order.EnsembleExperience = data.ensembleExperience
-      	set order.DeepseeExperience = data.deepseeExperience
       	set order.Chair = data.chair
       	set order.Faculty = data.faculty
       	set order.BirthDate= $ZDATEH(data.birthDate, 15)
@@ -232,7 +213,8 @@
 		set order.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
 		set order.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
         set order.University = ##class(Sti.Data.University).%OpenId(data.university.id)
-		
+		set order.EngName=data.engName
+		set order.EngLastName=data.engLastName
 		
     	set st = order.%Save()
   
@@ -331,6 +313,12 @@
 </Value>
 <Value name="28">
 <Value>FullNameUniversity</Value>
+</Value>
+<Value name="29">
+<Value>EngName</Value>
+</Value>
+<Value name="30">
+<Value>EngLastName</Value>
 </Value>
 </Data>
 </Storage>

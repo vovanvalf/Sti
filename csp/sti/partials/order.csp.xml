@@ -14,6 +14,10 @@
 					<div class="accordion-inner">
 						 <div class="row-fluid">
 							<div class="span4">
+								<label class="control-label" ng-bind="('Surname'|localize)+'*'">:</label>
+								<input class="span12"  type="text" ng-model="page.order.engLastName" required></input>
+								<label class="control-label" ng-bind="('Name'|localize)+'*'">:</label>
+								<input class="span12"  type="text" ng-model="page.order.engName" required></input>
 								<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
 								<input class="span12"  type="text" ng-model="page.order.lastName" required></input>
 								<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
@@ -34,11 +38,17 @@
 					                	   typeahead="city as city.name + ', ' + city.parentName + ', ' + city.greatParentName for city in cities | filter: {name: $viewValue} | limitTo: 15" 
 					                	   required>
 					            </input>
-					  			<label class="control-label" ng-bind="'Телефон'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.phone"></input>
-					    		
+					 
 					    	</div>
 							<div class="span4">
+								<label class="control-label" ng-bind="'Телефон'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.phone"></input>
+								<label class="control-label" ng-bind="('Email'|localize)+'*'">:</label>
+								<input class="span12"  type="text" ng-model="page.order.email" required></input>
+								<label class="control-label" ng-bind="'Skype'|localize">:</label>
+								<input class="span12"  type="text" placeholder="{{'Вставьте url на резюме онлайн или в pdf на сетевом диске'|localize}}" ng-model="page.order.skype"></input>
+								<label class="control-label" ng-bind="'Резюме'|localize">:</label>
+								<input class="span12"  type="text" ng-model="page.order.resume"></input>
 								<label class="control-label" ng-bind="('Университет'|localize)+'*'">:</label>
 								<div class="controls">
 								          <input class="span12" type="text" ng-model="searchForm.person" ng-change="searchForm.search(searchForm.person)" placeholder="{{'Введите полное название университета'|localize}}" typeahead="person as person.text for person in searchForm.persons | filter: {text: $viewValue} | limitTo: 15" required></input>
@@ -47,25 +57,12 @@
 								<input class="span12"  type="text" ng-model="page.order.chair"></input>
 								<label class="control-label" ng-bind="'Факультет'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.faculty"></input>
-								<label class="control-label" ng-bind="'Резюме'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.resume"></input>
-								<label class="control-label" ng-bind="('Email'|localize)+'*'">:</label>
-								<input class="span12"  type="text" ng-model="page.order.email" required></input>
-							    <label class="control-label" ng-bind="'Skype'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.skype"></input>
-
-  								</div>
+  							</div>
 							<div class="span4">
-							    <label class="control-label" ng-bind="'Уровень английского'|localize">:</label>
-								<select class="span12" ng-model="page.order.engMark.id" ng-options="eng.id as eng.value for eng in page.engmarks"></select>
-								<label class="control-label" ng-bind="'Опыт Cache'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.cacheExperience"></input> 
-						        <label class="control-label" ng-bind="'Опыт DeepSee'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.deepseeExperience"></input>	
-								<label class="control-label" ng-bind="'Опыт Ensemble'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.ensembleExperience"></input>
-							    <label class="control-label" ng-bind="('Стажировка'|localize)+'*'">:</label>
-								<select class="span12" ng-model="page.order.internship.id" ng-options="internship.id as internship.name for internship in page.internships" required><option value="">--{{'Выберите стажировку'|localize}}--</option></select>
+							    <label class="control-label" ng-bind="('Уровень английского'|localize)+'*'">:</label>
+								<select class="span12" ng-model="page.order.engMark.id" ng-options="eng.id as eng.value for eng in page.engmarks" required><option value="">--{{'Выберите уровень владения английским'|localize}}--</option></select>
+							    <label class="control-label" ng-bind="'Стажировка'|localize">:</label>
+								<select class="span12" ng-model="page.order.internship.id" ng-options="internship.id as internship.name for internship in page.internships"><option value="">--{{'Выберите стажировку'|localize}}--</option></select>
 								<label class="checkbox"  >
 			    					 <input type="checkbox" ng-model="page.order.isInNewsletter">{{'Согласен получать на email предложения о вакансиях и обучении'|localize}}
 			    				</label>							 

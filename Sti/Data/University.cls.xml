@@ -9,24 +9,23 @@
 <Property name="FullName">
 <Description>
 Полное наименование университета</Description>
-<Type>Sti.Data.Localization.LText</Type>
+<Type>%Text</Type>
 <Required>1</Required>
-<Parameter name="XMLREFERENCE" value="ID"/>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="ShortName">
 <Description>
 Краткое наименование университета</Description>
-<Type>Sti.Data.Localization.LText</Type>
-<Parameter name="XMLREFERENCE" value="ID"/>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="Address">
 <Description>
 Адрес университета</Description>
-<Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
-<Parameter name="XMLREFERENCE" value="ID"/>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="Web">
@@ -39,7 +38,6 @@ Web страница</Description>
 <Description>
 Город, в котором расположен университет</Description>
 <Type>Region</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="Curator">
@@ -74,14 +72,18 @@ Cтажёры</Description>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
-	set proxy.fullName = ..FullName.Value
+	set proxy.fullName = ..FullName
 	if (shortInfo = 1) quit proxy
-	set proxy.address = ..Address.Value
-	set proxy.city = ..City.ConvertToProxyObject()
-	if (..Curator){
-	set proxy.curator = ..Curator.ConvertToProxyObject()
+	
+	
+	set proxy.address = ..Address
+	if (..City){
+		set proxy.city = ..City.ConvertToProxyObject()
 	}
-	set proxy.shortName = ..ShortName.Value
+	if (..Curator){
+		set proxy.curator = ..Curator.ConvertToProxyObject()
+	}
+	set proxy.shortName = ..ShortName
 	set proxy.web = ..Web	
 
     quit proxy
@@ -96,17 +98,14 @@ Cтажёры</Description>
 	
 	if (data.id = ""){
 		set university = ..%New()
-      	set university.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName)
-		set university.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName)
-		set university.Address = ##class(Sti.Data.Localization.LText).Create(data.address)
     }
     else{
 	    
 	    set university = ..%OpenId(data.id)
-		set university.FullName.Value = data.fullName
-		set university.ShortName.Value = data.shortName
-		set university.Address.Value = data.address
    	}
+   		set university.FullName = data.fullName
+		set university.ShortName = data.shortName
+		set university.Address = data.address
 		set university.Web = data.web
         set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id)
 		set university.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
@@ -127,10 +126,22 @@ Cтажёры</Description>
 	     	
 	  &sql(SELECT UniversityTab.ID INTO :id
 		 FROM Sti_Data.University as UniversityTab 
-		 	INNER JOIN 
-		 	Sti_Data_Localization.LTextValue as ltvalFN ON ltvalFN.LText = UniversityTab.FullName 
-		 WHERE %UPPER(ltvalFN.Value) = %UPPER(TRIM(BOTH ' ' FROM :fName)))
+		  WHERE UniversityTab.FullName = :fName)
 		
+	quit ..%OpenId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversityAbrrByParameter">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>fName:%String</FormalSpec>
+<ReturnType>Employee</ReturnType>
+<Implementation><![CDATA[
+	 set id = ""
+	     	
+	  &sql(SELECT UniversityTab.ID INTO :id
+		 FROM Sti_Data.University as UniversityTab 
+		 WHERE UniversityTab.ShortName = :fName )
 	quit ..%OpenId(id)
 ]]></Implementation>
 </Method>

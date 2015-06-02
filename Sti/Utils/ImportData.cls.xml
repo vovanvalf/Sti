@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.ImportData">
+<TimeCreated>63691,52668.839021</TimeCreated>
+
+<UDLText name="T">
+<Content><![CDATA[
+// do ##class(Sti.Utils.ImportData).Import()
+
+]]></Content>
+</UDLText>
+
+<Method name="Import">
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[
+	do $CLASSMETHOD("Sti.Data.University", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Employee", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Internship", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Company", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Intern", "%KillExtent")
+	do $CLASSMETHOD("Sti.Data.Order", "%KillExtent")
+
+
+	
+	//do $CLASSMETHOD("Sti.Data.Localization.LTextValue", "%KillExtent")
+	//do $CLASSMETHOD("Sti.Data.Localization.LText", "%KillExtent")
+	
+    // Create an instance of %XML.Reader
+    Set reader = ##class(%XML.Reader).%New()
+
+    // Begin processing of the file
+    Set status = reader.OpenFile("c:\data2.xml")
+    If $$$ISERR(status) {do $System.Status.DisplayError(status)}
+
+    // Associate a class name with the XML element name
+    Do reader.Correlate("Object","Sti.Data.DataPerson")
+    
+    set i=0
+    // Read objects from xml file
+    While (reader.Next(.object,.status)) {
+	    
+	    set university = ##class(Sti.Data.University).GetUniversityByParameter(object.University)
+		if ('$ISOBJECT(university))
+		{
+			set university = ##class(Sti.Data.University).GetUniversityAbrrByParameter(object.University)
+			if ('$ISOBJECT(university))
+		    {
+			    set university = ##class(Sti.Data.University).%New()
+      			set university.FullName = object.University
+				set university.ShortName = object.University
+					if (object.CuratorEmail '= "")
+					{   
+						set curator = ##class(Sti.Data.Employee).GetEmployeeByEmail(object.CuratorEmail)
+						if ('$ISOBJECT(curator))
+						{
+							set curator = ##class(Sti.Data.Employee).%New()
+							set curator.Email= object.CuratorEmail
+							set st = curator.%Save()
+						}
+						set university.Curator = curator
+					}
+				set st = university.%Save()
+		    }
+		}				
+					
+		set intern = ##class(Sti.Data.Intern).%New()
+		set intern.University = university
+		
+		set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(object.FirstName)
+      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create(object.LastName)
+		set intern.Email = object.Email
+      	set intern.Phone = object.Phone
+      	set intern.Skype = object.Skype
+      	if (object.NewLetter="Да") || (object.NewLetter="да")
+      	{
+      		set intern.IsInNewsletter = $$$YES
+      	}	  
+      	set intern.TetMark = object.TET
+      	set intern.PetMark = object.PET
+      	set intern.Chair = object.Chair
+      	set intern.Faculty = object.Faculty
+      	
+      	if (object.EngMark="Не владею"){
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("1")}
+		elseif (object.EngMark="Elementary") {
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("2")}
+		elseif (object.EngMark="Pre Intermediate"){
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("3")}
+		elseif (object.EngMark="Intermediate"){
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("4")}
+		elseif (object.EngMark="Upper Intermediate"){
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("5")}
+   		elseif (object.EngMark="Advanced"){
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("6")}
+		elseif (object.EngMark="Fluent"){
+		  set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId("7")}
+		else{ 
+		  w object.EngMark, !}
+        
+	
+	set word = object.City
+
+	set proxyItems = ##class(%ListOfObjects).%New()	
+	set lang = $$$SessionLanguage
+	set word = word_"%"
+	
+	&sql(DECLARE RegionCurr CURSOR FOR 
+		 	 SELECT TOP 500 reg.ID As id, ltV.Value As name, reg.ParentRegion->Name->Value as parentName, reg.ParentRegion->ParentRegion->Name->Value
+		 	 FROM Sti_Data_Localization.LTextValue as ltV
+		 	 INNER JOIN 
+		 	 Sti_Data.Region as reg ON reg.Name = ltV.LText
+			 WHERE reg.HLevel = 2 AND ltV.Lang = :lang AND ltV.Value LIKE :word
+			 ORDER BY name, parentName)	
+		
+	&sql(OPEN RegionCurr)
+	for  
+	{	
+		&sql(FETCH RegionCurr INTO :id, :name, :parent, :greatParent) 
+		quit:(SQLCODE '= 0)
+		set proxyItem = ##class(%ZEN.proxyObject).%New()
+		set proxyItem.id = id
+		set proxyItem.name = name
+		set proxyItem.parentName = parent
+		set proxyItem.greatParentName = greatParent
+    	
+		
+		do proxyItems.Insert(proxyItem)
+	}
+	if (proxyItems.Count()>1)
+	{
+		//w proxyItems.GetNext().name, !
+		//w object.LastName, !
+		set intern.City=##class(Sti.Data.Region).%OpenId(proxyItems.GetNext().id)
+		
+	}
+	else{
+		if (proxyItems.Count())
+		{
+			set intern.City=##class(Sti.Data.Region).%OpenId(proxyItems.GetNext().id)}
+		else
+		{
+			w word, !
+		}	
+	}
+	&sql(CLOSE RegionCurr)
+	
+	//w object.BirthDate
+    set bdate=object.BirthDate+21548
+	set intern.BirthDate = bdate
+	set intern.EngName=object.EngName
+	set intern.EngLastName=object.SurName
+	set intern.CommentOne=object.Other1
+	set intern.CommentTwo=object.Other2
+		
+    	set st = intern.%Save()
+    	
+    	d $system.OBJ.DisplayError(st)
+        
+        //set i =i+1
+		//Write i, ") ", object.FirstName ,!
+        //Set savestatus = object.%Save()
+    	//If $$$ISERR(savestatus) {do $System.Status.DisplayError(savestatus)}
+}
+ //If error found during processing, show it
+ If $$$ISERR(status) {do $System.Status.DisplayError(status)}
+]]></Implementation>
+</Method>
+</Class>
+</Export>

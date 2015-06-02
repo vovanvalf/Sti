@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.DataPerson">
+<Super>%Persistent,%XML.Adaptor</Super>
+<TimeCreated>63691,52532.094303</TimeCreated>
+
+<Parameter name="XMLNAME">
+<Default>Object</Default>
+</Parameter>
+
+<Property name="Time">
+<Type>%String</Type>
+</Property>
+
+<Property name="FirstName">
+<Type>%String</Type>
+</Property>
+
+<Property name="LastName">
+<Type>%String</Type>
+</Property>
+
+<Property name="Email">
+<Type>%String</Type>
+</Property>
+
+<Property name="EngName">
+<Type>%String</Type>
+</Property>
+
+<Property name="SurName">
+<Type>%String</Type>
+</Property>
+
+<Property name="BirthDate">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="University">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Faculty">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Chair">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Phone">
+<Type>%String</Type>
+</Property>
+
+<Property name="Skype">
+<Type>%String</Type>
+</Property>
+
+<Property name="EngMark">
+<Type>%String</Type>
+</Property>
+
+<Property name="CuratorEmail">
+<Type>%String</Type>
+</Property>
+
+<Property name="City">
+<Type>%String</Type>
+</Property>
+
+<Property name="NewLetter">
+<Type>%String</Type>
+</Property>
+
+<Property name="TET">
+<Type>%String</Type>
+</Property>
+
+<Property name="PET">
+<Type>%String</Type>
+</Property>
+
+<Property name="Summ">
+<Type>%String</Type>
+</Property>
+
+<Property name="Other1">
+<Type>%String</Type>
+</Property>
+
+<Property name="Other2">
+<Type>%String</Type>
+</Property>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.DataPersonD</DataLocation>
+<DefaultData>DataPersonDefaultData</DefaultData>
+<IdLocation>^Sti.Data.DataPersonD</IdLocation>
+<IndexLocation>^Sti.Data.DataPersonI</IndexLocation>
+<StreamLocation>^Sti.Data.DataPersonS</StreamLocation>
+<Data name="DataPersonDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Time</Value>
+</Value>
+<Value name="3">
+<Value>FirstName</Value>
+</Value>
+<Value name="4">
+<Value>LastName</Value>
+</Value>
+<Value name="5">
+<Value>Email</Value>
+</Value>
+<Value name="6">
+<Value>EngName</Value>
+</Value>
+<Value name="7">
+<Value>SurName</Value>
+</Value>
+<Value name="8">
+<Value>BirthDate</Value>
+</Value>
+<Value name="9">
+<Value>University</Value>
+</Value>
+<Value name="10">
+<Value>Faculty</Value>
+</Value>
+<Value name="11">
+<Value>Chair</Value>
+</Value>
+<Value name="12">
+<Value>Phone</Value>
+</Value>
+<Value name="13">
+<Value>Skype</Value>
+</Value>
+<Value name="14">
+<Value>EngMark</Value>
+</Value>
+<Value name="15">
+<Value>City</Value>
+</Value>
+<Value name="16">
+<Value>TET</Value>
+</Value>
+<Value name="17">
+<Value>PET</Value>
+</Value>
+<Value name="18">
+<Value>Summ</Value>
+</Value>
+<Value name="19">
+<Value>NewLetter</Value>
+</Value>
+<Value name="20">
+<Value>Other1</Value>
+</Value>
+<Value name="21">
+<Value>Other2</Value>
+</Value>
+<Value name="22">
+<Value>CuratorEmail</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

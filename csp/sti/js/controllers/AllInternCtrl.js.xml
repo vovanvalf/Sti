@@ -17,7 +17,7 @@ $scope.init = function(){
                           {name: 'Имя', sqlName: 'FirstName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Отчество', sqlName: 'MiddleName->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Дата рождения', sqlName: 'BirthDate', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: false, filter: 'date'},
-                          {name: 'Университет', sqlName: 'University->FullName->Value', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true},
+                          {name: 'Университет', sqlName: 'University->FullName', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
                           {name: 'Город', sqlName: 'City->Name->Value', isSorted: false, isSortable: true, isDown: true, isSearched: false, isSearchable: true},
         				  {name: 'Стажировка', sqlName: 'Internship->Name->Value', isSorted: false, isSortable: false, isDown: true, isSearched: false, isSearchable: true}];
         $scope.internsTable.properties = [

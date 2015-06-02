@@ -10,7 +10,6 @@
 <Description>
 Имя работника</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -18,7 +17,6 @@
 <Description>
 Фамилия</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -39,7 +37,6 @@
 <Description>
 Электронный адрес</Description>
 <Type>%String</Type>
-<Required>1</Required>
 </Property>
 
 <Method name="ConvertToProxyObject">
@@ -93,12 +90,30 @@
 		set employee.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
       	set employee.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
       	set employee.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+
     }
     else{
 	    set employee = ..%OpenId(data.id)
-		set employee.LastName.Value = data.lastName
-      	set employee.FirstName.Value = data.firstName
-      	set employee.MiddleName.Value = data.middleName
+	    
+	    if (employee.LastName){
+		set employee.LastName.Value = data.lastName}
+		else{
+			set employee.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName)
+		}
+		
+		
+		if (employee.FirstName){
+      	set employee.FirstName.Value = data.firstName}
+      	else{
+			set employee.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
+		}
+		
+      	if (employee.MiddleName){
+      	set employee.MiddleName.Value = data.middleName}
+      	else{
+			set employee.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+		}
+      	
    	}
 		set employee.Email = data.email
       	set employee.Phone = data.phone
@@ -107,6 +122,20 @@
     	set st = employee.%Save()
   
 		quit employee
+]]></Implementation>
+</Method>
+
+<Method name="GetEmployeeByEmail">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>fName:%String</FormalSpec>
+<ReturnType>Employee</ReturnType>
+<Implementation><![CDATA[
+	 set id = ""
+	     	
+	  &sql(SELECT UniversityTab.ID INTO :id
+		 FROM Sti_Data.Employee as UniversityTab 
+		 WHERE UniversityTab.Email = :fName )
+	quit ..%OpenId(id)
 ]]></Implementation>
 </Method>
 

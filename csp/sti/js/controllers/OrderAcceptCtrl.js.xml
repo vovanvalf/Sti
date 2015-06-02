@@ -15,123 +15,113 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $location, $dia
 	$scope.filter=[];
 	
    // Инициализация данных
-   $scope.page.init = function(){
+   $scope.init = function(){
       if ($routeParams.id){
-          $scope.page.formCaption = $filter('localize')("Добавление стажера");
-          $scope.page.formBtnSubmitName = $filter('localize')("Принять стажера");
-          $scope.page.loadOrder($routeParams.id);        
+          $scope.formCaption = $filter('localize')("Добавление стажера");
+          $scope.formBtnSubmitName = $filter('localize')("Принять стажера");
+          $scope.loadOrder($routeParams.id);        
       }
        else if(($routeParams.orId)&&($routeParams.unId))
       {
-	      $scope.page.loadOrder($routeParams.orId);
-	      //$scope.page.loadUniversity();
+	      $scope.loadOrder($routeParams.orId);
+	      //$scope.loadUniversity();
 	      
 	      
-	      $scope.page.formCaption = $filter('localize')("Добавление стажера");
-          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
+	      $scope.formCaption = $filter('localize')("Добавление стажера");
+          $scope.formBtnSubmitName = $filter('localize')("Добавить");
       }
       else{
-          $scope.page.formCaption = $filter('localize')("Добавление стажера");
-          $scope.page.formBtnSubmitName = $filter('localize')("Добавить");
+          $scope.formCaption = $filter('localize')("Добавление стажера");
+          $scope.formBtnSubmitName = $filter('localize')("Добавить");
 
       }
       
-      $scope.page.loadUniversity();
-      $scope.page.loadInternship();
-      $scope.page.loadEngMarks();
-      $scope.page.loadPetMarks();
+      $scope.loadUniversity();
+      $scope.loadInternship();
+      $scope.loadEngMarks();
    };
 
    // Загрузить заявку по ИД
-  $scope.page.loadOrder = function(id){
+  $scope.loadOrder = function(id){
       OrderSrvc.get(id).then(
          
           function(data){
-	          $scope.page.intern = data;
+	          $scope.intern = data;
 	          
-	         if(!$scope.page.intern.university)
+	         if(!$scope.intern.university)
               {
-	            $scope.page.intern.university={id:''} 
+	            $scope.intern.university={id:''} 
 	         	if($routeParams.unId)
 	         	{
-             		$scope.page.intern.university.id=$routeParams.unId;
-             		OrderSrvc.save($scope.page.intern);
+             		$scope.intern.university.id=$routeParams.unId;
+             		OrderSrvc.save($scope.intern);
              		$location.path('/orderaccept/' + $routeParams.orId);
              	    
 	         	}
               }
              
              
-             $scope.page.intern.isInNewsletter=$scope.page.intern.isInNewsletter == 1;
+             $scope.intern.isInNewsletter=$scope.intern.isInNewsletter == 1;
              $scope.idorder=id;
           },
           function(data, status, headers, config){
-              $scope.page.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
+              $scope.unalert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });       
    };
 
    // Загрузить все универы
-  $scope.page.loadUniversity = function(id){
+  $scope.loadUniversity = function(id){
       UniversitySrvc.getAll().then(
           function(data){
-              $scope.page.universities = data.children;
+              $scope.universities = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert =UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
+              $scope.alert =UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });      
    };
    
    // Загрузить все стажировки
-  $scope.page.loadInternship = function(id){
+  $scope.loadInternship = function(id){
       InternshipSrvc.getAll().then(
           function(data){
-              $scope.page.internships = data.children;
+              $scope.internships = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert =UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
+              $scope.alert =UtilsSrvc.getAlert('Внимание!', data, 'error', true); 
           });      
    };
 	
   // Загрузить все уровни английского
-  $scope.page.loadEngMarks = function(id){
+  $scope.loadEngMarks = function(id){
       MarksSrvc.getEngAll().then(
           function(data){
-              $scope.page.engmarks = data.children;
+              $scope.engmarks = data.children;
           },
           function(data, status, headers, config){
-              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
+              $scope.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
           });      
    };
-    $scope.page.saveIntern= function(msg)
+    $scope.saveIntern= function(msg)
     {
-	    $scope.page.intern.id="";
-	    InternSrvc.save($scope.page.intern).then(
+	    $scope.intern.id="";
+	    InternSrvc.save($scope.intern).then(
       	  function(data){
              
-             $scope.page.intern = {};                        
+             $scope.intern = {};                        
              OrderSrvc.remove($scope.idorder);
-			 $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
+			 $scope.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
              // Сделать форму "чистой" (блокируется кнопка)
              		$scope.pageForm.$setPristine();
           	 },
           	 function(data, status, headers, config){
-              		$scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
+              		$scope.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
    			});		 
     };
-  // Загрузить все оценки pet
-  $scope.page.loadPetMarks = function(id){
-      MarksSrvc.getPetAll().then(
-          function(data){
-              $scope.page.petmarks = data.children;
-          },
-          function(data, status, headers, config){
-              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
-          });      
-   };
+
    
    // Сохранить/создать (отправка формы). Передаем объект на сервер
-   $scope.page.submit = function(){
-   InternSrvc.findSimmilarIntern($scope.page.intern.lastName,$scope.page.intern.firstName,$scope.page.intern.birthDate).then(
+   $scope.submit = function(){
+   InternSrvc.findSimmilarIntern($scope.intern.lastName,$scope.intern.firstName,$scope.intern.birthDate).then(
 	  function(data){
 		  if(data.status!=0)
 		  {
@@ -140,19 +130,19 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $location, $dia
 	    		 	$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open().then(function(result){
 		    		 if(result==1)	
 		    		 {
-		    		  	 $scope.page.intern.id = data.result.id; 
-		    		  	 $scope.page.saveIntern('Изменения сохранены.');
+		    		  	 $scope.intern.id = data.result.id; 
+		    		  	 $scope.saveIntern('Изменения сохранены.');
 		    		 }
 		    		 else if(result==0)
-		    		 	$scope.page.saveIntern('Стажёр добавлен.');
+		    		 	$scope.saveIntern('Стажёр добавлен.');
 		    	    })  	    
 		  }
 		  else
-		   $scope.page.saveIntern('Стажёр добавлен.');
+		   $scope.saveIntern('Стажёр добавлен.');
 		     	    
 	  },
    	  function(data, status, headers, config){
-              $scope.page.alert = UtilsSrvc.getAlert('Внимание!!', data, 'error', true);   
+              $scope.alert = UtilsSrvc.getAlert('Внимание!!', data, 'error', true);   
       });  
  	};
    
@@ -174,20 +164,20 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $location, $dia
     };
     
      /* Проверка данных на корректность */
-    $scope.page.formatData = function(){
-	    $scope.page.intern.birthDate = UtilsSrvc.getValidDate($scope.page.intern.birthDate);
-        if ($scope.page.intern.birthDate == ""){
-        	$scope.page.intern.birthDate = "";}
+    $scope.formatData = function(){
+	    $scope.intern.birthDate = UtilsSrvc.getValidDate($scope.intern.birthDate);
+        if ($scope.intern.birthDate == ""){
+        	$scope.intern.birthDate = "";}
     };
     
     
     /// Отмена - возврат на предыдущую страницу
-    $scope.page.cancel = function(){
+    $scope.cancel = function(){
         $window.history.back();
     };
     
     
-   $scope.page.init(); 
+   $scope.init(); 
 });
 
 ]]></CSP>

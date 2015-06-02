@@ -19,7 +19,6 @@
 <Description>
 Имя стажера</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -27,7 +26,6 @@
 <Description>
 Фамилия</Description>
 <Type>Sti.Data.Localization.LText</Type>
-<Required>1</Required>
 <Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
@@ -49,7 +47,6 @@
 <Description>
 Дата рождения стажера</Description>
 <Type>%Date</Type>
-<Required>1</Required>
 <Parameter name="FORMAT" value="3"/>
 </Property>
 
@@ -80,13 +77,13 @@
 <Description>
 Уровень английского языка</Description>
 <Type>ENGMark</Type>
+<Required>1</Required>
 </Property>
 
 <Property name="City">
 <Description>
 Город, в котором живёт стажёр</Description>
 <Type>Region</Type>
-<Required>1</Required>
 </Property>
 
 <Property name="Resume">
@@ -100,28 +97,6 @@
 <Description>
 Согласие на получение рассылки.</Description>
 <Type>%Boolean</Type>
-<Required>1</Required>
-</Property>
-
-<Property name="CacheExperience">
-<Description>
-Опыт Cache</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="5000"/>
-</Property>
-
-<Property name="EnsembleExperience">
-<Description>
-Опыт Ensemble</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="5000"/>
-</Property>
-
-<Property name="DeepseeExperience">
-<Description>
-Опыт DeepSee</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="5000"/>
 </Property>
 
 <Property name="TetMark">
@@ -133,19 +108,39 @@
 <Property name="PetMark">
 <Description>
 Оценка PET</Description>
-<Type>PETMark</Type>
+<Type>%String</Type>
 </Property>
 
 <Property name="Chair">
 <Description>
 Кафедра </Description>
-<Type>%String</Type>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="Faculty">
 <Description>
 Факультет</Description>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="EngName">
 <Type>%String</Type>
+</Property>
+
+<Property name="EngLastName">
+<Type>%String</Type>
+</Property>
+
+<Property name="CommentOne">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="CommentTwo">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Index name="UniversityIndex">
@@ -162,6 +157,7 @@
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
+	
 	set proxy.firstName = ..FirstName.Value
 	set proxy.lastName = ..LastName.Value
 	set proxy.middleName = ..MiddleName.Value
@@ -175,18 +171,23 @@
 	set proxy.email = ..Email
 	set proxy.skype = ..Skype
 	set proxy.isInNewsletter = ..IsInNewsletter
-	set proxy.cacheExperience = ..CacheExperience
-	set proxy.ensembleExperience = ..EnsembleExperience
-	set proxy.deepseeExperience = ..DeepseeExperience
 	set proxy.tetMark = ..TetMark
 	if (..EngMark){
  		set proxy.engMark = ..EngMark.ConvertToProxyObject()}
-	if (..PetMark){
-	   	set proxy.petMark = ..PetMark.ConvertToProxyObject()}
+  	set proxy.petMark = ..PetMark
 	set proxy.resume = ..Resume
-	set proxy.city = ..City.ConvertToProxyObject()
+	if (..City){
+	set proxy.city = ..City.ConvertToProxyObject()}
    	set proxy.university = ..University.ConvertToProxyObject()
+   	if (..Internship){
    	set proxy.internship=..Internship.ConvertToProxyObject()
+   	
+   	}
+   	set proxy.engName=..EngName
+   	set proxy.engLastName=..EngLastName
+   	set proxy.commentOne=..CommentOne
+   	set proxy.commentTwo=..CommentTwo
+   	
    	quit proxy
 ]]></Implementation>
 </Method>
@@ -226,34 +227,39 @@
 		set intern.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
       	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
       	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
-      	
     }
     else{
 	    set intern = ..%OpenId(data.id)
 		set intern.LastName.Value = data.lastName
       	set intern.FirstName.Value = data.firstName
-      	set intern.MiddleName.Value = data.middleName
+      	if (intern.MiddleName){
+      		set intern.MiddleName.Value = data.middleName
+      	}
+      	else
+      		{
+	      		set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+      		}
    	}
 		set intern.Email = data.email
       	set intern.Phone = data.phone
       	set intern.Skype = data.skype
       	set intern.Resume = data.resume
       	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
-      	set intern.CacheExperience = data.cacheExperience
-      	set intern.EnsembleExperience = data.ensembleExperience
-      	set intern.DeepseeExperience = data.deepseeExperience
       	set intern.TetMark = data.tetMark
+      	set intern.PetMark = data.petMark
       	set intern.Chair = data.chair
       	set intern.Faculty = data.faculty
       	set intern.BirthDate= $ZDATEH(data.birthDate, 15)
 		
 		
 		set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id)
-		set intern.PetMark = ##class(Sti.Data.PETMark).%OpenId(data.petMark.id)
 		set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
 		set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
         set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
-		
+		set intern.EngName=data.engName
+   		set intern.EngLastName=data.engLastName
+   		set intern.CommentOne=data.commentOne
+   		set intern.CommentTwo=data.commentTwo
 		
     	set st = intern.%Save()
   
@@ -374,6 +380,18 @@
 </Value>
 <Value name="35">
 <Value>TetMark</Value>
+</Value>
+<Value name="36">
+<Value>EngName</Value>
+</Value>
+<Value name="37">
+<Value>EngLastName</Value>
+</Value>
+<Value name="38">
+<Value>CommentOne</Value>
+</Value>
+<Value name="39">
+<Value>CommentTwo</Value>
 </Value>
 </Data>
 <Property name="%%CLASSNAME">

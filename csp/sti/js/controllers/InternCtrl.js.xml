@@ -37,7 +37,6 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, $windo
       $scope.page.loadUniversity();
       $scope.page.loadInternship();
       $scope.page.loadEngMarks();
-      $scope.page.loadPetMarks();
    };
 
    // Загрузить стажера по ИД
@@ -85,16 +84,6 @@ controllersModule.controller('InternCtrl', function($scope, $routeParams, $windo
           });      
    };
    
-  // Загрузить все оценки pet
-  $scope.page.loadPetMarks = function(id){
-      MarksSrvc.getPetAll().then(
-          function(data){
-              $scope.page.petmarks = data.children;
-          },
-          function(data, status, headers, config){
-              $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);
-          });      
-   };
    
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){

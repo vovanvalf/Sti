@@ -14,13 +14,13 @@ do ##class(Sti.Utils.Init.BaseInit).Init()</Description>
  	do ##class(Sti.Data.Localization.Translation).Init()
  	do ##class(Sti.Utils.Init.LTextLanguage).Import()
  	do ##class(Sti.Utils.Init.EngMarkInit).Import()
- 	do ##class(Sti.Utils.Init.PetMarkInit).Import()
- 	do ##class(Sti.Utils.Init.Region).Import()
- 	do ##class(Sti.Utils.Init.University).Import()
- 	do ##class(Sti.Utils.Init.Company).Import()
- 	do ##class(Sti.Utils.Init.Internship).Import()
- 	do ##class(Sti.Utils.Init.OrderInit).Import()
- 	do ##class(Sti.Utils.Init.Intern).Import()
+ 	//do ##class(Sti.Utils.Init.PetMarkInit).Import()
+    do ##class(Sti.Utils.Init.Region).Import()
+ 	//do ##class(Sti.Utils.Init.University).Import()
+ 	//do ##class(Sti.Utils.Init.Company).Import()
+ 	//do ##class(Sti.Utils.Init.Internship).Import()
+ 	//do ##class(Sti.Utils.Init.OrderInit).Import()
+ 	//do ##class(Sti.Utils.Init.Intern).Import()
  	
  	
  	

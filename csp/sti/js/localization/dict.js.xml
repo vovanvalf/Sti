@@ -132,7 +132,11 @@ localizationModule.constant('StiDictionary', {
 	    'Введите полное название университета' : 'Enter the full name of the university',
 	    'Выбрать' : 'Select',
 		'Университета, указанного в заявке, нет в базе данных! Добавить его или выбрать другой университет из списка?' : 'University of the application is not in the database! Add it or select another university from the list?',
-	 	
+	 	'Вставьте url на резюме онлайн или в pdf на сетевом диске' : 'Insert the url on a resume online or on a network drive pdf ',
+	 	'Добавление стажера' : 'Add intern',
+		'Принять стажера' : 'Accept intern',
+		'Комментарий#1' : 'Comments1',
+		'Комментарий#2' : 'Comments2',
   },
   toRussian: {
   },

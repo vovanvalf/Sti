@@ -38,16 +38,5 @@ Set localized </Description>
 	quit $$$OK
 ]]></Implementation>
 </Method>
-
-<Method name="AddDeepSeeMsg">
-<ClassMethod>1</ClassMethod>
-<FormalSpec>rusString:%String,engString:%String</FormalSpec>
-<Implementation><![CDATA[
-	set code = $ZCRC(rusString, 7)
-	set ^CacheMsg("Sti", "ru", code) = rusString
-	set ^CacheMsg("Sti", "en", code) = engString
-	set ^CacheMsg("Sti", "en-us", code) = engString
-]]></Implementation>
-</Method>
 </Class>
 </Export>

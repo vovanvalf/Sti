@@ -55,21 +55,22 @@
 	 <tabset>
 		<tab heading="{{'Информация'|localize}}">
 			<div class="span6">
-				<p><span class="spnTitle" ng-bind="'Email'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].email"></span></p>
+				<p><span class="spnTitle" ng-bind="'Name'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].engName"></span></p>
+				<p><span class="spnTitle" ng-bind="'Surname'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].engLastName"></span></p>
 				<p><span class="spnTitle" ng-bind="'Телефон'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].phone"></span></p>
+				<p><span class="spnTitle" ng-bind="'Email'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].email"></span></p>
 				<p><span class="spnTitle" ng-bind="'Skype'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].skype"></span></p>
 				<p><span class="spnTitle" ng-bind="'Резюме'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].resume"></span></p>
-				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].chair"></span></p>
-				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].faculty"></span></p>
 				<p><span class="spnTitle" ng-bind="'Рассылка'|localize"></span>: <span ng-hide="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Не оформлена'|localize"></span><span ng-show="internsTable.selectedItems[0].isInNewsletter==1" ng-bind="'Оформлена'|localize"></span></p>
             </div>
 			<div class="span6">
+				<p><span class="spnTitle" ng-bind="'Кафедра'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].chair"></span></p>
+				<p><span class="spnTitle" ng-bind="'Факультет'|localize"></span>:<span ng-bind="internsTable.selectedItems[0].faculty"></span></p>
 				<p><span class="spnTitle" ng-bind="'Уровень английского'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].engMark.value"></span></p>
-				<p><span class="spnTitle" ng-bind="'Опыт Cache'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].cacheExperience"></span></p> 
-                <p><span class="spnTitle" ng-bind="'Опыт Ensemble'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].ensembleExperience"></span></p> 
-				<p><span class="spnTitle" ng-bind="'Опыт DeepSee'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].deepseeExperience"></span></p>
 				<p><span class="spnTitle" ng-bind="'Оценка TET'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].tetMark"></span></p>
-				<p><span class="spnTitle" ng-bind="'Оценка PET'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].petMark.value"></span></p>
+				<p><span class="spnTitle" ng-bind="'Оценка PET'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].petMark"></span></p>
+				<p><span class="spnTitle" ng-bind="'Комментарий#1'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].commentOne"></span></p>
+				<p><span class="spnTitle" ng-bind="'Комментарий#2'|localize"></span>: <span ng-bind="internsTable.selectedItems[0].commentTwo"></span></p>
 			</div>
 		</tab>
 	</tabset>
