@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Src.Utils.Email.TemplateUtils">
+<Abstract>1</Abstract>
+<TimeCreated>63699,52686.704396</TimeCreated>
+
+<Method name="GetTextFormItem">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>code:%String,value:%String</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set result = ##class(%ZEN.proxyObject).%New()
+	
+	set result.Code = code
+	set result.Value = value
+		
+	return result
+]]></Implementation>
+</Method>
+
+<Method name="FormText">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>text:%String,list:%ListOfObjects</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set result = text
+	
+	for i=1:1:list.Count(){
+		set result = $REPLACE(result, list.GetAt(i).Code, list.GetAt(i).Value)
+	}
+	
+	return result
+]]></Implementation>
+</Method>
+</Class>
+</Export>
