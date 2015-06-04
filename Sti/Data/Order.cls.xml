@@ -162,7 +162,7 @@
 	set proxy.city = ..City.ConvertToProxyObject()
 	if (..University){
    		set proxy.university = ..University.ConvertToProxyObject()
-   		set proxy.fullNameUniversity = ..University.FullName
+   		set proxy.fullNameUniversity = ..University.FullName.Value
 	}
 	else
 	{
@@ -188,9 +188,9 @@
    
    if (data.id = ""){
 		set order = ..%New()
-		set order.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
-      	set order.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
-      	set order.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+		set order.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName,"Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set order.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName,"Sti.Data.Localization.Translation;PersonLTextValue")
+      	set order.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName,"Sti.Data.Localization.Translation;PersonLTextValue")
       	
     }
     else{

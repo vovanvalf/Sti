@@ -224,21 +224,23 @@
 	
 	if (data.id = ""){
 		set intern = ..%New()
-		set intern.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName) 
-      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName)
-      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
+		set intern.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName,"Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName, "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName, "Sti.Data.Localization.Translation;PersonLTextValue")
     }
     else{
 	    set intern = ..%OpenId(data.id)
 		set intern.LastName.Value = data.lastName
       	set intern.FirstName.Value = data.firstName
-      	if (intern.MiddleName){
+      	if (intern.MiddleName)
+      	{
       		set intern.MiddleName.Value = data.middleName
       	}
       	else
-      		{
-	      		set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName)
-      		}
+      	{
+	      set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName, "Sti.Data.Localization.Translation;PersonLTextValue")	
+      	}
+      	   	
    	}
 		set intern.Email = data.email
       	set intern.Phone = data.phone

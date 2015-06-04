@@ -31,8 +31,9 @@
 <Property name="LegalAddress">
 <Description>
 Адрес компании</Description>
-<Type>Sti.Data.Localization.LText</Type>
+<Type>%String</Type>
 <Required>1</Required>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="MailAddress">
@@ -66,7 +67,7 @@ Web-сайт</Description>
 	if (shortInfo = 1) quit proxy
 	
 	set proxy.shortName=..ShortName.Value
-	set proxy.legalAddress=..LegalAddress.Value
+	set proxy.legalAddress=..LegalAddress
 	set proxy.mailAddress=..MailAddress
 	set proxy.webSite=..WebSite
 	if (..Contact){
@@ -84,17 +85,16 @@ Web-сайт</Description>
 
 	if (data.id = ""){
 		set company = ..%New()
-      	set company.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName)
-		set company.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName)
-		set company.LegalAddress = ##class(Sti.Data.Localization.LText).Create(data.legalAddress)	
+      	set company.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName,"Sti.Data.Localization.Translation;PersonLTextValue")
+		set company.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName,"Sti.Data.Localization.Translation;PersonLTextValue")
     }
     else{
 	    
 	    set company = ..%OpenId(data.id)
       	set company.FullName.Value = data.fullName
-		set company.ShortName.Value = data.shortName
-		set company.LegalAddress.Value = data.legalAddress
+		set company.ShortName.Value = data.shortName 
    	}
+   		set company.LegalAddress=data.legalAddress
       	set company.MailAddress = data.mailAddress
 		set company.WebSite=data.webSite
       

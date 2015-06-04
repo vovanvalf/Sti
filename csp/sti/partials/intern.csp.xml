@@ -57,7 +57,7 @@
 							</div>
 							<div class="span4">
 							    <label class="control-label" ng-bind="('Уровень английского'|localize)+'*'">:</label>
-								<select class="span12" ng-model="page.intern.engMark.id" ng-options="eng.id as eng.value for eng in page.engmarks" required></select>
+								<select class="span12" ng-model="page.intern.engMark.id" ng-options="eng.id as eng.value for eng in page.engmarks" required><option value="">--{{'Выберите уровень владения английским'|localize}}--</option></select>
 								<label class="control-label" ng-bind="'Оценка TET'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.intern.tetMark"></input>
 								<label class="control-label" ng-bind="'Оценка PET'|localize">:</label>
