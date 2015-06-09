@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/app.js" application="/csp/sti/" default="1"><![CDATA[
+<CSP name="sti/js/app.js" application="/csp/interns/" default="1"><![CDATA[
 'use strict';
 /*
 Рекомендации:
@@ -64,6 +64,20 @@ mainModule.config(['$routeProvider', function($routeProvider) {
      $routeProvider.when('/company/:cmpId/employee/:empId',   {templateUrl: 'partials/company.csp',    controller: 'CompanyCtrl'});
     $routeProvider.when('/company',   {templateUrl: 'partials/company.csp',    controller: 'CompanyCtrl'});
     
+    $routeProvider.when('/mailing/groups', {templateUrl: 'partials/mailinggroups.csp', controller: 'AllMailingGroupsCtrl'});
+    $routeProvider.when('/mailing/group', {templateUrl: 'partials/mailinggroup.csp', controller: 'MailingGroupCtrl'});
+    $routeProvider.when('/mailing/group/:id', {templateUrl: 'partials/mailinggroup.csp', controller: 'MailingGroupCtrl'});
+    $routeProvider.when('/mailing/group/:id/mail', {templateUrl: 'partials/mailinggroupmail.csp', controller: 'MailingGroupMailCtrl'});
+    $routeProvider.when('/mailing/group/:gId/item', {templateUrl: 'partials/mailingitem.csp', controller: 'MailingItemCtrl'});
+    $routeProvider.when('/mailing/group/:gId/item/:iId', {templateUrl: 'partials/mailingitem.csp', controller: 'MailingItemCtrl'});
+    
+    $routeProvider.when('/mailing/subscription', {templateUrl: 'partials/mailingsubscription.csp', controller: 'MailingSubscriptionCtrl'});
+    $routeProvider.when('/mailing/subscription/:accessCode', {templateUrl: 'partials/mailingsubscription.csp', controller: 'MailingSubscriptionCtrl'});
+    $routeProvider.when('/mailing/subscription/confirmation/:confirmCode', {templateUrl: 'partials/mailingsubscription.csp', controller: 'MailingSubscriptionCtrl'});
+    
+    $routeProvider.when('/logs', {templateUrl: 'partials/logs.csp', controller: 'AllLogsCtrl'});
+    $routeProvider.when('/mailing/journal', {templateUrl: 'partials/mailingjournal.csp', controller: 'MailingJournalCtrl'});
+
     $routeProvider.otherwise({redirectTo: '/order'});
   }]);
 ]]></CSP>

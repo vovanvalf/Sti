@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/index.csp" application="/csp/sti/" default="1"><![CDATA[
+<CSP name="sti/index.csp" application="/csp/interns/" default="1"><![CDATA[
 <!doctype html>
 
 <html ng-app="mainModule" ng-controller="MainCtrl">
@@ -59,7 +59,10 @@
                   <li ng-show="menu.admin" ng-class="menu.pages.internships.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.internships.url}}" ng-bind="menu.pages.internships.name" ng-click="menu.selectMenu(menu.pages.internships)"></a></li>
   				  <li ng-show="menu.admin" ng-class="menu.pages.interns.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.interns.url}}" ng-bind="menu.pages.interns.name" ng-click="menu.selectMenu(menu.pages.interns)"></a></li>
   				  <li ng-show="menu.admin" ng-class="menu.pages.companies.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.companies.url}}" ng-bind="menu.pages.companies.name" ng-click="menu.selectMenu(menu.pages.companies)"></a></li>
-				  <li ng-show="menu.admin" ng-class="menu.pages.universities.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.universities.url}}" ng-bind="menu.pages.universities.name" ng-click="menu.selectMenu(menu.pages.universities)"></a></li><li ng-show="menu.admin" ng-class="menu.pages.employees.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.employees.url}}" ng-bind="menu.pages.employees.name" ng-click="menu.selectMenu(menu.pages.employees)"></a></li>
+				  <li ng-show="menu.admin" ng-class="menu.pages.universities.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.universities.url}}" ng-bind="menu.pages.universities.name" ng-click="menu.selectMenu(menu.pages.universities)"></a></li>
+				  <li ng-show="menu.admin" ng-class="menu.pages.employees.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.employees.url}}" ng-bind="menu.pages.employees.name" ng-click="menu.selectMenu(menu.pages.employees)"></a></li>
+				  <li ng-show="menu.admin" ng-class="menu.pages.mailingGroups.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.mailingGroups.url}}" ng-bind="menu.pages.mailingGroups.name" ng-click="menu.selectMenu(menu.pages.mailingGroups)"></a></li>
+				  <li ng-show="menu.admin" ng-class="menu.pages.mailingJournal.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.mailingJournal.url}}" ng-bind="menu.pages.mailingJournal.name" ng-click="menu.selectMenu(menu.pages.mailingJournal)"></a></li>
                 </ul>
 				
                 <ul class="nav pull-right">
@@ -129,8 +132,16 @@
     <script language="javascript"  src="js/controllers/InternshipCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllCompanyCtrl.js"></script>
     <script language="javascript"  src="js/controllers/CompanyCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/AllMailingGroupsCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/MailingGroupCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/MailingGroupMailCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/MailingItemCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/MailingSubscriptionCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/AllLogsCtrl.js"></script>
+    <script language="javascript"  src="js/controllers/MailingJournalCtrl.js"></script>
 
     <script language="javascript"  src="js/services/RESTSrvc.js"></script>
+    <script language="javascript"  src="js/services/DALSrvc.js"></script>
     <script language="javascript"  src="js/services/InternSrvc.js"></script>
     <script language="javascript"  src="js/services/OrderSrvc.js"></script>
     <script language="javascript"  src="js/services/InternshipSrvc.js"></script>
@@ -141,6 +152,7 @@
     <script language="javascript"  src="js/services/MarksSrvc.js"></script>
     <script language="javascript"  src="js/services/OtherSrvc.js"></script>
     <script language="javascript"  src="js/services/EmployeeSrvc.js"></script>
+    <script language="javascript"  src="js/services/MailingSrvc.js"></script>
     
     <script language="javascript"  src="js/directives/stigrid.js"></script>
     <script language="javascript"  src="js/directives/stialert.js"></script>

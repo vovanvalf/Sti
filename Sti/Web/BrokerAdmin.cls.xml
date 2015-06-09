@@ -138,6 +138,78 @@ Private request processor for administrator</Description>
 <!-- Получить все стажировки для таблицы[GRID] -->
 <Route Method="POST" Url="/internship/grid" Call="Sti.Web.JsonAdmin:GetInternshipsForGrid"/>
 
+    <!-- ================================================================================================================================== -->
+    <!-- MAILING GROUPS AND ITEMS                                                                                  MAILING GROUPS AND ITEMS -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Get mailing groups for table -->
+    <Route Method="POST" Url="/json/mailing/group/grid" Call="Sti.Web.JsonAdmin:GetMailingGroupsForGrid"/>
+    
+    <!-- Save mailing group -->
+    <Route Method="POST" Url="/json/mailing/group" Call="Sti.Web.JsonAdmin:SaveMailingGroup"/>
+
+    <!-- Get mailing groups for combobox -->
+    <Route Method="GET" Url="/json/mailing/group" Call="Sti.Web.JsonAdmin:GetMailingGroups"/>
+    
+    <!-- Get mailing group by ID -->
+    <Route Method="GET" Url="/json/mailing/group/:id" Call="Sti.Web.JsonAdmin:GetMailingGroup"/>
+    
+    <!-- Get mailing group contacts by ID -->
+    <Route Method="GET" Url="/json/mailing/group/:id/contact" Call="Sti.Web.JsonAdmin:GetMailingGroupContacts"/>
+    
+    <!-- Get mailing group mail by group ID -->
+    <Route Method="GET" Url="/json/mailing/group/:id/mail" Call="Sti.Web.JsonAdmin:GetMailingGroupMail"/>
+    
+    <!-- Delete mailing group by ID -->
+    <Route Method="DELETE" Url="/json/mailing/group/:id" Call="Sti.Web.JsonAdmin:DeleteMailingGroup"/>
+    
+    <!-- Get mailing items in the group for table  -->
+    <Route Method="POST" Url="/json/mailing/group/item/grid" Call="Sti.Web.JsonAdmin:GetMailingGroupItemsForGrid"/>
+    
+    <!-- Save mailing item -->
+    <Route Method="POST" Url="/json/mailing/group/item" Call="Sti.Web.JsonAdmin:SaveMailingItem"/>
+    
+    <!-- Get mailing item by ID -->
+    <Route Method="GET" Url="/json/mailing/group/item/:id" Call="Sti.Web.JsonAdmin:GetMailingItem"/>
+    
+    <!-- Delete mailing item by ID -->
+    <Route Method="DELETE" Url="/json/mailing/group/item/:id" Call="Sti.Web.JsonAdmin:DeleteMailingItem"/>
+    
+    <!-- Send mail to Mailing group items -->
+    <Route Method="POST" Url="/json/mailing/mail/send" Call="Sti.Web.JsonAdmin:SendMailToMailingGroup"/>
+    
+    <!-- Get mailing journal -->
+    <Route Method="POST" Url="/json/mailing/journal/grid" Call="Sti.Web.JsonAdmin:GetMailingJournalItemsForGrid"/>
+    
+    <!-- Get mailing journal parts -->
+    <Route Method="POST" Url="/json/mailing/journal/parts/grid" Call="Sti.Web.JsonAdmin:GetMailingJournalPartsForGrid"/>
+    
+    
+    <!-- Get current mailing status -->
+    <Route Method="GET" Url="/json/mailing/status" Call="Sti.Web.JsonAdmin:GetMailingStatus"/>
+    
+    <!-- Change mailing status (on|off) -->
+    <Route Method="POST" Url="/json/mailing/status/:status" Call="Sti.Web.JsonAdmin:ChangeMailingStatus"/>
+    
+    <!-- Delete mailing journal item -->
+    <Route Method="DELETE" Url="/json/mailing/journal/:id" Call="Sti.Web.JsonAdmin:DeleteMailingJournalItem"/>
+    
+    <!-- Delete mailing journal part -->
+    <Route Method="DELETE" Url="/json/mailing/journal/part/:groupNumber" Call="Sti.Web.JsonAdmin:DeleteMailingJournalPart"/>
+    
+    <!-- ================================================================================================================================== -->
+    <!-- MAIL                                                                                                                          MAIL -->
+    <!-- ================================================================================================================================== -->
+    
+    <!-- Send email -->
+    <Route Method="POST" Url="/json/mail/send" Call="Sti.Web.JsonAdmin:SendEmail"/>
+        
+    <!-- Get email pattern from CacheMsg -->
+    <Route Method="GET" Url="/json/mail/pattern/:type" Call="Sti.Web.JsonAdmin:GetEmailPattern"/>
+
+    <!-- All logs -->
+    <Route Method="POST" Url="/json/log/grid" Call="Sti.Web.JsonAdmin:GetLogsForGrid"/>
+    
 </Routes>
 ]]></Data>
 </XData>

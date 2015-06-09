@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.MailingItem">
+<Description>
+MailingItem (subscriber)</Description>
+<Abstract>1</Abstract>
+<TimeCreated>63387,80584.270425</TimeCreated>
+
+<Property name="AccessCode">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="LastUpdated">
+<Type>%TimeStamp</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="MGroup">
+<Type>MailingGroup</Type>
+<Required>1</Required>
+</Property>
+</Class>
+</Export>

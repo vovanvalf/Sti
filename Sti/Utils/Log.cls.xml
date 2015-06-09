@@ -40,6 +40,19 @@
 ]]></Implementation>
 </Method>
 
+<Method name="ConvertToProxyObject">
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<ImplementationWideBase64>CQBzAGUAdAAgAHAAcgBvAHgAeQAgAD0AIAAjACMAYwBsAGEAcwBzACgAJQBaAEUATgAuAHAAcgBv
+AHgAeQBPAGIAagBlAGMAdAApAC4AJQBOAGUAdwAoACkACgAJAAoACQBzAGUAdAAgAHAAcgBvAHgA
+eQAuAGwAbwBjAGEAdABpAG8AbgAgAD0AIAAuAC4ATABvAGMAYQB0AGkAbwBuAAoACQBzAGUAdAAg
+AHAAcgBvAHgAeQAuAG0AcwBnACAAPQAgACQAUgBFAFAATABBAEMARQAoACQAUgBFAFAATABBAEMA
+RQAoACQAUgBFAFAATABBAEMARQAoAC4ALgBNAHMAZwAsACAAIgAwACAAGQQBAAQABAAJBBMAGiAB
+ACIALAAgACIAIQAiACkALAAgACIAAQABAAEAAQABAAEAAQA6AAEAIgAsACAAIgAhACIAKQAsACAA
+IgAvACIALAAgACIAIQAiACkACgAJAHMAZQB0ACAAcAByAG8AeAB5AC4AYwByAGUAYQB0AGUAZABU
+AFMAIAA9ACAALgAuAEMAcgBlAGEAdABlAGQAVABTAAkACgAJAAoACQBxAHUAaQB0ACAAcAByAG8A
+eAB5AA==
+</ImplementationWideBase64></Method>
+
 <Storage name="Default">
 <Type>%Library.CacheStorage</Type>
 <DataLocation>^Sti.Utils.LogD</DataLocation>
@@ -48,8 +61,6 @@
 <IndexLocation>^Sti.Utils.LogI</IndexLocation>
 <StreamLocation>^Sti.Utils.LogS</StreamLocation>
 <Data name="LogDefaultData">
-<Structure>listnode</Structure>
-<Subscript/>
 <Value name="1">
 <Value>%%CLASSNAME</Value>
 </Value>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/localization/dict.js" application="/csp/sti/" default="1"><![CDATA[
+<CSP name="sti/js/localization/dict.js" application="/csp/interns/" default="1"><![CDATA[
 //---
 
 localizationModule.constant('StiDictionary', {
@@ -137,6 +137,7 @@ localizationModule.constant('StiDictionary', {
 		'Принять стажера' : 'Accept intern',
 		'Комментарий#1' : 'Comments1',
 		'Комментарий#2' : 'Comments2',
+		'Группы рассылки' : 'Mailing groups',
   },
   toRussian: {
   },

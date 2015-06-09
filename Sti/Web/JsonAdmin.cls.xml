@@ -88,7 +88,7 @@ Method="GET" Url="/json/person/search/:word"</Description>
 		set data = ##class(%ZEN.proxyObject).%New()
 		set data.user = $USERNAME
 	
-		if (##class(Sti.Data.Internship).CheckDeletePrivilege() = $$$OK){
+		if (($UserName = "UnknownUser") || ##class(Sti.Data.Internship).CheckDeletePrivilege() = $$$OK){
 			set data.privileges = "all"
 		}
 		else{
@@ -876,6 +876,463 @@ Method="GET" Url="/json/person/search/:word"</Description>
 	}
 
 	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingGroupsForGrid">
+<Description>
+
+==========================================================================================================================
+MAILING GROUPS AND ITEMS                                                                          MAILING GROUPS AND ITEMS   
+==========================================================================================================================
+
+Get mailing groups for table
+Method="POST" Url="/json/mailing/group/grid"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+        
+        $$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Sti_Data.MailingGroup", "Sti.Data.MailingGroup", params))
+    }
+    catch ex {
+        set st = ex.AsStatus()
+    }
+
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveMailingGroup">
+<Description>
+Save mailing group
+Method="POST" Url="/json/mailing/group"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+        
+        do ##class(Sti.Data.MailingGroup).Save(data, .st)
+        if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus($CASE(data.id = "", 1:"createMailingGroup",:"saveMailingGroup"), "| "_st)) 
+        
+        TCOMMIT
+    }
+    catch ex {
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingGroups">
+<Description>
+Get mailing groups 
+Method="GET" Url="/json/mailing/group"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[    quit ..WriteJsonFromSql("SELECT ID As id, Name as name FROM Sti_Data.MailingGroup ORDER BY name")
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingGroup">
+<Description>
+Get mailing group by ID
+Method="GET" Url="/json/mailing/group/:id"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    do ..GetProxyObject("Sti.Data.MailingGroup", id).%ToJSON()
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingGroupContacts">
+<Description>
+Get mailing group contacts by ID
+Method="GET" Url="/json/mailing/group/:id/contact"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set contacts = ##class(Sti.Data.MailingGroup).GetMailingItemsContacts(id)
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    set proxy.children = contacts
+    do proxy.%ToJSON() 
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="DeleteMailingGroup">
+<Description>
+Delete mailing group by ID
+Method="DELETE" Url="/json/mailing/group/:id"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        set SQLCODE = ""
+        &sql(DELETE FROM Sti_Data.MailingItemApproved WHERE MGroup = :id)
+        
+        if (SQLCODE '= 0) && (SQLCODE '= 100){
+            $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("DeleteMailingApprovedItemsError", " SQLCODE="_SQLCODE))
+        }
+        
+        $$$THROWONERROR(st, ##class(Sti.Data.MailingGroup).Delete(id))
+        
+        TCOMMIT
+    }
+    catch ex {
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingGroupItemsForGrid">
+<Description>
+Get mailing items in the group for table
+Method="POST" Url="/json/mailing/group/item/grid"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+        
+        $$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Sti_Data.MailingItemApproved", "Sti.Data.MailingItemApproved", params, "MGroup = "_..ParseParameter(params.other.groupId)))
+    }
+    catch ex {
+        set st = ex.AsStatus()
+    }
+
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveMailingItem">
+<Description>
+Save mailing item
+Method="POST" Url="/json/mailing/group/item"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+        
+        do ##class(Sti.Data.MailingItemApprovedSubscriber).Save(data, .st)
+        if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus($CASE(data.id = "", 1:"createMailingItem",:"saveMailingItem"), "| "_st)) 
+        
+        TCOMMIT
+    }
+    catch ex {
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingItem">
+<Description>
+Get mailing item by ID
+Method="GET" Url="/json/mailing/group/item/:id"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    do ..GetProxyObject("Sti.Data.MailingItemApproved", id).%ToJSON()
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="DeleteMailingItem">
+<Description>
+Delete mailing group by ID
+Method="DELETE" Url="/json/mailing/group/item/:id"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[    quit ##class(Sti.Data.MailingItemApproved).%DeleteId(id)
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingGroupMail">
+<Description>
+Delete mailing group by ID
+Method="GET" Url="/json/mailing/group/:id/mail"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>grId</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[    quit ##class(Sti.Data.MailingGroup).GetMail(grId).%ToJSON()
+]]></Implementation>
+</Method>
+
+<Method name="SendMailToMailingGroup">
+<Description>
+Send mail to Mailing group items
+Method="POST" Url="/json/mailing/mail/send"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        do ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1)
+        
+        set data.subject = $ZCVT(data.subject, "I", "UTF8")
+        set data.message = $ZCVT(data.message, "I", "UTF8")
+        set grNumber = ##class(Sti.Data.MailingJournal).GetValidGroupNumber()
+        for i=1:1:data.contacts.Count(){
+            set mItem = ##class(Sti.Data.MailingItemApproved).%OpenId(data.contacts.GetAt(i).id)
+            if '$ISOBJECT(mItem) continue
+                    
+            set msg = $REPLACE(data.message, "%UnsubscribeUrl", "http://"_$get(^Settings("Sti","WebApp"))_"/sti/index.csp#/mailing/subscription/"_$system.Encryption.Base64Encode(mItem.AccessCode))
+            do ##class(Sti.Data.MailingJournal).Create(data.contacts.GetAt(i).email, $ZCVT(data.contacts.GetAt(i).name, "I", "UTF8"), data.subject, msg, "ГР: "_mItem.MGroup.Name, grNumber)    
+        }
+        
+        TCOMMIT
+    }
+    catch(ex){
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    if $$$ISOK(st){
+        job ##class(Sti.Data.MailingJournal).StartSending()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingJournalItemsForGrid">
+<Description>
+Get mail journal
+Method="POST" Url="/json/mailing/journal/grid"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+        
+        set where = ""
+        if params.other.groupNumber > 0 {
+            set where = "GroupNumber = '"_params.other.groupNumber_"'"
+        }
+        
+        $$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Sti_Data.MailingJournal", "Sti.Data.MailingJournal", params, where))
+    }
+    catch ex {
+        set st = ex.AsStatus()
+    }
+
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingJournalPartsForGrid">
+<Description>
+Get mail journal
+Method="POST" Url="/json/mailing/journal/parts/grid"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+        
+        set proxyResult = ##class(%ZEN.proxyObject).%New()
+        set proxyResult.children = ##class(%ZEN.proxyObject).%New()
+        set proxyResult.children.items = ##class(%ListOfObjects).%New()
+        
+        set rowCount = 0
+        &sql(DECLARE MJCur3 CURSOR FOR 
+             SELECT mj.GroupNumber,
+                    mj.CreatedTS, 
+                    mj.Type, 
+                    mj.Subject, 
+                    mj.Message, 
+                    COUNT(mj.ID) As RecipientCount, 
+                    (SELECT COUNT(mj2.ID) FROM Sti_Data.MailingJournal mj2 WHERE mj.GroupNumber = mj2.GroupNumber AND IsSended = 1) As SendedCount
+             FROM Sti_Data.MailingJournal as mj
+             WHERE GroupNumber > 0
+             GROUP BY GroupNumber
+             ORDER BY GroupNumber DESC) 
+        
+        &sql(OPEN MJCur3)
+        for  
+        {   
+            &sql(FETCH MJCur3 INTO :grNumber, :createdTS, :type, :subj, :msg, :recCount, :sendCount) 
+            quit:(SQLCODE '= 0)
+            set rowCount = rowCount + 1
+            
+            if (rowCount > params.last) quit
+            
+            if (rowCount >= params.first){
+                set proxy = ##class(%ZEN.proxyObject).%New()
+                set proxy.id = grNumber
+                set proxy.groupNumber = grNumber
+                set proxy.createdTS = createdTS
+                set proxy.type = type
+                set proxy.subject = subj
+                set proxy.message = msg
+                set proxy.recipientsCount = recCount
+                set proxy.sendedCount = sendCount
+                do proxyResult.children.items.Insert(proxy)
+            }   
+        }
+        
+        &sql(CLOSE MJCur3)
+        
+        
+        &sql(SELECT COUNT(DISTINCT GroupNumber) INTO :rowCount FROM Sti_Data.MailingJournal WHERE GroupNumber > 0) 
+            
+        set proxyResult.children.itemsTotal = rowCount
+        do proxyResult.%ToJSON()
+    }
+    catch ex {
+        set st = ex.AsStatus()
+    }
+
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="ChangeMailingStatus">
+<Description>
+Change mailing status (on|off)
+Method="POST" Url="/json/mailing/status/:status"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>status:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    if ($ZCVT(status, "L") = "off"){
+        set ^Settings("Sti","Mail","Status") = "Off"
+    }
+    else{
+        set ^Settings("Sti","Mail","Status") = "On"
+        job ##class(Sti.Data.MailingJournal).StartSending()
+    }
+    
+    do ..GetMailingStatus()
+    
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingStatus">
+<Description>
+Get current mailing status
+Method="GET" Url="/json/mailing/status"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set proxy = ##class(%ZEN.proxyObject).%New()
+    set proxy.status = $get(^Settings("Sti","Mail","Status")) 
+    do proxy.%ToJSON()
+    
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="DeleteMailingJournalItem">
+<Description>
+Delete mailing journal item
+Method="DELETE" Url="/json/mailing/journal/:id"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = ##class(Sti.Data.MailingJournal).%DeleteId(id, 4)
+    quit:$$$ISERR(st) ##class(Sti.Utils.Msg).GetErrorStatus("deleteMailingJournalItem", "| "_st) 
+    
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="DeleteMailingJournalPart">
+<Description>
+Delete mailing journal item
+Method="DELETE" Url="/json/mailing/journal/part/:groupNumber"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>grNumber:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set SQLCODE = ""
+    &sql(DELETE FROM Sti_Data.MailingJournal WHERE GroupNumber = :grNumber)
+    
+    if (SQLCODE '= 0) && (SQLCODE '= 100){
+        quit ##class(Sti.Utils.Msg).GetErrorStatus("Bad sql code. ", "| SQLCODE="_SQLCODE)
+    }
+    
+    quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="GetEmailPattern">
+<Description>
+
+==========================================================================================================================
+OTHER                                                                                                                OTHER
+==========================================================================================================================
+
+Get email pattern from ^CacheMsg
+Method="GET" Url="/json/mail/pattern/:type"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>type:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[    quit ##class(Sti.Utils.Email).GetEmailPattern(type).%ToJSON()
+]]></Implementation>
+</Method>
+
+<Method name="GetLogsForGrid">
+<Description>
+Get logs
+Method="POST" Url="/json/log/grid"</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.params, 1))
+        
+        $$$THROWONERROR(st, ..WriteJsonForGrid("SELECT ID FROM Sti_Utils.Log", "Sti.Utils.Log", params))
+    }
+    catch ex {
+        set st = ex.AsStatus()
+    }
+
+    quit st
 ]]></Implementation>
 </Method>
 </Class>

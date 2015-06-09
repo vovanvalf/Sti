@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Init.EmailTemplates">
+<Abstract>1</Abstract>
+<TimeCreated>63707,45972.277155</TimeCreated>
+
+<Method name="Init">
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[
+	set template1 = ##class(Src.Utils.Email.Template).CodeIndexOpen("order_created_intern")
+	if ('$IsObject(template1)){
+		set template1 = ##class(Src.Utils.Email.Template).%New()
+		set template1.Code = "order_created_intern"
+	}
+	set template1.Subject = "Регистрация заявки на стажировку"
+	set template1.Message = "Ваша заявка на стажировку принята.<br>"_
+		"В ближайшее время Ваша заявка будет обработана и Вам пришлют приглашение пройти онлайн-тестирование."
+	
+	do template1.%Save()
+
+	set template2 = ##class(Src.Utils.Email.Template).CodeIndexOpen("order_created_curator")
+	if ('$IsObject(template2)){
+		set template2 = ##class(Src.Utils.Email.Template).%New()
+		set template2.Code = "order_created_curator"
+	}
+	set template2.Subject = "Регистрация заявки на стажировку"
+	set template2.Message = "Поступила новая заявка на стажировку.<br>"_
+		"Посмотреть заявку можно по <a target='_blank' href='%ApproveUrl'>ссылке</a>."
+	
+	do template2.%Save()
+]]></Implementation>
+</Method>
+</Class>
+</Export>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/services/UtilsSrvc.js" application="/csp/sti/" default="1"><![CDATA[
+<CSP name="sti/js/services/UtilsSrvc.js" application="/csp/interns/" default="1"><![CDATA[
 'use strict';
 
 /*===========================================================================================
 Utils
 ===========================================================================================*/
 
-servicesModule.factory('UtilsSrvc', function( $filter) {
+servicesModule.factory('UtilsSrvc', function( $filter, DALSrvc) {
 	
 	return {
 
@@ -78,7 +78,18 @@ servicesModule.factory('UtilsSrvc', function( $filter) {
   		},
   		base64Decode: function(s) {
     		return decodeURIComponent(escape(atob(s)));
-  		}
+  		},
+        getAllLogsForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
+            var first = pageSize * (pageCurr - 1) + 1;
+            var obj = {sqlName: sqlName, 
+                       isDown: isDown, 
+                       first: first, 
+                       last: first + pageSize - 1,
+                       searchSqlName: searchSqlName, 
+                       searchText: searchText};
+
+            return DALSrvc.getPromise('save', StiSetting.admin + '/json/log/grid', obj);
+        },
     }
 });
   
