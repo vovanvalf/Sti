@@ -88,7 +88,7 @@ Method="GET" Url="/json/person/search/:word"</Description>
 		set data = ##class(%ZEN.proxyObject).%New()
 		set data.user = $USERNAME
 	
-		if (($UserName = "UnknownUser") || ##class(Sti.Data.Internship).CheckDeletePrivilege() = $$$OK){
+		if (##class(Sti.Data.Internship).CheckDeletePrivilege() = $$$OK){
 			set data.privileges = "all"
 		}
 		else{
