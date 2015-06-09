@@ -9,16 +9,16 @@
 <Property name="FullName">
 <Description>
 Полное наименование университета</Description>
-<Type>%Text</Type>
+<Type>Sti.Data.Localization.LText</Type>
 <Required>1</Required>
-<Parameter name="MAXLEN" value="500"/>
+<Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
 <Property name="ShortName">
 <Description>
 Краткое наименование университета</Description>
-<Type>%Text</Type>
-<Parameter name="MAXLEN" value="500"/>
+<Type>Sti.Data.Localization.LText</Type>
+<Parameter name="XMLREFERENCE" value="ID"/>
 </Property>
 
 <Property name="Address">
@@ -72,7 +72,7 @@ Cтажёры</Description>
 <Implementation><![CDATA[
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	set proxy.id = ..%Id()
-	set proxy.fullName = ..FullName
+	set proxy.fullName = ..FullName.Value
 	if (shortInfo = 1) quit proxy
 	
 	
@@ -83,7 +83,7 @@ Cтажёры</Description>
 	if (..Curator){
 		set proxy.curator = ..Curator.ConvertToProxyObject()
 	}
-	set proxy.shortName = ..ShortName
+	set proxy.shortName = ..ShortName.Value
 	set proxy.web = ..Web	
 
     quit proxy
@@ -98,13 +98,30 @@ Cтажёры</Description>
 	
 	if (data.id = ""){
 		set university = ..%New()
+		set university.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName, "Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set university.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName, "Sti.Data.Localization.Translation;PersonLTextValue")
     }
     else{
-	    
 	    set university = ..%OpenId(data.id)
+	    if (university.FullName) {
+	   	 set university.FullName.Value = data.fullName
+	    }
+	    else {
+		    set university.FullName = ##class(Sti.Data.Localization.LText).Create(data.fullName, "Sti.Data.Localization.Translation;PersonLTextValue") 
+      	
+	    }
+	    if (university.ShortName)
+	    {
+			set university.ShortName.Value = data.shortName
+	    }
+	    else
+	    {
+		   set university.ShortName = ##class(Sti.Data.Localization.LText).Create(data.shortName, "Sti.Data.Localization.Translation;PersonLTextValue")
+     
+	    }
+	     	
    	}
-   		set university.FullName = data.fullName
-		set university.ShortName = data.shortName
+   		
 		set university.Address = data.address
 		set university.Web = data.web
         set university.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id)
@@ -126,7 +143,7 @@ Cтажёры</Description>
 	     	
 	  &sql(SELECT UniversityTab.ID INTO :id
 		 FROM Sti_Data.University as UniversityTab 
-		  WHERE UniversityTab.FullName = :fName)
+		  WHERE UniversityTab.FullName->Value = :fName)
 		
 	quit ..%OpenId(id)
 ]]></Implementation>
@@ -141,7 +158,7 @@ Cтажёры</Description>
 	     	
 	  &sql(SELECT UniversityTab.ID INTO :id
 		 FROM Sti_Data.University as UniversityTab 
-		 WHERE UniversityTab.ShortName = :fName )
+		 WHERE UniversityTab.ShortName->Value = :fName )
 	quit ..%OpenId(id)
 ]]></Implementation>
 </Method>

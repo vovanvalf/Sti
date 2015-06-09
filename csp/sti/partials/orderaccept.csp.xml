@@ -14,16 +14,16 @@
 					<div class="accordion-inner">
 						 <div class="row-fluid">
 							<div class="span4">
-								<label class="control-label" ng-bind="('Surname'|localize)+'*'">:</label>
-								<input class="span12"  type="text" ng-model="intern.engLastName" required></input>
-								<label class="control-label" ng-bind="('Name'|localize)+'*'">:</label>
-								<input class="span12"  type="text" ng-model="intern.engName" required></input>
 								<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
 								<input class="span12"  type="text" ng-model="intern.lastName" required></input>
 								<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
 								<input class="span12"  type="text" ng-model="intern.firstName" required></input>
 								<label class="control-label" ng-bind="'Отчество'|localize">:</label>
 								<input class="span12"  type="text" ng-model="intern.middleName"></input>
+								<label class="control-label" ng-bind="('Name'|localize)+'*'">:</label>
+								<input class="span12"  type="text" placeholder="{{'Enter your Name in English'|localize}}" ng-model="intern.engName" required></input>								
+								<label class="control-label" ng-bind="('Surname'|localize)+'*'">:</label>
+								<input class="span12"  type="text" placeholder="{{'Enter your Surname in English'|localize}}" ng-model="intern.engLastName" required></input>								
 								<label class="control-label" ng-bind="('Дата рождения'|localize)+'*'">:</label>
 							    <div class="controls">
 									        <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="intern.birthDate" show-weeks="false" ng-required="true" />
@@ -57,7 +57,7 @@
 							</div>
 							<div class="span4">
 							    <label class="control-label" ng-bind="('Уровень английского'|localize)+'*'">:</label>
-								<select class="span12" ng-model="intern.engMark.id" ng-options="eng.id as eng.value for eng in engmarks" required></select>
+								<select class="span12" ng-model="intern.engMark.id" ng-options="eng.id as eng.value for eng in engmarks" required><option value="">--{{'Выберите уровень владения английским'|localize}}--</option></select>
 								<label class="control-label" ng-bind="'Оценка TET'|localize">:</label>
 								<input class="span12"  type="text" ng-model="intern.tetMark"></input>
 								<label class="control-label" ng-bind="'Оценка PET'|localize">:</label>

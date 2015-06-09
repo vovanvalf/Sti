@@ -135,6 +135,7 @@ localizationModule.constant('StiDictionary', {
 	 	'Вставьте url на резюме онлайн или в pdf на сетевом диске' : 'Insert the url on a resume online or on a network drive pdf ',
 	 	'Добавление стажера' : 'Add intern',
 		'Принять стажера' : 'Accept intern',
+		'Удалить данную запись?' : 'Delete this record?',
 		'Комментарий#1' : 'Comments1',
 		'Комментарий#2' : 'Comments2',
 		'Группы рассылки' : 'Mailing groups',

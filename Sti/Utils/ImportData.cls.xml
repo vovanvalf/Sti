@@ -46,8 +46,8 @@
 			if ('$ISOBJECT(university))
 		    {
 			    set university = ##class(Sti.Data.University).%New()
-      			set university.FullName = object.University
-				set university.ShortName = object.University
+      			set university.FullName = ##class(Sti.Data.Localization.LText).Create(object.University, "Sti.Data.Localization.Translation;PersonLTextValue")
+				set university.ShortName = ##class(Sti.Data.Localization.LText).Create(object.University,"Sti.Data.Localization.Translation;PersonLTextValue")
 					if (object.CuratorEmail '= "")
 					{   
 						set curator = ##class(Sti.Data.Employee).GetEmployeeByEmail(object.CuratorEmail)
@@ -66,8 +66,8 @@
 		set intern = ##class(Sti.Data.Intern).%New()
 		set intern.University = university
 		
-		set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(object.FirstName)
-      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create(object.LastName)
+		set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(object.FirstName, "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.LastName = ##class(Sti.Data.Localization.LText).Create(object.LastName, "Sti.Data.Localization.Translation;PersonLTextValue")
 		set intern.Email = object.Email
       	set intern.Phone = object.Phone
       	set intern.Skype = object.Skype

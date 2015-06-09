@@ -14,16 +14,16 @@
 					<div class="accordion-inner">
 						 <div class="row-fluid">
 							<div class="span4">
-								<label class="control-label" ng-bind="('Surname'|localize)+'*'">:</label>
-								<input class="span12"  type="text" ng-model="page.order.engLastName" required></input>
-								<label class="control-label" ng-bind="('Name'|localize)+'*'">:</label>
-								<input class="span12"  type="text" ng-model="page.order.engName" required></input>
 								<label class="control-label" ng-bind="('Фамилия'|localize)+'*'">:</label>
 								<input class="span12"  type="text" ng-model="page.order.lastName" required></input>
 								<label class="control-label" ng-bind="('Имя'|localize)+'*'">:</label>
 								<input class="span12"  type="text" ng-model="page.order.firstName" required></input>
 								<label class="control-label" ng-bind="'Отчество'|localize">:</label>
 								<input class="span12"  type="text" ng-model="page.order.middleName"></input>
+								<label class="control-label" ng-bind="('Name'|localize)+'*'">:</label>
+								<input class="span12"  type="text" placeholder="{{'Enter your Name in English'|localize}}" ng-model="page.order.engName" required></input>								
+								<label class="control-label" ng-bind="('Surname'|localize)+'*'">:</label>
+								<input class="span12"  type="text" placeholder="{{'Enter your Surname in English'|localize}}" ng-model="page.order.engLastName" required></input>								
 								<label class="control-label" ng-bind="('Дата рождения'|localize)+'*'">:</label>
 								<div class="controls">
 									        <input type="text" class="span12" datepicker-popup="{{'d MMMM y'|localize}}" ng-model="page.order.birthDate" show-weeks="false" ng-required="true" />
@@ -46,9 +46,9 @@
 								<label class="control-label" ng-bind="('Email'|localize)+'*'">:</label>
 								<input class="span12"  type="text" ng-model="page.order.email" required></input>
 								<label class="control-label" ng-bind="'Skype'|localize">:</label>
-								<input class="span12"  type="text" placeholder="{{'Вставьте url на резюме онлайн или в pdf на сетевом диске'|localize}}" ng-model="page.order.skype"></input>
+								<input class="span12"  type="text"  ng-model="page.order.skype"></input>
 								<label class="control-label" ng-bind="'Резюме'|localize">:</label>
-								<input class="span12"  type="text" ng-model="page.order.resume"></input>
+								<input class="span12"  type="text" placeholder="{{'Вставьте url на резюме онлайн или в pdf на сетевом диске'|localize}}" ng-model="page.order.resume"></input>
 								<label class="control-label" ng-bind="('Университет'|localize)+'*'">:</label>
 								<div class="controls">
 								          <input class="span12" type="text" ng-model="searchForm.person" ng-change="searchForm.search(searchForm.person)" placeholder="{{'Введите полное название университета'|localize}}" typeahead="person as person.text for person in searchForm.persons | filter: {text: $viewValue} | limitTo: 15" required></input>

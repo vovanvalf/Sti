@@ -60,8 +60,9 @@
 <Property name="Street">
 <Description>
 Улица</Description>
-<Type>Sti.Data.Localization.LText</Type>
+<Type>%String</Type>
 <Required>1</Required>
+<Parameter name="MAXLEN" value="500"/>
 </Property>
 
 <Property name="NumberOfStudent">
@@ -121,7 +122,7 @@
 	set proxy.curator=..Curator.ConvertToProxyObject()
 	}
 	set proxy.city=..City.ConvertToProxyObject()
-	set proxy.street=..Street.Value
+	set proxy.street=..Street
 	set proxy.room=..Room
 	set proxy.freeSeats=..MaxPeople-..NumberOfStudent
 	set proxy.company=..Company.ConvertToProxyObject()
@@ -182,19 +183,18 @@ Check update privilege</Description>
 	
 	if (data.id = ""){
 		set internship = ..%New()
- 		set internship.Name = ##class(Sti.Data.Localization.LText).Create(data.name)
- 		set internship.Street= ##class(Sti.Data.Localization.LText).Create(data.street)
+ 		set internship.Name = ##class(Sti.Data.Localization.LText).Create(data.name,"Sti.Data.Localization.Translation;PersonLTextValue")
  		
     }
     else{
 	    set internship = ..%OpenId(data.id)
  		set internship.Name.Value = data.name
- 		set internship.Street.Value= data.street
    	}
 		set internship.DateBegin=$ZDATEH(data.dateBegin, 15)
 		set internship.DateEnd=$ZDATEH(data.dateEnd, 15)
 		set internship.MaxPeople=data.maxPeople
 		set internship.Room=data.room
+		set internship.Street= data.street
 		set internship.IsInUse=data.isInUse=$$$YES
 		
 		set internship.Curator = ##class(Sti.Data.Employee).%OpenId(data.curator.id)

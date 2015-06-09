@@ -252,10 +252,10 @@
 <Implementation><![CDATA[
 	set word = ..ParseParameter(word) 
     set sql = "SELECT ID as id, "_ 
-	"FullName as fullName, "_ 
-	"FullName as text "_ 
+	"FullName->Value as fullName, "_ 
+	"FullName->Value as text "_ 
 	"FROM Sti_Data.University "_ 
-	"WHERE (FullName LIKE '"_word_"%') "_ 
+	"WHERE (FullName->Value LIKE '"_word_"%') "_ 
 	"ORDER BY text"
     quit ..WriteJsonFromSql(sql)
 ]]></Implementation>
