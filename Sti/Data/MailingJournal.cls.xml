@@ -88,7 +88,7 @@
 		set obj.RecipientEmail = email
 		set obj.RecipientName = recipientName
 		
-		do obj.%Save()
+		$$$TOE(st,obj.%Save())
 	}
 	catch(ex){
 		set st = ex.AsStatus()
@@ -184,5 +184,46 @@
 	quit $$$OK
 ]]></Implementation>
 </Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.MailingJournalD</DataLocation>
+<DefaultData>MailingJournalDefaultData</DefaultData>
+<IdLocation>^Sti.Data.MailingJournalD</IdLocation>
+<IndexLocation>^Sti.Data.MailingJournalI</IndexLocation>
+<StreamLocation>^Sti.Data.MailingJournalS</StreamLocation>
+<Data name="MailingJournalDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>SendedTS</Value>
+</Value>
+<Value name="3">
+<Value>CreatedTS</Value>
+</Value>
+<Value name="4">
+<Value>IsSended</Value>
+</Value>
+<Value name="5">
+<Value>RecipientEmail</Value>
+</Value>
+<Value name="6">
+<Value>RecipientName</Value>
+</Value>
+<Value name="7">
+<Value>Subject</Value>
+</Value>
+<Value name="8">
+<Value>Message</Value>
+</Value>
+<Value name="9">
+<Value>Type</Value>
+</Value>
+<Value name="10">
+<Value>GroupNumber</Value>
+</Value>
+</Data>
+</Storage>
 </Class>
 </Export>
