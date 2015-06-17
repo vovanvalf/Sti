@@ -7,7 +7,7 @@
 Заявка. Изменение/Добавление
 ===========================================================================================*/
 
-controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionSrvc, OrderSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc, $filter, UtilsSrvc){
+controllersModule.controller('OrderCtrl', function($scope, $routeParams,$location, $dialog, RegionSrvc, OrderSrvc, UniversitySrvc, InternshipSrvc, MarksSrvc, $filter, UtilsSrvc){
     $scope.menu.selectMenu($scope.menu.pages.order);
     $scope.page = {order:{university:{id:{}}, newUniversity: {}}};
 	$scope.cities = [];
@@ -71,7 +71,8 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
    //Очистить форму
    $scope.page.clear = function(){
         $scope.pageForm.$setPristine();
-        $scope.page.order = {};
+ 		$scope.page.order={university:{id:{}}, newUniversity: {}};
+        $scope.searchForm.person='';
    };
    // Загрузить все стажировки
   $scope.page.loadInternship = function(id){
@@ -125,10 +126,14 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams, RegionS
                   msg = 'Заявка принята';
                   $scope.page.order = {};                        
               }
-
+			  	    var msg = 'Ваша заявка принята. В ближайшее время с вами свяжутся.';
+				    var btns= [{result: '0', label: $filter('localize')('Ok'),  cssClass: 'btn-small', func:null}];
+	    		 	$dialog.messageBox($filter('localize')('Внимание!'), $filter('localize')(msg), btns).open();  
+			  	
               $scope.page.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
               // Сделать форму "чистой" (блокируется кнопка)
-              $scope.pageForm.$setPristine();
+              $scope.page.clear();
+               
           },
           function(data, status, headers, config){
               $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  

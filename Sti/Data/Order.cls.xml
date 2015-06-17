@@ -224,9 +224,12 @@
 		do ##class(Sti.Data.MailingJournal).Create(order.Email, order.FirstName.Value_" "_order.LastName.Value,
 			message.subject, message.message, "Создание заявки", groupNumber)
 		set message = ##class(Sti.Utils.Email).GetMailForOrderCurator(order)
+		if (order.University.Curator)
+		{
 		set curator = order.University.Curator
 		do ##class(Sti.Data.MailingJournal).Create(curator.Email, curator.FirstName.Value_" "_curator.LastName.Value,
 			message.subject, message.message, "Создание заявки", groupNumber)
+		}
 		job ##class(Sti.Data.MailingJournal).StartSending()
 	}
   

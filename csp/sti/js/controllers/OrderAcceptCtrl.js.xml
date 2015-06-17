@@ -112,6 +112,7 @@ controllersModule.controller('OrderAcceptCtrl', function($scope, $location, $dia
 			 $scope.alert = UtilsSrvc.getAlert('Готово!', msg, 'success', true);
              // Сделать форму "чистой" (блокируется кнопка)
              		$scope.pageForm.$setPristine();
+           
           	 },
           	 function(data, status, headers, config){
               		$scope.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);   
