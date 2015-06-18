@@ -68,9 +68,23 @@
 			    				</label>							 
 						   </div>
 						</div>
+						<div class="span9">
+						</div>
+						<div class="row-fluid">
+						<div class="span9">
+						<label class="control-label" ng-bind="('В соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» даю свое согласие Филиалу Корпорации «ИнтерСистемз Интернэшнл Корпорейшн», на обработку следующих персональных данных с использованием и без использования средств автоматизации. Я подтверждаю, что ознакомлен (а), что обработка персональных данных может осуществляться путем сбора, систематизации, накопления, хранения, уточнения (обновление, изменение), использования, передачи, обезличивания, блокирования, уничтожения. Я уведомлен(а) о своем праве отозвать согласие на обработку персональных данных путем подачи в Филиал Корпорации «ИнтерСистемз Интернэшнл Корпорейшн» письменного заявления. Подтверждаю, что ознакомлен (а) с положениями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных», права и обязанности в области защиты персональных данных мне разъяснены.'|localize)">:</label>
+						
+						<div class="row-fluid" style="padding-bottom: 25px;">
+						</div>
+						
+						<label class="checkbox"  >
+			    					 <input type="checkbox" ng-model="page.order.isAgree" ng-change="checkAgree()">{{'Согласен на обработку персональных данных анкеты'|localize}}
+			    		</label>
+						</div></div>
+						
 						<div class="control-group" body style="padding-top:20px;" >
 							<div class="controls">
-								<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-click="page.formatData()" ng-disabled="pageForm.$pristine"></button>
+								<button type="submit" class="btn btn-success btn-small" ng-bind="page.formBtnSubmitName" ng-click="page.formatData()" ng-disabled="pageForm.$pristine || !page.order.isAgree"></button>
 								<button button type="button" class="btn btn-small" ng-disabled="!pageForm.$dirty" ng-click="page.clear()"><i class="fa fa-eraser"></i>&nbsp;&nbsp;{{'Очистить'|localize}}</button>
 							</div>
 	 					</div>

@@ -11,6 +11,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams,$locatio
     $scope.menu.selectMenu($scope.menu.pages.order);
     $scope.page = {order:{university:{id:{}}, newUniversity: {}}};
 	$scope.cities = [];
+	$scope.page.order.isAgree=false;
 	$scope.searchForm = {visible: true, persons: [], person:''};
    // Инициализация данных
    $scope.page.init = function(){
@@ -109,7 +110,7 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams,$locatio
    
    // Сохранить/создать (отправка формы). Передаем объект на сервер
    $scope.page.submit = function(){
-	   
+	    
 	     if($scope.searchForm.person.id){
 		 	$scope.page.order.university.id=$scope.searchForm.person.id;
 		 	       //page.order.university.id
@@ -139,7 +140,15 @@ controllersModule.controller('OrderCtrl', function($scope, $routeParams,$locatio
               $scope.page.alert = UtilsSrvc.getAlert('Внимание!', data, 'error', true);  
           });
    };
-   
+    $scope.checkAgree=function()
+    {
+	    if($scope.page.order.isAgree)
+	    {
+		   $scope.page.order.isAgree=true; 
+		    }
+		    else
+		     $scope.page.order.isAgree=false;
+    }
    // Загрузить города
     $scope.loadCities = function(startsWith){       
         if(!startsWith || startsWith.length == 0)
