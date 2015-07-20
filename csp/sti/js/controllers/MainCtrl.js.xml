@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/controllers/MainCtrl.js" application="/csp/interns/" default="1"><![CDATA[
+<CSP name="sti/js/controllers/MainCtrl.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 
 /*===========================================================================================
@@ -27,6 +27,7 @@ controllersModule.controller('MainCtrl', function($scope, $cookies, $filter, $wi
                          employees: {id: 'employees', url: '#/employees', name: $filter('localize')('Сотрудники')},
                          mailingGroups: {id: 'mailingGroups', url: '#/mailing/groups', name: $filter('localize')('Группы рассылки')},
                          mailingJournal: {id: 'mailingJournal', url: '#/mailing/journal', name: $filter('localize')('Журнал рассылки')},
+                         settings: {id: 'settings', url: '#/settings', name: $filter('localize')('Настройки')},
                         }; 
   
     $scope.menu.selectMenu = function(menuItem){

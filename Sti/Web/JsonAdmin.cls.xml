@@ -1335,5 +1335,212 @@ Method="POST" Url="/json/log/grid"</Description>
     quit st
 ]]></Implementation>
 </Method>
+
+<Method name="GetMailSettings">
+<Description>
+
+==========================================================================================================================
+SETTINGS                                                                                                          SETTINGS
+==========================================================================================================================
+
+Get settings for mail from globals
+Method="GET" Url="/json/settings/mail/:type"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>type:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st  = $$$OK
+
+    try{
+        // Check privilege for Person table
+       // $$$THROWONERROR(st, ##class(Sti.Data.Person).CheckDeletePrivilege())
+
+        set proxy = ##class(%ZEN.proxyObject).%New()
+        set proxy.data = ##class(%ZEN.proxyObject).%New()
+        set proxy.type = type
+        
+        if (type = "settings"){
+            set proxy.data.from = ##class(Sti.Data.Settings).GetEmailFrom()
+            set proxy.data.password = ##class(Sti.Data.Settings).GetEmailSMTPPassword()
+            set proxy.data.port = ##class(Sti.Data.Settings).GetEmailSMTPPort()
+            set proxy.data.server = ##class(Sti.Data.Settings).GetEmailSMTPServer()
+            set proxy.data.user = ##class(Sti.Data.Settings).GetEmailSMTPUser()
+        }
+        elseif (type = "operators"){
+            set emailList = $LISTFROMSTRING(##class(Sti.Data.Settings).GetMailingOperatorAddresses(), ",")
+            set items = ##class(%ListOfObjects).%New()
+            for i=1:1:$LISTLENGTH(emailList){
+                set item = ##class(%ZEN.proxyObject).%New()
+                set item.email = $LIST(emailList, i)
+                do items.Insert(item)   
+            }
+            
+            set proxy.data.items = items
+        }
+        elseif (type = "students") || (type = "reminder"){
+            set proxy.data = ##class(Sti.Utils.Email).GetEmailPattern("orderIntern")
+            set proxy.data.days = ##class(Sti.Data.Settings).GetMailingStudentsDays()
+        }
+        elseif (type = "teacher"){
+            set proxy.data = ##class(Sti.Utils.Email).GetEmailPattern(type)
+            set proxy.data.days = ##class(Sti.Data.Settings).GetMailingTeacherDays()            
+        }
+        elseif (type = "curator"){
+            set proxy.data = ##class(Sti.Utils.Email).GetEmailPattern("orderCurator")
+            set proxy.data.days = ##class(Sti.Data.Settings).GetMailingCuratorDays()
+        }
+        else{
+            set proxy.data = ##class(Sti.Utils.Email).GetEmailPattern(type)
+        }
+        
+        do proxy.%ToJSON()      
+    }
+    catch ex {
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="SaveMailSettings">
+<Description>
+Save settings for mail from client
+Method="POST" Url="/json/settings/mail/:type"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>type:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st  = $$$OK
+
+    try{
+        TSTART
+        
+        // Check privilege for Person table
+  //      $$$THROWONERROR(st, ##class(Sti.Data.Person).CheckDeletePrivilege())
+        
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+        
+        if (type = "settings"){
+            do ##class(Sti.Data.Settings).SetEmailFrom(data.from)
+            do ##class(Sti.Data.Settings).SetEmailSMTPPassword(data.password)
+            do ##class(Sti.Data.Settings).SetEmailSMTPPort(data.port)
+            do ##class(Sti.Data.Settings).SetEmailSMTPServer(data.server)
+            do ##class(Sti.Data.Settings).SetEmailSMTPUser(data.user)
+        }
+        elseif (type = "operators"){
+            set emails = ""
+            for i=1:1:data.items.Count(){
+                set emails = emails_data.items.GetAt(i).email_","
+            }
+            
+            do ##class(Sti.Data.Settings).SetMailingOperatorAddresses($E(emails, 1, *-1))
+        }
+        elseif (type = "students") || (type = "reminder"){
+            do ##class(Sti.Utils.Email).SetMailPattern("orderIntern", $ZCVT(data.subject, "I", "UTF8"), $ZCVT(data.message, "I", "UTF8"))
+            do ##class(Sti.Data.Settings).SetMailingStudentsDays(data.days)
+        }
+        elseif (type = "feedback"){
+            do ##class(Sti.Utils.Email).SetMailPattern(type, $ZCVT(data.subject, "I", "UTF8"), $ZCVT(data.message, "I", "UTF8"))
+        }
+        elseif (type = "teacher"){
+            do ##class(Sti.Utils.Email).SetMailPattern(type, $ZCVT(data.subject, "I", "UTF8"), $ZCVT(data.message, "I", "UTF8"))
+            do ##class(Sti.Data.Settings).SetMailingTeacherDays(data.days)          
+        }
+        elseif (type = "curator"){
+            do ##class(Sti.Utils.Email).SetMailPattern(type, $ZCVT(data.subject, "I", "UTF8"), $ZCVT(data.message, "I", "UTF8"))
+            do ##class(Sti.Data.Settings).SetMailingCuratorDays(data.days)
+        }
+        else{
+            do ##class(Sti.Utils.Email).SetMailPattern(type, $ZCVT(data.subject, "I", "UTF8"), $ZCVT(data.message, "I", "UTF8"))    
+        }
+
+        
+        TCOMMIT 
+    }
+    catch ex {
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<UDLText name="T">
+<Content><![CDATA[
+/*/// Get preview of settings for mail from last training
+/// Method="GET" Url="/json/settings/mail/preview/:type"
+ClassMethod GetMailPreview(type) As %Status
+{
+    set st  = $$$OK
+    
+    try{
+        set mail = ##class(%ZEN.proxyObject).%New()
+        set mail.subject = "none"
+        set mail.message = "none"
+        
+        if (##class(Sti.Data.Training).%ExistsId(92) = $$$YES){
+            set tr = ##class(Sti.Data.Training).%OpenId(92)
+        }
+        else{
+            &sql(SELECT TOP 1 ID INTO :lastId FROM Sti_Data.Training ORDER BY ID DESC)
+            set tr = ##class(Sti.Data.Training).%OpenId(lastId)
+        }
+        
+        if (type = "registration"){
+            set mail = ##class(Sti.Utils.Email).GetMailForTrainingRegistration(tr)
+        }
+        elseif (type = "students") || (type = "reminder"){
+            set mail = ##class(Sti.Utils.Email).GetMailForTrainingStudents(tr)
+        }
+        elseif (type = "feedback"){
+            set mail = ##class(Sti.Utils.Email).GetMailForTrainingFeedBack(tr)
+        }
+        elseif (type = "curator"){
+            set mail = ##class(Sti.Utils.Email).GetMailForTrainingCurator(tr)
+        }
+        elseif (type = "teacher"){
+            set mail = ##class(Sti.Utils.Email).GetMailForTrainingTeacher(tr)
+        }
+        elseif (type = "orders"){
+            set mail = ##class(Sti.Utils.Email).GetMailForTrainingOrders(tr)
+        }
+        elseif (type = "orderapply"){
+            &sql(SELECT TOP 1 ID INTO :lastId FROM Sti_Data.Order ORDER BY ID DESC)
+            set order = ##class(Sti.Data.Order).%OpenId(lastId,,.sc)
+            if $$$ISOK(sc){ 
+                set mail = ##class(Sti.Utils.Email).GetMailForOrderApply(tr)
+            }
+        }
+        elseif (type = "mailinggroups"){
+            set mail = ##class(Sti.Utils.Email).GetMailForMailingGroups(tr)
+        }
+        elseif (type = "mailingsubscriber"){
+            set mail = ##class(Sti.Utils.Email).GetMailForMailingSubscriber(tr)
+        }
+        elseif (type = "confirmsubscription"){
+            &sql(SELECT TOP 1 ID INTO :lastId FROM Sti_Data.MailingItemApproved ORDER BY ID DESC)
+            set mItem = ##class(Sti.Data.MailingItemApproved).%OpenId(lastId,,.sc)
+            if $$$ISOK(sc){ 
+                set mail = ##class(Sti.Utils.Email).GetMailForConfirmationSubscription(mItem)
+            }
+        }
+        elseif (type = "listOfFeedbacks"){
+            set mail = ##class(Sti.Utils.Email).GetMailForListOfTrainingFeedBacks(tr)
+        }
+        
+        set proxy = ##class(%ZEN.proxyObject).%New()
+        set proxy.preview = mail.subject_"<br><br>"_mail.message
+        do proxy.%ToJSON()
+    }   
+    catch ex {
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+}*/
+]]></Content>
+</UDLText>
 </Class>
 </Export>

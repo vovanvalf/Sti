@@ -45,8 +45,8 @@ Get email pattern from ^CacheMsg</Description>
 	set proxy = ##class(%ZEN.proxyObject).%New()
 	
 	if (type = "orderCurator"){
-		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Order-Curator")
-		set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Order-Curator")
+		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Training-Curator")
+		set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Training-Curator")
 	}
 	elseif (type = "orderIntern"){
 		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Order-Intern")
@@ -56,6 +56,31 @@ Get email pattern from ^CacheMsg</Description>
 		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Confirmation-Subscription")
 		set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Confirmation-Subscription")
 	}
+	elseif (type = "teacher"){
+		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Training-Teacher")
+		set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Training-Teacher")
+	}
+	elseif (type = "registration"){
+		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Training-Registration")
+		set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Training-Registration")
+	}
+	elseif (type = "feedback"){
+		set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Training-FeedBack")
+		set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Training-FeedBack")
+	}
+	 elseif (type = "listOfFeedbacks"){
+        set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Training-ListOfFeedBacks")
+        set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Training-ListOfFeedBacks")
+    }
+    elseif (type = "orders"){
+        set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Training-Orders")
+        set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Training-Orders")
+    }
+	elseif (type = "orderapply"){
+        set proxy.subject = ##class(Sti.Utils.Msg).GetMsg("mail_Subject_Order-Apply")
+        set proxy.message = ##class(Sti.Utils.Msg).GetMsg("mail_Message_Order-Apply")
+    }
+	
 	quit proxy
 ]]></Implementation>
 </Method>
@@ -67,11 +92,7 @@ Get email pattern from ^CacheMsg</Description>
 <FormalSpec>type:%String,subject:%String,message:%String</FormalSpec>
 <ReturnType>%ZEN.proxyObject</ReturnType>
 <Implementation><![CDATA[
-	if (type = "orderCurator"){
-		do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Order-Curator", subject)
-		do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Order-Curator", message)
-	}
-	elseif (type = "orderIntern"){
+	if (type = "orderIntern"){
 		do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Order-Intern", subject)
 		do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Order-Intern", message)
 	}
@@ -79,6 +100,34 @@ Get email pattern from ^CacheMsg</Description>
 		do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Confirmation-Subscription", subject)
 		do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Confirmation-Subscription", message)
 	}
+	elseif (type = "teacher"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Training-Teacher", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Training-Teacher", message)
+    }
+    elseif (type = "curator"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Training-Curator", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Training-Curator", message)
+    }
+    elseif (type = "feedback"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Training-FeedBack", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Training-FeedBack", message)
+    }
+    elseif (type = "orders"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Training-Orders", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Training-Orders", message)
+    }
+    elseif (type = "registration"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Training-Registration", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Training-Registration", message)
+    }
+    elseif (type = "orderapply"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Order-Apply", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Order-Apply", message)
+    }
+    elseif (type = "listOfFeedbacks"){
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Subject_Training-ListOfFeedBacks", subject)
+        do ##class(Sti.Utils.Msg).SetMsg("mail_Message_Training-ListOfFeedBacks", message)
+    }
 	
 	quit $$$OK
 ]]></Implementation>

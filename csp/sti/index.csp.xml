@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/index.csp" application="/csp/interns/" default="1"><![CDATA[
+<CSP name="sti/index.csp" application="/csp/sti/" default="1"><![CDATA[
 <!doctype html>
 
 <html ng-app="mainModule" ng-controller="MainCtrl">
@@ -63,6 +63,7 @@
 				  <li ng-show="menu.admin" ng-class="menu.pages.employees.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.employees.url}}" ng-bind="menu.pages.employees.name" ng-click="menu.selectMenu(menu.pages.employees)"></a></li>
 				  <li ng-show="menu.admin" ng-class="menu.pages.mailingGroups.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.mailingGroups.url}}" ng-bind="menu.pages.mailingGroups.name" ng-click="menu.selectMenu(menu.pages.mailingGroups)"></a></li>
 				  <li ng-show="menu.admin" ng-class="menu.pages.mailingJournal.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.mailingJournal.url}}" ng-bind="menu.pages.mailingJournal.name" ng-click="menu.selectMenu(menu.pages.mailingJournal)"></a></li>
+				  <li ng-show="menu.admin" ng-class="menu.pages.settings.id==menu.pages.selected.id ? 'active' : ''"><a ng-href="{{menu.pages.settings.url}}" ng-bind="menu.pages.settings.name" ng-click="menu.selectMenu(menu.pages.settings)"></a></li>               
                 </ul>
 				
                 <ul class="nav pull-right">
@@ -139,6 +140,7 @@
     <script language="javascript"  src="js/controllers/MailingSubscriptionCtrl.js"></script>
     <script language="javascript"  src="js/controllers/AllLogsCtrl.js"></script>
     <script language="javascript"  src="js/controllers/MailingJournalCtrl.js"></script>
+     <script language="javascript"  src="js/controllers/SettingsCtrl.js"></script>
 
     <script language="javascript"  src="js/services/RESTSrvc.js"></script>
     <script language="javascript"  src="js/services/DALSrvc.js"></script>
@@ -153,6 +155,7 @@
     <script language="javascript"  src="js/services/OtherSrvc.js"></script>
     <script language="javascript"  src="js/services/EmployeeSrvc.js"></script>
     <script language="javascript"  src="js/services/MailingSrvc.js"></script>
+    <script language="javascript"  src="js/services/SettingsSrvc.js"></script>
     
     <script language="javascript"  src="js/directives/stigrid.js"></script>
     <script language="javascript"  src="js/directives/stialert.js"></script>

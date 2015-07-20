@@ -210,6 +210,22 @@ Private request processor for administrator</Description>
     <!-- All logs -->
     <Route Method="POST" Url="/json/log/grid" Call="Sti.Web.JsonAdmin:GetLogsForGrid"/>
     
+     <!-- ================================================================================================================================== -->
+    <!-- SETTINGS                                                                                                                  SETTINGS -->
+    <!-- ================================================================================================================================== -->
+
+    
+    <!-- Get settings for mail from globals -->
+    <Route Method="GET" Url="/json/settings/mail/:type" Call="Sti.Web.JsonAdmin:GetMailSettings"/>
+    
+    <!-- Save settings for mail from client -->
+    <Route Method="POST" Url="/json/settings/mail/:type" Call="Sti.Web.JsonAdmin:SaveMailSettings"/>
+    
+
+    <!-- Get preview of settings for mail from last training -->
+    <!--<Route Method="GET" Url="/json/settings/mail/preview/:type" Call="Sti.Web.JsonAdmin:GetMailPreview"/--> 
+    
+    
 </Routes>
 ]]></Data>
 </XData>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.Journal">
+<Super>%Persistent</Super>
+<TimeCreated>63657,73030.639394</TimeCreated>
+
+<Property name="EventType">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="CreatedTS">
+<Type>%TimeStamp</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Location">
+<Type>%String</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="1500"/>
+</Property>
+
+<Property name="Msg">
+<Type>%Text</Type>
+<Required>1</Required>
+<Parameter name="MAXLEN" value="7000"/>
+</Property>
+
+<Method name="Create">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>type:%String,location:%String,msg:%Text</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	try{
+		set log = ..%New()
+		set log.EventType = type
+		set log.CreatedTS = $ZDT($ZTS,3)
+		set log.Location = location
+		set log.Msg = msg
+		do log.%Save()
+	}
+	catch(ex){
+	}
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Utils.JournalD</DataLocation>
+<DefaultData>JournalDefaultData</DefaultData>
+<IdLocation>^Sti.Utils.JournalD</IdLocation>
+<IndexLocation>^Sti.Utils.JournalI</IndexLocation>
+<StreamLocation>^Sti.Utils.JournalS</StreamLocation>
+<Data name="JournalDefaultData">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>EventType</Value>
+</Value>
+<Value name="3">
+<Value>CreatedTS</Value>
+</Value>
+<Value name="4">
+<Value>Location</Value>
+</Value>
+<Value name="5">
+<Value>Msg</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>

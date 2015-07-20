@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-<CSP name="sti/js/services/UtilsSrvc.js" application="/csp/interns/" default="1"><![CDATA[
+<CSP name="sti/js/services/UtilsSrvc.js" application="/csp/sti/" default="1"><![CDATA[
 'use strict';
 
 /*===========================================================================================
 Utils
 ===========================================================================================*/
 
-servicesModule.factory('UtilsSrvc', function( $filter, DALSrvc) {
+servicesModule.factory('UtilsSrvc', function( $filter, DALSrvc, $dialog) {
 	
 	return {
 
@@ -42,6 +42,11 @@ servicesModule.factory('UtilsSrvc', function( $filter, DALSrvc) {
                     cssClass: 'alert alert-' + eventType,
                     visible: visible};
     	},
+    	getAlertLabel: function(msg, eventType){
+            return {msg: $filter('localize')(msg),
+                    cssClass: eventType,
+                    visible: true};
+        },
         getPropertyValue: function (item, propertyStr, defaultValue){
             var value;
             defaultValue = defaultValue ? defaultValue : '';
@@ -79,6 +84,14 @@ servicesModule.factory('UtilsSrvc', function( $filter, DALSrvc) {
   		base64Decode: function(s) {
     		return decodeURIComponent(escape(atob(s)));
   		},
+  		openCustomMessageBox: function(title, msg, btns){
+            $dialog.messageBox($filter('localize')(title), $filter('localize')(msg), btns).open().then(function(result){
+                for (var i=0; i < btns.length; i++){
+                    if (result == btns[i].result && btns[i].func)
+                        btns[i].func();
+                }
+             });
+        },
         getAllLogsForGrid: function(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText){
             var first = pageSize * (pageCurr - 1) + 1;
             var obj = {sqlName: sqlName, 
