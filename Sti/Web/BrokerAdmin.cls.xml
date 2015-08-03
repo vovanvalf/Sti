@@ -223,7 +223,7 @@ Private request processor for administrator</Description>
     
 
     <!-- Get preview of settings for mail from last training -->
-    <!--<Route Method="GET" Url="/json/settings/mail/preview/:type" Call="Sti.Web.JsonAdmin:GetMailPreview"/--> 
+    <Route Method="GET" Url="/json/settings/mail/preview/:type" Call="Sti.Web.JsonAdmin:GetMailPreview"/> 
     
     
 </Routes>

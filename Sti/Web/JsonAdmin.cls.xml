@@ -1467,12 +1467,14 @@ Method="POST" Url="/json/settings/mail/:type"</Description>
 ]]></Implementation>
 </Method>
 
-<UDLText name="T">
-<Content><![CDATA[
-/*/// Get preview of settings for mail from last training
-/// Method="GET" Url="/json/settings/mail/preview/:type"
-ClassMethod GetMailPreview(type) As %Status
-{
+<Method name="GetMailPreview">
+<Description>
+Get preview of settings for mail from last training
+Method="GET" Url="/json/settings/mail/preview/:type"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>type</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
     set st  = $$$OK
     
     try{
@@ -1480,37 +1482,37 @@ ClassMethod GetMailPreview(type) As %Status
         set mail.subject = "none"
         set mail.message = "none"
         
-        if (##class(Sti.Data.Training).%ExistsId(92) = $$$YES){
-            set tr = ##class(Sti.Data.Training).%OpenId(92)
+        if (##class(Sti.Data.Internship).%ExistsId(92) = $$$YES){
+            set tr = ##class(Sti.Data.Internship).%OpenId(92)
         }
         else{
-            &sql(SELECT TOP 1 ID INTO :lastId FROM Sti_Data.Training ORDER BY ID DESC)
-            set tr = ##class(Sti.Data.Training).%OpenId(lastId)
+            &sql(SELECT TOP 1 ID INTO :lastId FROM Sti_Data.Internship ORDER BY ID DESC)
+            set tr = ##class(Sti.Data.Internship).%OpenId(lastId)
         }
         
         if (type = "registration"){
-            set mail = ##class(Sti.Utils.Email).GetMailForTrainingRegistration(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForInternshipRegistration(tr)
         }
         elseif (type = "students") || (type = "reminder"){
-            set mail = ##class(Sti.Utils.Email).GetMailForTrainingStudents(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForInternshipStudents(tr)
         }
         elseif (type = "feedback"){
-            set mail = ##class(Sti.Utils.Email).GetMailForTrainingFeedBack(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForInternshipFeedBack(tr)
         }
         elseif (type = "curator"){
-            set mail = ##class(Sti.Utils.Email).GetMailForTrainingCurator(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForInternshipCurator(tr)
         }
         elseif (type = "teacher"){
-            set mail = ##class(Sti.Utils.Email).GetMailForTrainingTeacher(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForInternshipTeacher(tr)
         }
         elseif (type = "orders"){
-            set mail = ##class(Sti.Utils.Email).GetMailForTrainingOrders(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForInternshipOrders(tr)
         }
         elseif (type = "orderapply"){
             &sql(SELECT TOP 1 ID INTO :lastId FROM Sti_Data.Order ORDER BY ID DESC)
             set order = ##class(Sti.Data.Order).%OpenId(lastId,,.sc)
             if $$$ISOK(sc){ 
-                set mail = ##class(Sti.Utils.Email).GetMailForOrderApply(tr)
+                set mail = ##class(Sti.Utils.Email).GetMailForOrderApply(order)
             }
         }
         elseif (type = "mailinggroups"){
@@ -1527,7 +1529,7 @@ ClassMethod GetMailPreview(type) As %Status
             }
         }
         elseif (type = "listOfFeedbacks"){
-            set mail = ##class(Sti.Utils.Email).GetMailForListOfTrainingFeedBacks(tr)
+            set mail = ##class(Sti.Utils.Email).GetMailForListOfInternshipFeedBacks(tr)
         }
         
         set proxy = ##class(%ZEN.proxyObject).%New()
@@ -1539,8 +1541,7 @@ ClassMethod GetMailPreview(type) As %Status
     }
     
     quit st
-}*/
-]]></Content>
-</UDLText>
+]]></Implementation>
+</Method>
 </Class>
 </Export>

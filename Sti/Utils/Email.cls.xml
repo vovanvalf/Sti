@@ -5,6 +5,102 @@
 Working with email</Description>
 <TimeCreated>63098,81612.618657</TimeCreated>
 
+<Method name="GetMailMessageWithTrainingData">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>patternMsg:%Text,tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%Text</ReturnType>
+<Implementation><![CDATA[
+    set patternMsg = $REPLACE(patternMsg, "%DateStart", $ZDATE(tr.DateBegin, 3))
+    set patternMsg = $REPLACE(patternMsg, "%DateEnd", $ZDATE(tr.DateEnd, 3))
+    set patternMsg = $REPLACE(patternMsg, "%Internship.Name", tr.Name.Value)
+    set patternMsg = $REPLACE(patternMsg, "%City.Name", tr.City.Name.Value)
+    set patternMsg = $REPLACE(patternMsg, "%Region.Name", tr.City.ParentRegion.Name.Value)
+    set patternMsg = $REPLACE(patternMsg, "%Country.Name", tr.City.ParentRegion.ParentRegion.Name.Value)
+    set patternMsg = $REPLACE(patternMsg, "%Street", tr.Street)
+    set patternMsg = $REPLACE(patternMsg, "%Room", tr.Room)
+    set patternMsg = $REPLACE(patternMsg, "%Curator.FullName", $SELECT(tr.Curator.FirstName ="":"-", tr.Curator.FirstName.Value'="":tr.Curator.FirstName.Value))
+    set patternMsg = $REPLACE(patternMsg, "%Curator.Email", $SELECT(tr.Curator.Email="":"-", tr.Curator.Email'="":tr.Curator.Email))
+    set patternMsg = $REPLACE(patternMsg, "%Curator.Phone", $SELECT(tr.Curator.Phone="":"-", tr.Curator.Phone'="":tr.Curator.Phone))
+    quit patternMsg
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForInternshipRegistration">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("registration")
+    set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+    set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+    quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForInternshipStudents">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("orderIntern")
+    set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+    set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+    quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForInternshipOrders">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("orders")
+    set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+    set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+    set mail.message = $REPLACE(mail.message, "%JoinUrl", "http://"_##class(Sti.Data.Settings).GetWebAppDomain()_"/sti/index.csp#/internship/"_tr.%Id()_"/order")
+    quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForInternshipTeacher">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("teacher")
+    set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+    set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+    set mail.message = $REPLACE(mail.message, "%ListOfAttendeesUrl", "http://"_##class(Sti.Data.Settings).GetWebAppDomain()_"/sti/index.csp#/internship/"_tr.%Id()_"/interns/"_tr.AccessCode)
+    quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForInternshipCurator">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("orderCurator")
+    set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+    set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+    set mail.message = $REPLACE(mail.message, "%ListOfAttendeesUrl", "http://"_##class(Sti.Data.Settings).GetWebAppDomain()_"/sti/index.csp#/internship/"_tr.%Id()_"/interns/"_tr.AccessCode)
+    quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForInternshipFeedBack">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>tr:Sti.Data.Internship</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("feedback")
+    set mail.subject = ..GetMailMessageWithTrainingData(mail.subject, tr)
+    set mail.message = ..GetMailMessageWithTrainingData(mail.message, tr)
+    set mail.message = $REPLACE(mail.message, "%SurveyUrl", "http://"_##class(Sti.Data.Settings).GetWebAppDomain()_"/sti/index.csp#/internship/"_tr.%Id()_"/feedback/"_$p(tr.AccessCode,"-",1)_"-"_$p(tr.AccessCode,"-",5)) 
+    quit mail
+]]></Implementation>
+</Method>
+
 <Method name="GetMailForOrderCurator">
 <ClassMethod>1</ClassMethod>
 <FormalSpec>order:Sti.Data.Order</FormalSpec>
@@ -32,6 +128,17 @@ Working with email</Description>
 	set mail = ..GetEmailPattern("confirmsubscription")
 	set mail.message = $REPLACE(mail.message, "%ActivationUrl", "http://"_$get(^Settings("Sti","WebApp"))_"/sti/index.csp#/mailing/subscription/confirmation/"_$system.Encryption.Base64Encode(mItem.AccessCode))
 	quit mail
+]]></Implementation>
+</Method>
+
+<Method name="GetMailForOrderApply">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>ord:Sti.Data.Order</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+    set mail = ..GetEmailPattern("orderapply")
+    set mail.message = $REPLACE(mail.message, "%Internship.Name", ord.Internship.Name.Value)
+    quit mail
 ]]></Implementation>
 </Method>
 
