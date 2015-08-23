@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Utils.TaskOperatorNotification">
+<Super>%SYS.Task.Definition</Super>
+<TimeCreated>63787,73006.754863</TimeCreated>
+
+<Method name="OnTask">
+<Description><![CDATA[
+This method is responsible for executing the task.<br>
+At the scheduled time, the Task Manager creates an instance of this object,
+sets any property values using the stored "settings" for the task, and then
+invokes this method to execute the task.<br>
+In order to execute a real task, override this method in a subclass.]]></Description>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[    Quit ..Main()
+]]></Implementation>
+</Method>
+
+<Method name="Main">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+
+    try{
+        TSTART
+        
+        set subject = ##class(Msg).GetMsg("STISummaryOfThePeriod")_" "_(60*24/$GET(^Sti.Data.OrderNotification("maxCount"), 48))_" "_##class(Msg).GetMsg("Minute")
+         
+        if ($GET(^Sti.Data.OrderNotification("count"), 0) >= $GET(^Sti.Data.OrderNotification("maxCount"), 48)){
+            set ^Sti.Data.OrderNotification("orders") = ""
+            set ^Sti.Data.OrderNotification("students") = ""
+            set ^Sti.Data.OrderNotification("count") = 0
+            set subject = ##class(Msg).GetMsg("STISummaryOfTheDay")
+        } 
+        
+        set ^Sti.Data.OrderNotification("count") = $GET(^Sti.Data.OrderNotification("count"), 0) + 1
+        
+        set orders = ..GetNewOrders()
+        set students = ..GetNewOrderStudents()
+        
+        set totalCount = orders.Count() + students.Count()
+        if (totalCount > 0){
+            set subject = subject_" "_##class(Msg).GetMsg("NewOrders")_": "_totalCount_"."
+            set msg = ""
+            
+            if (orders.Count() > 0){
+                set msg = ##class(Msg).GetMsg("NewOrdersForInternship")_" ("_orders.Count()_"):<br>"
+                for i=1:1:orders.Count(){
+                    set companyName = orders.GetAt(i).CompanyString
+                    if (orders.GetAt(i).Company){
+                        set companyName = orders.GetAt(i).Company.ShortName.Value
+                    }
+                    
+                    set msg = msg_i_". "_$REPLACE($REPLACE(##class(Msg).GetMsg("FromOrganization"), "%Company.ShortName", companyName), "%Course.Name", orders.GetAt(i).Course.Name.Value)_"<br>"
+                    set ^Sti.Data.OrderNotification("orders") = $GET(^Sti.Data.OrderNotification("orders"))_","_orders.GetAt(i).%Id()
+                }
+                
+                set msg = msg_"<a href='http://"_##class(Sti.Data.Settings).GetWebAppDomainNamespace()_"/sti/index.csp#/orders' target='_blank'>"_##class(Msg).GetMsg("GoToOrdersPage")_"</a><br><br>"
+            }
+            
+            if (students.Count() > 0){
+                set msg = msg_##class(Msg).GetMsg("NewOrdersToJoin")_" ("_students.Count()_"):<br>"
+                for i=1:1:students.Count(){
+                    
+                    set msg = msg_i_". "_ $REPLACE($REPLACE($REPLACE(##class(Msg).GetMsg("FromStudent"), "%Student.FullName", students.GetAt(i).LastName.Value), "%Internship.Name", students.GetAt(i).Training.Course.Name.Value), "%City.Name", students.GetAt(i).Training.City.Name.Value)
+                    set msg = msg_". <a href='http://"_##class(Sti.Data.Settings).GetWebAppDomainNamespace()_"/sti/index.csp#/training/"_students.GetAt(i).Internship.%Id()_"' target='_blank'>"_##class(Msg).GetMsg("GoToTrainingPage")_"</a><br>"
+                    set ^Sti.Data.OrderNotification("students") = $GET(^Sti.Data.OrderNotification("students"))_","_students.GetAt(i).%Id()
+                }
+            } 
+            
+            set emailList = $LISTFROMSTRING(##class(Sti.Data.Settings).GetMailingOperatorAddresses(), ",")
+            set grNumber = ##class(Sti.Data.MailingJournal).GetValidGroupNumber()
+            for i=1:1:$LISTLENGTH(emailList){
+                set email = $LIST(emailList, i)
+                do ##class(Sti.Data.MailingJournal).Create(email, ##class(Msg).GetMsg("Operator"), subject, msg, ##class(Msg).GetMsg("Notification"), grNumber)
+            }
+        }
+        
+        TCOMMIT
+    }
+    catch(ex){
+        TROLLBACK
+        set st = ex.AsStatus()
+        do ##class(Sti.Utils.Log).Create("Sti.Utils.TaskOperatorNotification Catch", $System.Status.GetErrorText(st))
+    }
+    
+    job ##class(Sti.Data.MailingJournal).StartSending()
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<UDLText name="T">
+<Content><![CDATA[
+/*
+ClassMethod GetNewOrders() As %ListOfObjects
+{
+    set list = ##class(%ListOfObjects).%New()
+    set haveBeenNotifiedId = $LISTFROMSTRING($GET(^Sti.Data.OrderNotification("orders")), ",")
+    
+    set currTS = $ZDT($ZTS, 3)
+    
+    &sql(DECLARE Cur1 CURSOR FOR 
+             SELECT ID
+             FROM Sti_Data.Order
+             WHERE OrderStatus->Code = 'New' AND {fn TIMESTAMPDIFF(SQL_TSI_HOUR, CreatedTS, :currTS)} <= 24)    
+        
+    &sql(OPEN Cur1)
+    for{    
+        &sql(FETCH Cur1 INTO :id) 
+        quit:(SQLCODE '= 0)
+        
+        if ($LF(haveBeenNotifiedId, id) = 0){
+            do list.Insert(##class(Sti.Data.Order).%OpenId(id))
+        }       
+    }
+        
+    &sql(CLOSE Cur1)
+    
+    quit list
+}*/
+]]></Content>
+</UDLText>
+
+<UDLText name="T">
+<Content><![CDATA[
+/*ClassMethod GetNewOrderStudents() As %ListOfObjects
+{
+    set list = ##class(%ListOfObjects).%New()
+    set haveBeenNotifiedId = $LISTFROMSTRING($GET(^Sti.Data.OrderNotification("students")), ",")
+    
+    set currTS = $ZDT($ZTS, 3)
+    &sql(DECLARE Cur2 CURSOR FOR 
+             SELECT ID
+             FROM Sti_Data.OrderNewStudent
+             WHERE Training->IsCompleted = 0 AND {fn TIMESTAMPDIFF(SQL_TSI_HOUR, CreatedTS, :currTS)} <= 24)    
+        
+        
+    &sql(OPEN Cur2)
+    for{    
+        &sql(FETCH Cur2 INTO :id) 
+        quit:(SQLCODE '= 0)
+        
+        if ($LF(haveBeenNotifiedId, id) = 0){
+            do list.Insert(##class(Sti.Data.OrderNewStudent).%OpenId(id))
+        }       
+    }
+        
+    &sql(CLOSE Cur2)
+    
+    quit list
+}*/
+]]></Content>
+</UDLText>
+</Class>
+</Export>

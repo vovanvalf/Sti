@@ -6,6 +6,20 @@
 <Super>%Persistent,%XML.Adaptor</Super>
 <TimeCreated>63606,78099.288893</TimeCreated>
 
+<Property name="IsCuratorAutoMailing">
+<Description>
+Automailing to curator in n - days before start</Description>
+<Type>%Boolean</Type>
+<InitialExpression>1</InitialExpression>
+</Property>
+
+<Property name="IsStudentsAutoMailing">
+<Description>
+Automailing to students in n - days before start</Description>
+<Type>%Boolean</Type>
+<InitialExpression>1</InitialExpression>
+</Property>
+
 <Property name="Name">
 <Description>
 Название стажировки </Description>
@@ -247,6 +261,9 @@ Check update privilege</Description>
 </Value>
 <Value name="11">
 <Value>Company</Value>
+</Value>
+<Value name="12">
+<Value>IsStudentsAutoMailing</Value>
 </Value>
 </Data>
 </Storage>
