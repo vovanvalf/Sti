@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Data.Intern">
+<Description>
+Стажёр</Description>
+<Super>%Persistent,%XML.Adaptor</Super>
+<TimeCreated>63527,76710.81259</TimeCreated>
+
+<Property name="Internship">
+<Description>
+Стажировка</Description>
+<Type>Sti.Data.Internship</Type>
+<Cardinality>one</Cardinality>
+<Inverse>shpInterns</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Property name="FirstName">
+<Description>
+Имя стажера</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="LastName">
+<Description>
+Фамилия</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="MiddleName">
+<Description>
+Отчество</Description>
+<Type>Sti.Data.Localization.LText</Type>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="Email">
+<Description>
+Электронный адрес</Description>
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="BirthDate">
+<Description>
+Дата рождения стажера</Description>
+<Type>%Date</Type>
+<Parameter name="FORMAT" value="3"/>
+</Property>
+
+<Property name="University">
+<Description>
+Университет</Description>
+<Type>Sti.Data.University</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Interns</Inverse>
+<Relationship>1</Relationship>
+<Parameter name="XMLPROJECTION" value="XELEMENT"/>
+<Parameter name="XMLREFERENCE" value="ID"/>
+</Property>
+
+<Property name="Phone">
+<Description>
+Телефон</Description>
+<Type>%String</Type>
+</Property>
+
+<Property name="Skype">
+<Description>
+Скайп</Description>
+<Type>%String</Type>
+</Property>
+
+<Property name="EngMark">
+<Description>
+Уровень английского языка</Description>
+<Type>ENGMark</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="City">
+<Description>
+Город, в котором живёт стажёр</Description>
+<Type>Region</Type>
+</Property>
+
+<Property name="Resume">
+<Description>
+Резюме</Description>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="10000"/>
+</Property>
+
+<Property name="IsInNewsletter">
+<Description>
+Согласие на получение рассылки.</Description>
+<Type>%Boolean</Type>
+</Property>
+
+<Property name="TetMark">
+<Description>
+Оценка TET </Description>
+<Type>%String</Type>
+</Property>
+
+<Property name="PetMark">
+<Description>
+Оценка PET</Description>
+<Type>%String</Type>
+</Property>
+
+<Property name="Chair">
+<Description>
+Кафедра </Description>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="Faculty">
+<Description>
+Факультет</Description>
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="EngName">
+<Type>%String</Type>
+</Property>
+
+<Property name="EngLastName">
+<Type>%String</Type>
+</Property>
+
+<Property name="CommentOne">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Property name="CommentTwo">
+<Type>%Text</Type>
+<Parameter name="MAXLEN" value="500"/>
+</Property>
+
+<Index name="UniversityIndex">
+<Properties>University</Properties>
+</Index>
+
+<Index name="InternshipIndex">
+<Properties>Internship</Properties>
+</Index>
+
+<Method name="ConvertToProxyObject">
+<FormalSpec>shortInfo:%Boolean=0</FormalSpec>
+<ReturnType>%ZEN.proxyObject</ReturnType>
+<Implementation><![CDATA[
+	set proxy = ##class(%ZEN.proxyObject).%New()
+	set proxy.id = ..%Id()
+	
+	set proxy.firstName = ..FirstName.Value
+	set proxy.lastName = ..LastName.Value
+	set proxy.middleName = ..MiddleName.Value
+	
+	if (shortInfo = 1) quit proxy
+	
+	set proxy.faculty=..Faculty
+	set proxy.chair=..Chair
+	set proxy.birthDate = $ZDATE(..BirthDate, 3)
+	set proxy.phone = ..Phone
+	set proxy.email = ..Email
+	set proxy.skype = ..Skype
+	set proxy.isInNewsletter = ..IsInNewsletter
+	set proxy.tetMark = ..TetMark
+	if (..EngMark){
+ 		set proxy.engMark = ..EngMark.ConvertToProxyObject()}
+  	set proxy.petMark = ..PetMark
+	set proxy.resume = ..Resume
+	if (..City){
+	set proxy.city = ..City.ConvertToProxyObject()}
+   	set proxy.university = ..University.ConvertToProxyObject()
+   	if (..Internship){
+   	set proxy.internship=..Internship.ConvertToProxyObject()
+   	
+   	}
+   	set proxy.engName=..EngName
+   	set proxy.engLastName=..EngLastName
+   	set proxy.commentOne=..CommentOne
+   	set proxy.commentTwo=..CommentTwo
+   	
+   	quit proxy
+]]></Implementation>
+</Method>
+
+<Method name="GetInternByParameter">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>lName:%String,fName:%String,bDate:%String</FormalSpec>
+<ReturnType>Intern</ReturnType>
+<Implementation><![CDATA[
+	 set id = ""
+	     	
+	  &sql(SELECT InternTab.ID INTO :id
+		 FROM Sti_Data.Intern as InternTab 
+		 	INNER JOIN 
+		 	Sti_Data_Localization.LTextValue as ltvalLN ON ltvalLN.LText = InternTab.LastName 
+		 	INNER JOIN 
+		 	Sti_Data_Localization.LTextValue as ltvalFN ON ltvalFN.LText = InternTab.FirstName
+		 WHERE %UPPER(ltvalLN.Value) = %UPPER(TRIM(BOTH ' ' FROM :lName)) 
+		 	   AND 
+		 	   %UPPER(ltvalFN.Value) = %UPPER(TRIM(BOTH ' ' FROM :fName)) 
+		 	   AND 
+		 	   InternTab.BirthDate = TO_DATE(:bDate, 'YYYY-MM-DD'))
+		
+		
+	quit ..%OpenId(id)
+]]></Implementation>
+</Method>
+
+<Method name="Save">
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[data:%RegisteredObject,&st]]></FormalSpec>
+<ReturnType>Intern</ReturnType>
+<Implementation><![CDATA[
+	set isNew = $$$NO
+	if (data.id = ""){
+		set isNew = $$$YES
+		set intern = ..%New()
+		set intern.LastName = ##class(Sti.Data.Localization.LText).Create(data.lastName,"Sti.Data.Localization.Translation;PersonLTextValue") 
+      	set intern.FirstName = ##class(Sti.Data.Localization.LText).Create(data.firstName, "Sti.Data.Localization.Translation;PersonLTextValue")
+      	set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName, "Sti.Data.Localization.Translation;PersonLTextValue")
+    }
+    else{
+	    set intern = ..%OpenId(data.id)
+		set intern.LastName.Value = data.lastName
+      	set intern.FirstName.Value = data.firstName
+      	if (intern.MiddleName)
+      	{
+      		set intern.MiddleName.Value = data.middleName
+      	}
+      	else
+      	{
+	      set intern.MiddleName =##class(Sti.Data.Localization.LText).Create(data.middleName, "Sti.Data.Localization.Translation;PersonLTextValue")	
+      	}
+      	   	
+   	}
+		set intern.Email = data.email
+      	set intern.Phone = data.phone
+      	set intern.Skype = data.skype
+      	set intern.Resume = data.resume
+      	set intern.IsInNewsletter = data.isInNewsletter = $$$YES
+      	set intern.TetMark = data.tetMark
+      	set intern.PetMark = data.petMark
+      	set intern.Chair = data.chair
+      	set intern.Faculty = data.faculty
+      	set intern.BirthDate= $ZDATEH(data.birthDate, 15)
+		
+		
+		set intern.EngMark = ##class(Sti.Data.ENGMark).%OpenId(data.engMark.id)
+		set intern.City = ##class(Sti.Data.Region).%OpenId(data.city.id)
+		set intern.Internship=  ##class(Sti.Data.Internship).%OpenId(data.internship.id)
+        set intern.University = ##class(Sti.Data.University).%OpenId(data.university.id)
+		set intern.EngName=data.engName
+   		set intern.EngLastName=data.engLastName
+   		set intern.CommentOne=data.commentOne
+   		set intern.CommentTwo=data.commentTwo
+		
+    	set st = intern.%Save()
+    	
+    	
+    	set st = $$$OK
+    
+    
+    if ($$$ISOK(st) && isNew){
+	    
+    	try{
+        	TSTART
+        
+        
+        #dim item As MailingItem = ""
+	
+		set item = ##class(Sti.Data.MailingItemApprovedSubscriber).%New()
+		set item.AccessCode = $SYSTEM.Util.CreateGUID()
+		set ac = item.AccessCode
+	    set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy = ##class(Sti.Data.MailingGroup).GetAnnouncementGroup().ConvertToProxyObject()
+		///ошибка может быть тут
+		set item.MGroup = ##class(Sti.Data.MailingGroup).%OpenId(proxy.id,,.st)
+		
+		
+		set item.FullName = intern.LastName.Value_" "_intern.FirstName.Value
+		set item.Email = intern.Email
+		set item.Company = intern.Internship.Company.FullName.Value
+		set item.Position = ""
+		set item.City = intern.City.Name.Value
+		set item.LastUpdated = $ZDT($ZTS, 3)
+	
+		set st = item.%Save()
+        
+        
+        
+   
+        	
+        	 $$$THROWONERROR(st, st)
+        	 
+        	 
+        	 set groupNumber = ##class(Sti.Data.MailingJournal).GetValidGroupNumber()
+			 set message = ##class(Sti.Utils.Email).GetMailForOrderIntern(intern.Internship, item.AccessCode)
+			 do ##class(Sti.Data.MailingJournal).Create(intern.Email, intern.FirstName.Value_" "_intern.LastName.Value,
+			 message.subject, message.message, "Создание заявки", groupNumber)
+		     set message = ##class(Sti.Utils.Email).GetMailForOrderCurator(intern)
+	         if (intern.University.Curator)
+		     {
+		        set curator = intern.University.Curator
+		        do ##class(Sti.Data.MailingJournal).Create(curator.Email, curator.FirstName.Value_" "_curator.LastName.Value,
+			    message.subject, message.message, "Создание заявки", groupNumber)
+			 }
+			 job ##class(Sti.Data.MailingJournal).StartSending()
+		
+        
+           TCOMMIT
+    	}
+    	catch(ex){
+        	TROLLBACK
+        	set st = ex.AsStatus()
+        	do ##class(Sti.Utils.Log).Create(..%ClassName(1)_".SaveIntern catch"_item.AccessCode, $System.Status.GetErrorText(st))
+    	}
+   
+	}
+  
+    quit intern
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^Sti.Data.InternD</DataLocation>
+<DefaultData>InternDefaultData</DefaultData>
+<IdLocation>^Sti.Data.InternD</IdLocation>
+<IndexLocation>^Sti.Data.InternI</IndexLocation>
+<StreamLocation>^Sti.Data.InternS</StreamLocation>
+<ExtentSize>10</ExtentSize>
+<Data name="InternDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>BirthDay</Value>
+</Value>
+<Value name="3">
+<Value>City</Value>
+</Value>
+<Value name="4">
+<Value>Email</Value>
+</Value>
+<Value name="5">
+<Value>EngScience</Value>
+</Value>
+<Value name="6">
+<Value>FirstName</Value>
+</Value>
+<Value name="7">
+<Value>LastName</Value>
+</Value>
+<Value name="8">
+<Value>MiddleName</Value>
+</Value>
+<Value name="9">
+<Value>Phone</Value>
+</Value>
+<Value name="10">
+<Value>Resume</Value>
+</Value>
+<Value name="11">
+<Value>Skype</Value>
+</Value>
+<Value name="12">
+<Value>University</Value>
+</Value>
+<Value name="13">
+<Value>MailAgree</Value>
+</Value>
+<Value name="14">
+<Value>CacheScience</Value>
+</Value>
+<Value name="15">
+<Value>EnsembleScience</Value>
+</Value>
+<Value name="16">
+<Value>DeepSeeScience</Value>
+</Value>
+<Value name="17">
+<Value>TET</Value>
+</Value>
+<Value name="18">
+<Value>PET</Value>
+</Value>
+<Value name="19">
+<Value>engScience</Value>
+</Value>
+<Value name="20">
+<Value>Pet</Value>
+</Value>
+<Value name="21">
+<Value>engMark</Value>
+</Value>
+<Value name="22">
+<Value>petMark</Value>
+</Value>
+<Value name="23">
+<Value>Internship</Value>
+</Value>
+<Value name="24">
+<Value>EngMark</Value>
+</Value>
+<Value name="25">
+<Value>PetMark</Value>
+</Value>
+<Value name="26">
+<Value>Сhair</Value>
+</Value>
+<Value name="27">
+<Value>Faculty</Value>
+</Value>
+<Value name="28">
+<Value>Chair</Value>
+</Value>
+<Value name="29">
+<Value>IsInNewsletter</Value>
+</Value>
+<Value name="30">
+<Value>BirthDate</Value>
+</Value>
+<Value name="31">
+<Value>CacheExperience</Value>
+</Value>
+<Value name="32">
+<Value>EnsembleExperience</Value>
+</Value>
+<Value name="33">
+<Value>DeepSeeExperience</Value>
+</Value>
+<Value name="34">
+<Value>DeepseeExperience</Value>
+</Value>
+<Value name="35">
+<Value>TetMark</Value>
+</Value>
+<Value name="36">
+<Value>EngName</Value>
+</Value>
+<Value name="37">
+<Value>EngLastName</Value>
+</Value>
+<Value name="38">
+<Value>CommentOne</Value>
+</Value>
+<Value name="39">
+<Value>CommentTwo</Value>
+</Value>
+</Data>
+<Property name="%%CLASSNAME">
+<Selectivity>100.0000%</Selectivity>
+</Property>
+<Property name="BirthDay">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="CacheScience">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="City">
+<Selectivity>100.0000%</Selectivity>
+</Property>
+<Property name="DeepSeeScience">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Email">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="EngScience">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="EnsembleScience">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="FirstName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="LastName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="MailAgree">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="MiddleName">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="PET">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Phone">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Resume">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="Skype">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="TET">
+<Selectivity>10.0000%</Selectivity>
+</Property>
+<Property name="University">
+<Selectivity>14.2857%</Selectivity>
+</Property>
+<SQLMap name="IDKEY">
+<BlockCount>-4</BlockCount>
+</SQLMap>
+<SQLMap name="UniversityIndex">
+<BlockCount>-4</BlockCount>
+</SQLMap>
+</Storage>
+</Class>
+</Export>

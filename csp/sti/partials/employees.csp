@@ -1,0 +1,44 @@
+<!-- Страница работников -->
+<div class="row-fluid">
+		<!-- Свой компонент - таблица -->
+		 <stigrid style="border-radius: 4px 0 4px 4px;"
+	    	grid="employeeTable.state"
+		    table-class="table table-bordered table-hover"
+		    caption="'Сотрудники'|localize"
+		    columns="employeeTable.columns"
+		    items="employeeTable.items"
+		    properties="employeeTable.properties"
+		    update-items="employeeTable.loadItems(pageCurr, pageSize, sqlName, isDown, searchSqlName, searchText)"
+
+		    page-curr="employeeTable.pageCurr"
+		    page-total="employeeTable.pageTotal"
+		    page-size="employeeTable.pageSize"
+		    navigator-visible="true"
+
+		    selectable="true"
+		    selected-items="employeeTable.selectedItems"
+		    multi-select-mode="false"
+ 			on-select="employeeTable.onSelect(item)"
+ 			on-select-cell="employeeTable.onSelectCell(item, property)"
+
+ 			action-column-visible="true"
+		    action-column-icon="'fa fa-plus-circle'"
+		    action-column-title="'Добавить'|localize"
+		    action-column-method="employeeTable.add()"
+
+		    first-row-action-icon="'fa fa-pencil'"
+		    first-row-action-title="'Изменить'|localize"
+		    first-row-action-method="employeeTable.edit(item)"
+	    	
+	    	second-row-action-icon="'fa fa-times'"
+		    second-row-action-title="'Удалить'|localize"
+		    second-row-action-method="employeeTable.remove(item)"
+	    	
+ 			forcibly-update="employeeTable.forciblyUpdate"
+		/>
+	<div class="span1">
+	</div>
+</div>
+<br>
+<!-- Инфо-сообщения -->
+<stialert data="inalert" span-right="1" span-middle="10" span-left="1"/>

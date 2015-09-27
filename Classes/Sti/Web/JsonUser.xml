@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Web.JsonUser">
+<Super>Json</Super>
+<TimeCreated>63619,59146.457469</TimeCreated>
+
+<Method name="GetCities">
+<Description>
+Получить все города</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>word:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	if $L(word) < 2 quit $$$OK
+	
+	set proxyItems = ##class(%ListOfObjects).%New()	
+	set lang = $$$SessionLanguage
+	set word = word_"%"
+	
+	&sql(DECLARE RegionCurr CURSOR FOR 
+		 	 SELECT TOP 500 reg.ID As id, ltV.Value As name, reg.ParentRegion->Name->Value as parentName, reg.ParentRegion->ParentRegion->Name->Value
+		 	 FROM Sti_Data_Localization.LTextValue as ltV
+		 	 INNER JOIN 
+		 	 Sti_Data.Region as reg ON reg.Name = ltV.LText
+			 WHERE reg.HLevel = 2 AND ltV.Lang = :lang AND ltV.Value LIKE :word
+			 ORDER BY name, parentName)	
+		
+	&sql(OPEN RegionCurr)
+	for  
+	{	
+		&sql(FETCH RegionCurr INTO :id, :name, :parent, :greatParent) 
+		quit:(SQLCODE '= 0)
+		set proxyItem = ##class(%ZEN.proxyObject).%New()
+		set proxyItem.id = id
+		set proxyItem.name = name
+		set proxyItem.parentName = parent
+		set proxyItem.greatParentName = greatParent
+		do proxyItems.Insert(proxyItem)
+	}
+		
+	&sql(CLOSE RegionCurr)
+	
+	set proxyResult = ##class(%ZEN.proxyObject).%New()
+	set proxyResult.children = proxyItems
+	do proxyResult.%ToJSON()
+	    
+	q $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="GetLanguages">
+<Description>
+Получить доступные локализации</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set status = $$$OK
+	
+	try{		
+		set list = ##class(%ListOfObjects).%New()
+		
+		&sql(DECLARE LangCurs CURSOR FOR
+			 SELECT Code, Name 
+			 FROM Sti_Data_Localization.LTextLanguage
+			 ORDER BY Code)
+		
+		&sql(OPEN LangCurs)
+		for{
+			&sql(FETCH LangCurs INTO :code, :name) 
+			quit:(SQLCODE '= 0)
+			
+			set proxy = ##class(%ZEN.proxyObject).%New()
+			set proxy.code = code
+			set proxy.name = name
+			set proxy.flagUrl = "img/flags/"_code_".png"
+			
+			do list.Insert(proxy)	
+		}
+		
+		&sql(CLOSE LangCurs)
+		
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = list
+		do proxy.%ToJSON()
+	}
+	catch(ex){
+		set status = ex.AsStatus()
+	}
+	
+	quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="SaveOrder">
+<Description>
+Создать / сохранить заявку</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>isLogin:%Boolean</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	
+	set st = $$$OK
+	
+	try{
+		TSTART
+		
+		//$$$THROWONERROR(st, ##class(Sti.Data.Order).CheckUpdatePrivilege())
+		
+		$$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject($ZCVT(%request.Content.Read(10000000), "I", "UTF8"),,.data, 1))
+      	
+      	do ##class(Sti.Data.Order).Save(data, .st)
+      	if $$$ISERR(st) $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("error_OrderSave"," | "_st))
+      	
+      	TCOMMIT
+	}
+	catch ex {
+		TROLLBACK
+		set st = ex.AsStatus()
+	}	
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetEngMarks">
+<Description>
+Получить все уровни английского</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE EngCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.ENGMark)	
+		
+		&sql(OPEN EngCur)
+		for  
+		{	
+			&sql(FETCH EngCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.ENGMark).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE EngCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetPetMarks">
+<Description>
+Получить все оценки pet</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE PetCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.PETMark)	
+		
+		&sql(OPEN PetCur)
+		for  
+		{	
+			&sql(FETCH PetCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.PETMark).%OpenId(id).ConvertToProxyObject())
+		}
+		
+		&sql(CLOSE PetCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetStudents">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>LN:%String,FN:%String,MN:%String,DB:%Date</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	
+	&sql( SELECT id
+		  FROM Sti_Data.Intern
+		  WHERE FirstName='FN' AND LastName='LN' AND MiddleName='MN' AND BirthDate='BD')
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversitys">
+<Description>
+Все университеты</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE UnCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data."University")	
+		
+		&sql(OPEN UnCur)
+		for  
+		{	
+			&sql(FETCH UnCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.University).%OpenId(id).ConvertToProxyObject(1))
+		}
+		
+		&sql(CLOSE UnCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetUniversityBySearchParameters">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>word:%String,additionalWhere:%String=""</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set word = ..ParseParameter(word) 
+    set sql = "SELECT ID as id, "_ 
+	"FullName->Value as fullName, "_ 
+	"FullName->Value as text "_ 
+	"FROM Sti_Data.University "_ 
+	"WHERE (FullName->Value LIKE '"_word_"%') "_ 
+	"ORDER BY text"
+    quit ..WriteJsonFromSql(sql)
+]]></Implementation>
+</Method>
+
+<Method name="GetInternships">
+<Description>
+Все стажировки</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set st = $$$OK
+	
+	try{
+		set proxy = ##class(%ZEN.proxyObject).%New()
+		set proxy.children = ##class(%ListOfObjects).%New() 
+		
+		&sql(DECLARE IntsCur CURSOR FOR 
+		 	 SELECT ID
+		 	 FROM Sti_Data.Internship)	
+		
+		&sql(OPEN IntsCur)
+		for  
+		{	
+			&sql(FETCH IntsCur INTO :id) 
+			quit:(SQLCODE '= 0)
+			
+			do proxy.children.Insert(##class(Sti.Data.Internship).%OpenId(id).ConvertToProxyObject(1))
+		}
+		
+		&sql(CLOSE IntsCur)
+		
+		do proxy.%ToJSON()
+	}
+	catch (ex){
+		set st = ex.AsStatus()
+	}
+	
+	quit st
+]]></Implementation>
+</Method>
+
+<Method name="ConfirmMailingSubscription">
+<Description>
+==========================================================================================================================
+MAILING SUBSCRIPTION                                                                                  MAILING SUBSCRIPTION
+==========================================================================================================================
+Activate subscription, remove dirty and create approved mailing item
+Method="POST" Url="/json/mailing/subscription/confirmation/:code"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>code:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        set code = $system.Encryption.Base64Decode(code)
+        
+        if (##class(Sti.Data.MailingItemDirty).AccessCodeIdxExists(code) = $$$NO){
+            if (##class(Sti.Data.MailingItemApproved).AccessCodeIdxExists(code) = $$$YES){
+                $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("SubscriptionAlreadyExists"))
+            }
+            else{ 
+                $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("WrongConfirmationCode"))
+            }
+        }
+        
+        set dirtyItem = ##class(Sti.Data.MailingItemDirty).AccessCodeIdxOpen(code)
+        
+        set approvedItem = ##class(Sti.Data.MailingItemApprovedSubscriber).%New()
+        set approvedItem.FullName = dirtyItem.FullName
+        set approvedItem.Email = dirtyItem.Email
+        set approvedItem.City = dirtyItem.City
+        set approvedItem.Company = dirtyItem.Company
+        set approvedItem.Position = dirtyItem.Position
+        set approvedItem.AccessCode = dirtyItem.AccessCode
+        set approvedItem.MGroup = dirtyItem.MGroup
+        set approvedItem.LastUpdated = $ZDT($ZTS, 3)
+        
+        $$$THROWONERROR(st, approvedItem.%Save())
+        
+        $$$THROWONERROR(st, ##class(Sti.Data.MailingItemDirty).AccessCodeIdxDelete(code))
+        
+        TCOMMIT
+    }
+    catch(ex){
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="DeleteMailingSubscription">
+<Description>
+Remove approved mailing item by access code (unsubscribe)
+Method="DELETE" Url="/json/mailing/subscription/:code"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>code:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        set code = $system.Encryption.Base64Decode(code)
+        
+        if (##class(Sti.Data.MailingItemApproved).AccessCodeIdxExists(code) = $$$NO){
+            $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("WrongAccessCode"))
+        }
+        
+        set item = ##class(Sti.Data.MailingItemApproved).AccessCodeIdxOpen(code)
+        do ##class(Sti.Utils.Log).Create("Json.Admin.DeleteMailingSubscription()", "FullName="_item.ItemFullName)
+        kill item
+        
+        $$$THROWONERROR(st, ##class(Sti.Data.MailingItemApproved).AccessCodeIdxDelete(code))
+        
+        TCOMMIT
+    }
+    catch(ex){
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="UpdateMailingSubscription">
+<Description>
+Update approved mailing item by access code
+Method="POST" Url="/json/mailing/subscription/:code"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>code:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        TSTART
+        
+        set code = $system.Encryption.Base64Decode(code)
+        
+        if (##class(Sti.Data.MailingItemApproved).AccessCodeIdxExists(code) = $$$NO){
+            $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("WrongAccessCode"))
+        }
+        
+        $$$THROWONERROR(st, ##class(%ZEN.Auxiliary.jsonProvider).%ConvertJSONToObject(%request.Content,,.data, 1))
+        
+        set oldObj = ##class(Sti.Data.MailingItemApproved).AccessCodeIdxOpen(code)
+        set data.id = oldObj.%Id()
+        set data.email = oldObj.Email
+        set data.group = ##class(Sti.Data.MailingGroup).GetAnnouncementGroup().ConvertToProxyObject()
+        kill oldObj
+        
+        do ##class(Sti.Data.MailingItemApprovedSubscriber).Save(data, .st)
+        $$$THROWONERROR(st, st)
+        
+        TCOMMIT
+    }
+    catch(ex){
+        TROLLBACK
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+
+<Method name="GetMailingSubscription">
+<Description>
+Get approved mailing item by access code
+Method="GET" Url="/json/mailing/subscription/:code"</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>code:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set st = $$$OK
+    
+    try{
+        set code = $system.Encryption.Base64Decode(code)
+        
+        if (##class(Sti.Data.MailingItemApproved).AccessCodeIdxExists(code) = $$$NO){
+            $$$ThrowStatus(##class(Sti.Utils.Msg).GetErrorStatus("WrongAccessCode"))
+        }
+        
+        set proxy = ##class(Sti.Data.MailingItemApproved).AccessCodeIdxOpen(code).ConvertToProxyObject()
+        set proxy.accessCode = ""
+        set proxy.group = proxy.group.name
+        
+        do proxy.%ToJSON()
+    }
+    catch(ex){
+        set st = ex.AsStatus()
+    }
+    
+    quit st
+]]></Implementation>
+</Method>
+</Class>
+</Export>

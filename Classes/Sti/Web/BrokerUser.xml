@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+<Class name="Sti.Web.BrokerUser">
+<Description>
+Private request processor for administrator</Description>
+<Super>Sti.Web.BrokerBase</Super>
+<TimeCreated>63619,52703.290149</TimeCreated>
+
+<Parameter name="UseSession">
+<Type>Integer</Type>
+<Default>1</Default>
+</Parameter>
+
+<XData name="UrlMap">
+<Data><![CDATA[
+<Routes>
+
+<!-- Получить доступные локализации -->
+<Route Method="GET" Url="/language" Call="Sti.Web.JsonUser:GetLanguages"/>
+
+<!-- Сохранить / создать заявку -->
+<Route Url="/order" Method="POST" Call="Sti.Web.JsonUser:SaveOrder"/> 
+
+<!-- Получить все города -->
+<Route Method="GET" Url="/json/city/:startsWith" Call="Sti.Web.JsonUser:GetCities"/>
+
+<!-- Получить все уровни английского -->
+<Route Url="/eng" Method="GET" Call="Sti.Web.JsonUser:GetEngMarks"/> 
+
+<!-- Получить все оценки pet -->
+<Route Url="/pet" Method="GET" Call="Sti.Web.JsonUser:GetPetMarks"/>
+
+<!-- Все университеты -->
+<Route Url="/university" Method="GET" Call="Sti.Web.JsonUser:GetUniversitys"/> 
+
+<!-- Получить все стажировки -->
+<Route Url="/internship" Method="GET" Call="Sti.Web.JsonUser:GetInternships"/> 
+
+<!-- Поиск университета(LiveSearch) -->
+<Route Method="GET" Url="/json/university/:word" Call="Sti.Web.JsonUser:GetUniversityBySearchParameters"/>
+
+
+ <!-- ================================================================================================================================== -->
+    <!-- MAILING SUBSCRIPTION                                                                                          MAILING SUBSCRIPTION -->
+    <!-- ================================================================================================================================== -->
+    
+    
+    
+    <!-- Update approved mailing item by access code-->
+    <Route Method="POST" Url="/json/mailing/subscription/:code" Call="Sti.Web.JsonUser:UpdateMailingSubscription"/>
+    
+    <!-- Remove approved mailing item by access code (unsubscribe)-->
+    <Route Method="DELETE" Url="/json/mailing/subscription/:code" Call="Sti.Web.JsonUser:DeleteMailingSubscription"/>
+    
+    <!-- Get approved mailing item by access code-->
+    <Route Method="GET" Url="/json/mailing/subscription/:code" Call="Sti.Web.JsonUser:GetMailingSubscription"/>
+    
+    <!-- Activate subscription, remove dirty and create approved mailing item -->
+    <Route Method="POST" Url="/json/mailing/subscription/confirmation/:code" Call="Sti.Web.JsonUser:ConfirmMailingSubscription"/>
+    
+    
+</Routes>
+]]></Data>
+</XData>
+</Class>
+</Export>

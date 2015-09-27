@@ -1,3 +1,0 @@
-<cspapp>
-Src.pkg
-Sti.pkg
